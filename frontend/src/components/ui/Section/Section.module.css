@@ -1,0 +1,14 @@
+.section { width: 100%; }
+.bg-primary { background-color: var(--color-bg-primary); }
+.bg-secondary { background-color: var(--color-bg-secondary); }
+.bg-tertiary { background-color: var(--color-bg-tertiary); }
+.bg-white { background-color: var(--color-surface); }
+.spacing-sm { padding-top: var(--space-12); padding-bottom: var(--space-12); }
+.spacing-md { padding-top: var(--space-20); padding-bottom: var(--space-20); }
+.spacing-lg { padding-top: var(--space-24); padding-bottom: var(--space-24); }
+.spacing-xl { padding-top: var(--space-32); padding-bottom: var(--space-32); }
+.container {
+  max-width: var(--container-2xl);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}

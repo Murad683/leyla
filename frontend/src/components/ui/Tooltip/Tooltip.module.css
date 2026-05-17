@@ -1,0 +1,4 @@
+.wrapper { position: relative; display: inline-block; }
+.tooltip { position: absolute; background: var(--color-accent); color: var(--color-surface); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); font-size: var(--text-xs); white-space: nowrap; z-index: 10; font-family: var(--font-body); }
+.top { bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: var(--space-2); }
+.bottom { top: 100%; left: 50%; transform: translateX(-50%); margin-top: var(--space-2); }

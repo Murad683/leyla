@@ -1,0 +1,3 @@
+.wrapper { transition: opacity var(--transition-base); }
+.fadeIn { opacity: 1; }
+.fadeOut { opacity: 0; }

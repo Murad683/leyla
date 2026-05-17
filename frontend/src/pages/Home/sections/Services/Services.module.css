@@ -1,0 +1,14 @@
+
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); margin-top: var(--space-16); align-items: stretch; }
+.cardWrapper { display: flex; flex-direction: column; height: 100%; }
+.serviceCard { transition: all var(--transition-base); border-color: var(--color-border); }
+.serviceCard:hover { border-color: var(--color-accent); }
+.iconArea { width: 48px; height: 48px; border-radius: var(--radius-md); background-color: var(--color-bg-tertiary); display: flex; align-items: center; justify-content: center; color: var(--color-accent); margin-bottom: var(--space-6); }
+.title { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-text-primary); margin-bottom: var(--space-3); }
+.description { font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin-bottom: 0; }
+.divider { margin: var(--space-6) 0; }
+.featureList { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-3); }
+.featureItem { display: flex; align-items: flex-start; gap: var(--space-3); font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: var(--leading-tight); }
+.featureItem svg { flex-shrink: 0; color: var(--color-accent); width: 16px; height: 16px; margin-top: 2px; }
+@media (max-width: 1024px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 767px) { .grid { grid-template-columns: 1fr; } }
