@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../../services/settingsService';
 import { LinkedInIcon, InstagramIcon, XIcon } from '../../../assets/icons';
+import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Footer.module.css';
 
 const navLinks = [
@@ -21,7 +22,7 @@ const Footer = () => {
   });
 
   const logoContent = settings?.logoUrl ? (
-    <img src={settings.logoUrl} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
+    <img src={getImageUrl(settings.logoUrl)} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
   ) : (
     "LeylaDigital"
   );

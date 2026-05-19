@@ -1,0 +1,10 @@
+# Root Environment Variables
+DB_NAME=leyladigital
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_PORT=5432
+
+PORT=4000
+
+DATABASE_URL="postgresql://postgres:8%256kS*4E-F%235Q%40c@db.qqvcnoyqpxmclrabjsyv.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
+JWT_SECRET="leyladigitalsecret"

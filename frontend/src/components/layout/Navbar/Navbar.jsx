@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../../services/settingsService';
+import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
 import useClickOutside from '../../../hooks/useClickOutside';
@@ -33,7 +34,7 @@ const Navbar = () => {
   });
 
   const logoContent = settings?.logoUrl ? (
-    <img src={settings.logoUrl} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
+    <img src={getImageUrl(settings.logoUrl)} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
   ) : (
     "LeylaDigital"
   );

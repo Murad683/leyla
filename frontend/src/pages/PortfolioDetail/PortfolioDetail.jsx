@@ -7,6 +7,7 @@ import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
 import Badge from '../../components/ui/Badge';
 import LazyImage from '../../components/ui/LazyImage';
+import { getImageUrl } from '../../utils/imageUrl';
 import NotFound from '../NotFound/NotFound';
 import CaseStudySidebar from './CaseStudySidebar';
 import Skeleton from '../../components/ui/Skeleton';
@@ -85,7 +86,7 @@ const PortfolioDetail = () => {
         <div className={styles.layout}>
           <div className={styles.mainContent}>
             <div className={styles.coverImage}>
-              <LazyImage src={project.thumbnail} alt={project.title} />
+              <LazyImage src={getImageUrl(project.thumbnail)} alt={project.title} />
             </div>
 
             <div className={styles.resultsRow}>
@@ -127,7 +128,7 @@ const PortfolioDetail = () => {
           <div className={styles.relatedGrid}>
             {relatedProjects.map(p => (
               <Link key={p.id} to={`/portfolio/${p.slug}`} className={styles.relatedCard}>
-                <div className={styles.relatedImage}><LazyImage src={p.thumbnail} alt={p.title} /></div>
+                <div className={styles.relatedImage}><LazyImage src={getImageUrl(p.thumbnail)} alt={p.title} /></div>
                 <h4 className={styles.relatedCardTitle}>{p.title}</h4>
               </Link>
             ))}

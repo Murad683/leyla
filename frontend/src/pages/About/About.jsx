@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getAbout } from '../../services/settingsService';
+import { getImageUrl } from '../../utils/imageUrl';
 import styles from './About.module.css';
 import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
@@ -25,7 +26,7 @@ const About = () => {
   });
 
   const storyText = aboutData?.story || "Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi. Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur. Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.";
-  const mainImage = aboutData?.mainImage || STORY_IMAGE;
+  const mainImage = getImageUrl(aboutData?.mainImage) || STORY_IMAGE;
   const experienceYears = aboutData?.experienceYears || 8;
 
   const defaultValues = [

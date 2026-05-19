@@ -4,11 +4,12 @@ import styles from './Portfolio.module.css';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import LazyImage from '../../components/ui/LazyImage';
+import { getImageUrl } from '../../utils/imageUrl';
 
 const PortfolioCard = ({ project, isFeatured }) => (
   <Card variant="elevated" className={`${styles.card} ${isFeatured ? styles.featuredCard : ''}`}>
     <div className={styles.imageArea}>
-      <LazyImage src={project.thumbnail} alt={project.title} />
+      <LazyImage src={getImageUrl(project.thumbnail)} alt={project.title} />
     </div>
     <div className={styles.cardContent}>
       <div className={styles.tagsRow}>

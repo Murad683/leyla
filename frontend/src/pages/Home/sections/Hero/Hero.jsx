@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getHero } from '../../../../services/settingsService';
+import { getImageUrl } from '../../../../utils/imageUrl';
 import styles from './Hero.module.css';
 import Button from '../../../../components/ui/Button';
 import Badge from '../../../../components/ui/Badge';
@@ -18,7 +19,7 @@ const Hero = () => {
   const descText = heroData?.description || 'Mən yaradıcı baxış və data analitikasını birləşdirərək, hədəf auditoriyanı sadiq müştərilərə çevirən yüksək effektivlikli reklam kampaniyaları yaradıram.';
   const ctaLabel = heroData?.ctaLabel || 'Kampaniyalarıma baxın';
   const ctaHref = heroData?.ctaHref || '/portfolio';
-  const imageUrl = heroData?.backgroundImage || '/hero_visual.png';
+  const imageUrl = getImageUrl(heroData?.backgroundImage) || '/hero_visual.png';
 
   return (
     <section className={styles.hero}>
