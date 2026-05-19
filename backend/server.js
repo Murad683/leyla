@@ -3,9 +3,10 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
-require('dotenv').config();
+const path = require('path');
+require('dotenv').config({ path: '../.env' }); // Adjust for monorepo
 
-const { testConnection } = require('./config/db');
+const prisma = require('./config/prisma');
 const routes = require('./routes');
 const errorHandler = require('./middleware/errorHandler');
 const swaggerUi = require('swagger-ui-express');
@@ -17,19 +18,18 @@ const PORT = process.env.PORT || 4000;
 const isProduction = process.env.NODE_ENV === 'production';
 
 // Security Middlewares
-app.use(helmet());
-app.set('trust proxy', 1); // Trust Vercel proxy
+app.use(helmet({ crossOriginResourcePolicy: false })); // Allow serving images
+app.set('trust proxy', 1);
 
 // CORS Configuration
 const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:3000',
-  /\.vercel\.app$/ // Allow Vercel preview deployments
+  /\.vercel\.app$/
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
     if (allowedOrigins.some(o => o instanceof RegExp ? o.test(origin) : o === origin)) {
       return callback(null, true);
@@ -43,8 +43,11 @@ app.use(cors({
 
 // Performance Middlewares
 app.use(compression());
-app.use(express.json({ limit: '10kb' })); // Limit body size for security
+app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
+
+// Static Files (Uploads)
+app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
 if (!isProduction) {
   app.use(morgan('dev'));
@@ -59,7 +62,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 // Health check endpoint
 app.get('/api/health', async (req, res) => {
   try {
-    await testConnection();
+    await prisma.$queryRaw`SELECT 1`;
     res.status(200).json({ 
       status: 'ok', 
       environment: process.env.NODE_ENV,
@@ -81,8 +84,8 @@ if (process.env.NODE_ENV !== 'test' && require.main === module) {
   app.listen(PORT, async () => {
     logger.info(`Backend server starting at port ${PORT}`);
     try {
-      await testConnection();
-      logger.info('Connected to PostgreSQL');
+      await prisma.$connect();
+      logger.info('Connected to PostgreSQL via Prisma');
     } catch (error) {
       logger.error('Failed to connect to PostgreSQL on startup', error);
     }

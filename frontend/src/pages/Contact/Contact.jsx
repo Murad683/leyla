@@ -1,4 +1,6 @@
 import React, { useCallback } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getSettings } from '../../services/settingsService';
 import styles from './Contact.module.css';
 import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
@@ -31,6 +33,15 @@ const BUDGET_OPTIONS = [
 
 const Contact = () => {
   useSEO({ title: 'Əlaqə | LeylaDigital', description: 'Rəqəmsal strategiya və veb inkişaf layihələri üçün bizimlə əlaqə saxlayın.' });
+
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: getSettings,
+  });
+
+  const emailVal = settings?.email || "hello@leyladigital.com";
+  const phoneVal = settings?.phone || "+994 50 831 48 08";
+  const addressVal = settings?.address || "Məsafədən / Qlobal";
 
   const { values, errors, setErrors, handleChange, isSubmitting, setIsSubmitting, isSuccess, setIsSuccess, isError, setIsError, reset } = useForm({
     name: '',
@@ -98,21 +109,25 @@ const Contact = () => {
                   <div className={styles.icon}>✉</div>
                   <div>
                     <h4 className={styles.infoLabel}>E-poçt</h4>
-                    <p className={styles.infoValue}>hello@leyladigital.com</p>
+                    <p className={styles.infoValue}>
+                      <a href={`mailto:${emailVal}`} style={{ color: 'inherit', textDecoration: 'none' }}>{emailVal}</a>
+                    </p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>
                   <div className={styles.icon}>💬</div>
                   <div>
                     <h4 className={styles.infoLabel}>WhatsApp</h4>
-                    <p className={styles.infoValue}>+994 50 831 48 08</p>
+                    <p className={styles.infoValue}>
+                      <a href={`tel:${phoneVal.replace(/\s+/g, '')}`} style={{ color: 'inherit', textDecoration: 'none' }}>{phoneVal}</a>
+                    </p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>
                   <div className={styles.icon}>📍</div>
                   <div>
                     <h4 className={styles.infoLabel}>Məkan</h4>
-                    <p className={styles.infoValue}>Məsafədən / Qlobal</p>
+                    <p className={styles.infoValue}>{addressVal}</p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>

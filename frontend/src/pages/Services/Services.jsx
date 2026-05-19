@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getServices } from '../../services/settingsService';
 import styles from './Services.module.css';
-import { services } from '../../data/services';
+import { services as servicesFallback } from '../../data/services';
 import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
 import SectionLabel from '../../components/ui/SectionLabel';
@@ -14,6 +16,12 @@ const Services = () => {
     description: 'Brend Strategiyası, Performans Marketinqi, SMM və Reklam Optimizasiyası daxil olmaqla peşəkar marketinq xidmətləri.'
   });
 
+  const { data: servicesList } = useQuery({
+    queryKey: ['services'],
+    queryFn: getServices,
+  });
+
+  const services = servicesList || servicesFallback;
   const mainServices = services.slice(0, 4);
 
   const workflow = [
@@ -45,7 +53,7 @@ const Services = () => {
 
       {/* Detailed Services */}
       {mainServices.map((service, idx) => (
-        <section key={service.id} className={styles.detailSection}>
+        <section key={service.id || idx} className={styles.detailSection}>
           <Section spacing="lg">
             <div className={styles.detailGrid}>
               <RevealOnScroll className={styles.detailContent} delay={idx % 2 === 0 ? 0 : 200}>

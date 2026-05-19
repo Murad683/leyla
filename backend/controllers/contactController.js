@@ -1,27 +1,43 @@
-const contactQueries = require('../services/db/contactQueries');
-const { sendEmailNotification } = require('../services/emailService');
-const logger = require('../utils/logger');
+const prisma = require('../config/prisma');
 
-const submitContact = async (req, res, next) => {
+const submitContactForm = async (req, res, next) => {
   try {
-    const { name, email, phone, company, service, budget, subject, message } = req.body;
-    const ip_address = req.ip;
-
-    const contactData = { name, email, phone, company, service, budget, subject, message, ip_address };
-    const savedContact = await contactQueries.insertContact(contactData);
-
-    // Send email non-blocking
-    sendEmailNotification(contactData).catch(err => logger.error('Email error:', err));
-
-    res.status(201).json({
-      success: true,
-      data: savedContact
+    const contact = await prisma.contact.create({
+      data: {
+        ...req.body,
+        ipAddress: req.ip || req.connection.remoteAddress
+      }
     });
+    res.json({ success: true, message: 'Message sent successfully', data: contact });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Admin functions
+const getContacts = async (req, res, next) => {
+  try {
+    const contacts = await prisma.contact.findMany({ orderBy: { createdAt: 'desc' } });
+    res.json({ success: true, data: contacts });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const markContactAsRead = async (req, res, next) => {
+  try {
+    const contact = await prisma.contact.update({
+      where: { id: parseInt(req.params.id) },
+      data: { isRead: true }
+    });
+    res.json({ success: true, data: contact });
   } catch (error) {
     next(error);
   }
 };
 
 module.exports = {
-  submitContact
+  submitContactForm,
+  getContacts,
+  markContactAsRead
 };

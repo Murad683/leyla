@@ -1,8 +1,9 @@
 import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import PageLayout from '../components/layout/PageLayout';
 import PageTransition from '../components/layout/PageTransition';
 import Spinner from '../components/ui/Spinner';
+import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 const Home = lazy(() => import('../pages/Home/Home'));
 const Services = lazy(() => import('../pages/Services/Services'));
@@ -13,6 +14,17 @@ const BlogDetail = lazy(() => import('../pages/BlogDetail/BlogDetail'));
 const About = lazy(() => import('../pages/About/About'));
 const Contact = lazy(() => import('../pages/Contact/Contact'));
 const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
+
+// Admin Pages
+const AdminLogin = lazy(() => import('../pages/Admin/Login/Login'));
+const AdminLayout = lazy(() => import('../pages/Admin/AdminLayout/AdminLayout'));
+const AdminDashboard = lazy(() => import('../pages/Admin/Dashboard/Dashboard'));
+const AdminSettings = lazy(() => import('../pages/Admin/Settings/Settings'));
+const AdminHero = lazy(() => import('../pages/Admin/Hero/Hero'));
+const AdminAbout = lazy(() => import('../pages/Admin/About/About'));
+const AdminServices = lazy(() => import('../pages/Admin/Services/Services'));
+const AdminPortfolio = lazy(() => import('../pages/Admin/Portfolio/Portfolio'));
+const AdminBlog = lazy(() => import('../pages/Admin/Blog/Blog'));
 
 const SuspenseWrapper = ({ children }) => (
   <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}><Spinner /></div>}>
@@ -36,6 +48,24 @@ const router = createBrowserRouter([
       { path: '*', element: <SuspenseWrapper><PageTransition><NotFound /></PageTransition></SuspenseWrapper> },
     ],
   },
+  {
+    path: '/admin/login',
+    element: <SuspenseWrapper><AdminLogin /></SuspenseWrapper>
+  },
+  {
+    path: '/admin',
+    element: <ProtectedRoute><AdminLayout /></ProtectedRoute>,
+    children: [
+      { index: true, element: <Navigate to="/admin/dashboard" replace /> },
+      { path: 'dashboard', element: <SuspenseWrapper><AdminDashboard /></SuspenseWrapper> },
+      { path: 'settings', element: <SuspenseWrapper><AdminSettings /></SuspenseWrapper> },
+      { path: 'hero', element: <SuspenseWrapper><AdminHero /></SuspenseWrapper> },
+      { path: 'about', element: <SuspenseWrapper><AdminAbout /></SuspenseWrapper> },
+      { path: 'services', element: <SuspenseWrapper><AdminServices /></SuspenseWrapper> },
+      { path: 'portfolio', element: <SuspenseWrapper><AdminPortfolio /></SuspenseWrapper> },
+      { path: 'blog', element: <SuspenseWrapper><AdminBlog /></SuspenseWrapper> },
+    ]
+  }
 ]);
 
 export default router;

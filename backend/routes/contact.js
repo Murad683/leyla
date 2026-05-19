@@ -4,6 +4,6 @@ const contactController = require('../controllers/contactController');
 const { validateContact } = require('../middleware/validator');
 const { contactRateLimiter } = require('../middleware/rateLimiter');
 
-router.post('/', contactRateLimiter, validateContact, contactController.submitContact);
+router.post('/', contactRateLimiter, validateContact, contactController.submitContactForm);
 
 module.exports = router;

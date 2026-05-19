@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getAbout } from '../../services/settingsService';
 import styles from './About.module.css';
 import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
@@ -16,6 +18,39 @@ const About = () => {
     title: 'Haqqımızda | LeylaDigital', 
     description: 'LeylaDigital haqqında öyrənin - rəqəmsal strategiya, performans marketinqi və auditoriya analitikasına yönəlmiş yaradıcı reklam agentliyi.' 
   });
+
+  const { data: aboutData } = useQuery({
+    queryKey: ['about'],
+    queryFn: getAbout,
+  });
+
+  const storyText = aboutData?.story || "Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi. Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur. Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.";
+  const mainImage = aboutData?.mainImage || STORY_IMAGE;
+  const experienceYears = aboutData?.experienceYears || 8;
+
+  const defaultValues = [
+    {
+      icon: "🎯",
+      title: "Nəticəyə Fokus",
+      desc: "Biz bəyənmə sayı üçün deyil, satış sayı üçün işləyirik. Hər bir kampaniyanın konversiya gətirməsini təmin edirik."
+    },
+    {
+      icon: "📊",
+      title: "Data Analitikası",
+      desc: "Qərarlarimizi ehtimallar üzərində deyil, dəqiq bazar və istifadəçi davranış məlumatları üzərində qururuq."
+    },
+    {
+      icon: "🚀",
+      title: "Sürətli Adaptasiya",
+      desc: "Dəyişən bazar trendlərinə və alqoritmlərə anında uyğunlaşaraq kampaniyalarınızı həmişə aktual saxlayırıq."
+    }
+  ];
+
+  const values = aboutData?.values?.map(v => ({
+    icon: v.icon === "QualityIcon" ? "🎯" : v.icon === "InnovationIcon" ? "📊" : "🚀",
+    title: v.title,
+    desc: v.description
+  })) || defaultValues;
 
   return (
     <div className={styles.page}>
@@ -38,22 +73,18 @@ const About = () => {
         <div className={styles.storyGrid}>
           <RevealOnScroll className={styles.storyImage}>
             <LazyImage 
-              src={STORY_IMAGE} 
+              src={mainImage} 
               alt="Bizim yaradıcı agentliyimiz" 
               aspectRatio="4/3"
             />
           </RevealOnScroll>
           <RevealOnScroll delay={200} className={styles.storyText}>
             <SectionLabel overline="Hekayəmiz" heading="Vizyondan Reallığa" />
-            <p>
-              Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi.
-            </p>
-            <p>
-              Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur.
-            </p>
-            <p>
-              Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.
-            </p>
+            <div className={styles.storyParagraphs}>
+              {storyText.split('\n').map((p, i) => (
+                <p key={i}>{p}</p>
+              ))}
+            </div>
           </RevealOnScroll>
         </div>
       </Section>
@@ -65,23 +96,7 @@ const About = () => {
         </RevealOnScroll>
         
         <div className={styles.valuesGrid}>
-          {[
-            {
-              icon: "🎯",
-              title: "Nəticəyə Fokus",
-              desc: "Biz bəyənmə sayı üçün deyil, satış sayı üçün işləyirik. Hər bir kampaniyanın konversiya gətirməsini təmin edirik."
-            },
-            {
-              icon: "📊",
-              title: "Data Analitikası",
-              desc: "Qərarlarımızı ehtimallar üzərində deyil, dəqiq bazar və istifadəçi davranış məlumatları üzərində qururuq."
-            },
-            {
-              icon: "🚀",
-              title: "Sürətli Adaptasiya",
-              desc: "Dəyişən bazar trendlərinə və alqoritmlərə anında uyğunlaşaraq kampaniyalarınızı həmişə aktual saxlayırıq."
-            }
-          ].map((value, idx) => (
+          {values.map((value, idx) => (
             <RevealOnScroll key={idx} delay={idx * 100}>
               <div className={styles.valueCard}>
                 <span className={styles.valueIcon}>{value.icon}</span>
@@ -123,7 +138,7 @@ const About = () => {
               {[
                 { label: "Uğurlu Kampaniya", value: "100+" },
                 { label: "Müştəri Məmnuniyyəti", value: "99%" },
-                { label: "İllik Təcrübə", value: "8+" },
+                { label: "İllik Təcrübə", value: `${experienceYears}+` },
                 { label: "İdarə Olunan Büdcə", value: "1M+" }
               ].map((stat, idx) => (
                 <div key={idx} className={styles.statItem}>
@@ -155,3 +170,4 @@ const About = () => {
 };
 
 export default About;
+

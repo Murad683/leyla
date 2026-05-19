@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getSettings } from '../../../services/settingsService';
 import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
 import useClickOutside from '../../../hooks/useClickOutside';
@@ -21,15 +23,26 @@ const Navbar = () => {
   const isScrolled = scrollPosition > 60;
   const navRef = useRef(null);
 
+  const { data: settings } = useQuery({
+    queryKey: ['settings'],
+    queryFn: getSettings,
+  });
+
   useClickOutside(navRef, () => {
     if (isMenuOpen) setIsMenuOpen(false);
   });
+
+  const logoContent = settings?.logoUrl ? (
+    <img src={settings.logoUrl} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
+  ) : (
+    "LeylaDigital"
+  );
 
   return (
     <header ref={navRef} className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
       <div className={styles.container}>
         <Link to="/" className={styles.logo} onClick={() => setIsMenuOpen(false)}>
-          LeylaDigital
+          {logoContent}
         </Link>
         
         {/* Desktop Nav */}
