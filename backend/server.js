@@ -24,6 +24,8 @@ app.set('trust proxy', 1);
 // CORS Configuration
 const allowedOrigins = [
   process.env.FRONTEND_URL,
+  'https://digitaleyla.az',
+  'https://www.digitaleyla.az',
   'http://localhost:3000',
   /\.vercel\.app$/
 ].filter(Boolean);
@@ -34,7 +36,11 @@ app.use(cors({
     if (allowedOrigins.some(o => o instanceof RegExp ? o.test(origin) : o === origin)) {
       return callback(null, true);
     }
-    return callback(new Error('CORS policy violation'), false);
+    // Return a 403 Forbidden instead of throwing an Error that becomes a 500
+    const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+    const error = new Error(msg);
+    error.status = 403; // This will be caught by errorHandler and returned as 403 instead of 500
+    return callback(error, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
