@@ -60,7 +60,7 @@ if (!isProduction) {
 }
 
 // Routes
-app.use('/api', routes);
+app.use('/', routes);
 
 // API Documentation (Swagger)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
