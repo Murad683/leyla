@@ -6,7 +6,7 @@ import About from './sections/About/About';
 import styles from './Home.module.css';
 
 const Home = () => {
-  useSEO({ title: 'Jane Doe — Digital Strategist | Personal Brand', description: 'Crafting digital experiences that elevate personal brands and scale businesses.' });
+  useSEO({ title: 'Leyla — Rəqəmsal Marketoloq və Reklam Strateqi', description: 'Brendləri ucaldan və biznesləri böyüdən strateji kampaniyalar yaradan rəqəmsal marketoloq və reklam strateqi.' });
   return (
     <div className={styles.home}>
       <Hero />

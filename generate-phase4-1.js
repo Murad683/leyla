@@ -51,7 +51,7 @@ const blogData = Array.from({ length: 8 }).map((_, i) => ({
   featured: i === 0,
   coverImage: null,
   content: lipsumContent,
-  author: { name: 'Jane Doe', avatar: null }
+  author: { name: 'Leyla', avatar: null }
 }));
 
 const portfolioData = Array.from({ length: 6 }).map((_, i) => ({

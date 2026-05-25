@@ -9,7 +9,7 @@ export const blogPosts = Array.from({ length: 8 }).map((_, i) => ({
   publishedAt: new Date(Date.now() - i * 864000000).toISOString(),
   featured: i === 0,
   coverImage: null,
-  author: { name: 'Jane Doe', avatar: null },
+  author: { name: 'Leyla', avatar: null },
   content: `## Introduction
 In the rapidly evolving digital landscape, establishing a strong and recognizable presence is more important than ever. Companies of all sizes are looking to optimize their performance, engage their audiences, and scale their infrastructure efficiently. 
 
