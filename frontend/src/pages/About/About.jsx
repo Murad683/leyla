@@ -10,6 +10,7 @@ import RevealOnScroll from '../../components/ui/RevealOnScroll';
 import SectionLabel from '../../components/ui/SectionLabel';
 import Button from '../../components/ui/Button';
 import LazyImage from '../../components/ui/LazyImage';
+import Skeleton from '../../components/ui/Skeleton';
 
 // Path to the generated image in public folder
 const STORY_IMAGE = "/about_hero_bg.png";
@@ -20,10 +21,38 @@ const About = () => {
     description: 'LeylaDigital haqqında öyrənin - rəqəmsal strategiya, performans marketinqi və auditoriya analitikasına yönəlmiş yaradıcı reklam agentliyi.' 
   });
 
-  const { data: aboutData } = useQuery({
+  const { data: aboutData, isLoading } = useQuery({
     queryKey: ['about'],
     queryFn: getAbout,
   });
+
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <section className={styles.hero}>
+          <Section spacing="xl">
+            <div className={styles.heroContent} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <Skeleton width="60%" height="48px" style={{ marginBottom: '1.5rem' }} />
+              <Skeleton width="80%" height="24px" style={{ marginBottom: '0.5rem' }} />
+              <Skeleton width="70%" height="24px" />
+            </div>
+          </Section>
+        </section>
+        <Section spacing="xl">
+          <div className={styles.storyGrid}>
+            <Skeleton width="100%" height="400px" style={{ borderRadius: 'var(--radius-2xl)' }} />
+            <div className={styles.storyText}>
+              <Skeleton width="120px" height="24px" style={{ marginBottom: '1rem' }} />
+              <Skeleton width="250px" height="32px" style={{ marginBottom: '2rem' }} />
+              <Skeleton width="100%" height="20px" style={{ marginBottom: '0.5rem' }} />
+              <Skeleton width="100%" height="20px" style={{ marginBottom: '0.5rem' }} />
+              <Skeleton width="80%" height="20px" style={{ marginBottom: '2rem' }} />
+            </div>
+          </div>
+        </Section>
+      </div>
+    );
+  }
 
   const storyText = aboutData?.story || "Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi. Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur. Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.";
   const mainImage = getImageUrl(aboutData?.mainImage) || STORY_IMAGE;

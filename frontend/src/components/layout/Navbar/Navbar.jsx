@@ -7,6 +7,7 @@ import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
 import useClickOutside from '../../../hooks/useClickOutside';
 import Button from '../../ui/Button';
+import Skeleton from '../../ui/Skeleton';
 import { MenuIcon, CloseIcon } from '../../../assets/icons';
 
 const navLinks = [
@@ -24,7 +25,7 @@ const Navbar = () => {
   const isScrolled = scrollPosition > 60;
   const navRef = useRef(null);
 
-  const { data: settings } = useQuery({
+  const { data: settings, isLoading } = useQuery({
     queryKey: ['settings'],
     queryFn: getSettings,
   });
@@ -33,7 +34,9 @@ const Navbar = () => {
     if (isMenuOpen) setIsMenuOpen(false);
   });
 
-  const logoContent = settings?.logoUrl ? (
+  const logoContent = isLoading ? (
+    <Skeleton width="120px" height="32px" />
+  ) : settings?.logoUrl ? (
     <img src={getImageUrl(settings.logoUrl)} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
   ) : (
     "LeylaDigital"

@@ -7,16 +7,49 @@ import SectionLabel from '../../../../components/ui/SectionLabel';
 import RevealOnScroll from '../../../../components/ui/RevealOnScroll';
 import Button from '../../../../components/ui/Button';
 import Badge from '../../../../components/ui/Badge';
+import Skeleton from '../../../../components/ui/Skeleton';
 import ValueItem from './ValueItem';
 import { about as aboutFallback } from '../../../../data/about';
 
 const About = () => {
   const navigate = useNavigate();
 
-  const { data: aboutData } = useQuery({
+  const { data: aboutData, isLoading } = useQuery({
     queryKey: ['about'],
     queryFn: getAbout,
   });
+
+  if (isLoading) {
+    return (
+      <Section id="about" bg="primary" spacing="xl">
+        <div className={styles.container}>
+          <div className={styles.leftCol}>
+            <Skeleton width="100%" height="500px" style={{ borderRadius: 'var(--radius-3xl)' }} />
+          </div>
+          <div className={styles.rightCol}>
+            <Skeleton width="150px" height="24px" style={{ marginBottom: '1rem' }} />
+            <Skeleton width="80%" height="40px" style={{ marginBottom: '1.5rem' }} />
+            <Skeleton width="100%" height="20px" style={{ marginBottom: '0.5rem' }} />
+            <Skeleton width="100%" height="20px" style={{ marginBottom: '0.5rem' }} />
+            <Skeleton width="60%" height="20px" style={{ marginBottom: '2rem' }} />
+            
+            <div className={styles.valuesGrid} style={{ marginBottom: '2rem' }}>
+              <Skeleton width="100%" height="80px" />
+              <Skeleton width="100%" height="80px" />
+            </div>
+            
+            <Skeleton width="150px" height="24px" style={{ marginBottom: '1rem' }} />
+            <Skeleton width="100%" height="60px" style={{ marginBottom: '0.5rem' }} />
+            <Skeleton width="100%" height="60px" style={{ marginBottom: '2rem' }} />
+            
+            <div className={styles.ctaWrapper}>
+              <Skeleton width="150px" height="50px" />
+            </div>
+          </div>
+        </div>
+      </Section>
+    );
+  }
 
   const story = aboutData?.story || aboutFallback.story;
   const values = aboutData?.values || aboutFallback.values;

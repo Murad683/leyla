@@ -9,6 +9,7 @@ import Section from '../../components/ui/Section';
 import SectionLabel from '../../components/ui/SectionLabel';
 import RevealOnScroll from '../../components/ui/RevealOnScroll';
 import Button from '../../components/ui/Button';
+import Skeleton from '../../components/ui/Skeleton';
 
 const Services = () => {
   useSEO({
@@ -16,10 +17,41 @@ const Services = () => {
     description: 'Brend Strategiyası, Performans Marketinqi, SMM və Reklam Optimizasiyası daxil olmaqla peşəkar marketinq xidmətləri.'
   });
 
-  const { data: servicesList } = useQuery({
+  const { data: servicesList, isLoading } = useQuery({
     queryKey: ['services'],
     queryFn: getServices,
   });
+
+  if (isLoading) {
+    return (
+      <div className={styles.page}>
+        <section className={styles.hero}>
+          <Section spacing="xl">
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+              <Skeleton width="60%" height="48px" style={{ marginBottom: '1.5rem' }} />
+              <Skeleton width="80%" height="24px" style={{ marginBottom: '0.5rem' }} />
+              <Skeleton width="70%" height="24px" />
+            </div>
+          </Section>
+        </section>
+        <section className={styles.detailSection}>
+          <Section spacing="lg">
+            <div className={styles.detailGrid}>
+              <div className={styles.detailContent}>
+                <Skeleton width="120px" height="24px" style={{ marginBottom: '1rem' }} />
+                <Skeleton width="250px" height="32px" style={{ marginBottom: '1.5rem' }} />
+                <Skeleton width="100%" height="60px" style={{ marginBottom: '2rem' }} />
+                <Skeleton width="60%" height="20px" style={{ marginBottom: '0.5rem' }} />
+                <Skeleton width="50%" height="20px" style={{ marginBottom: '0.5rem' }} />
+                <Skeleton width="70%" height="20px" />
+              </div>
+              <Skeleton width="100%" height="300px" style={{ borderRadius: 'var(--radius-3xl)' }} />
+            </div>
+          </Section>
+        </section>
+      </div>
+    );
+  }
 
   const services = servicesList || servicesFallback;
   const mainServices = services.slice(0, 4);
