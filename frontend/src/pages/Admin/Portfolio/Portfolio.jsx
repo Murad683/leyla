@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getPortfolioItems } from '../../../services/portfolioService';
 import { createPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadImage } from '../../../services/adminService';
@@ -104,6 +104,16 @@ const Portfolio = () => {
     setModalOpen(false);
     setEditingItem(null);
   };
+
+  useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape') closeModal();
+    };
+    if (modalOpen) {
+      window.addEventListener('keydown', handleEsc);
+    }
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [modalOpen]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -278,8 +288,8 @@ const Portfolio = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className={styles.modalOverlay}>
-          <div className={styles.modal}>
+        <div className={styles.modalOverlay} onClick={closeModal}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
             <h3 className={styles.modalTitle}>
               {editingItem ? 'Layihəni Redaktə Et' : 'Yeni Layihə Yarat'}
             </h3>
