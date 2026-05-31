@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getServices } from '../../../services/settingsService';
 import { createService, updateService, deleteService } from '../../../services/adminService';
@@ -71,16 +71,6 @@ const Services = () => {
     setEditingService(null);
   };
 
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') closeModal();
-    };
-    if (modalOpen) {
-      window.addEventListener('keydown', handleEsc);
-    }
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [modalOpen]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -147,8 +137,8 @@ const Services = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
             <h3 className={styles.modalTitle}>
               {editingService ? 'Xidməti Redaktə Et' : 'Yeni Xidmət Əlavə Et'}
             </h3>

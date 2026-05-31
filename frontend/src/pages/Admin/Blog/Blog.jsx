@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getBlogPosts } from '../../../services/blogService';
 import { createBlogPost, updateBlogPost, deleteBlogPost, uploadImage } from '../../../services/adminService';
@@ -86,16 +86,6 @@ const Blog = () => {
     setModalOpen(false);
     setEditingPost(null);
   };
-
-  useEffect(() => {
-    const handleEsc = (e) => {
-      if (e.key === 'Escape') closeModal();
-    };
-    if (modalOpen) {
-      window.addEventListener('keydown', handleEsc);
-    }
-    return () => window.removeEventListener('keydown', handleEsc);
-  }, [modalOpen]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -232,8 +222,8 @@ const Blog = () => {
 
       {/* Modal */}
       {modalOpen && (
-        <div className={styles.modalOverlay} onClick={closeModal}>
-          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.modalOverlay}>
+          <div className={styles.modal}>
             <h3 className={styles.modalTitle}>
               {editingPost ? 'Məqaləni Redaktə Et' : 'Yeni Məqalə Yaz'}
             </h3>
