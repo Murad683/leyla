@@ -27,6 +27,7 @@ const allowedOrigins = [
   'https://digitaleyla.az',
   'https://www.digitaleyla.az',
   'http://localhost:3000',
+  /\.azurestaticapps\.net$/,
   /\.vercel\.app$/
 ].filter(Boolean);
 

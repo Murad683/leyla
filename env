@@ -6,5 +6,7 @@ DB_PORT=5432
 
 PORT=4000
 
-DATABASE_URL="postgresql://postgres:8%256kS*4E-F%235Q%40c@db.qqvcnoyqpxmclrabjsyv.supabase.co:6543/postgres?pgbouncer=true&connection_limit=1"
+DATABASE_URL="postgresql://murad_admin:nPiFgxa8dQ24qxoG5q3fW@leyla-rg.postgres.database.azure.com:5432/postgres?sslmode=require"
+AZURE_STORAGE_CONNECTION_STRING="DefaultEndpointsProtocol=https;AccountName=leyladigitalstorage;AccountKey=h4XLNFtgt3+0jWu1FKo3MMISSqEvDdsUF4Z9DzeWPgMHpnu64hzUpcrQcne/S++MtudGIE7xJ6CN+AStsWdcxg==;EndpointSuffix=core.windows.net"
+AZURE_STORAGE_CONTAINER_NAME="uploads"
 JWT_SECRET="leyladigitalsecret"

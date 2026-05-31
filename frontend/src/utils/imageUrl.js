@@ -1,6 +1,6 @@
 /**
  * Formats image URLs to ensure they resolve correctly in both local development
- * and production deployment environments (Vercel + Render).
+ * and production deployment environments (Azure).
  */
 export const getImageUrl = (url) => {
   if (!url) return '';

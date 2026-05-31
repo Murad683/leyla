@@ -9,7 +9,7 @@ const options = {
       description: 'Production-ready API for LeylaDigital Marketing Agency',
       contact: {
         name: 'API Support',
-        url: 'https://leyladigital.vercel.app',
+        url: 'https://leyla-backend.azurewebsites.net',
       },
     },
     servers: [
@@ -18,7 +18,7 @@ const options = {
         description: 'Development server',
       },
       {
-        url: 'https://leyladigital.vercel.app/api',
+        url: 'https://leyla-backend.azurewebsites.net/api',
         description: 'Production server',
       },
     ],

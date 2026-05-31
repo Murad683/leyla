@@ -1,22 +1,9 @@
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
+const { BlobServiceClient } = require('@azure/storage-blob');
 
-// Ensure uploads directory exists
-const uploadDir = path.join(__dirname, '../public/uploads');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-  }
-});
+// Use memory storage so we can buffer the image and send it directly to Azure
+const storage = multer.memoryStorage();
 
 const upload = multer({ 
   storage: storage,
@@ -30,12 +17,33 @@ const upload = multer({
   }
 });
 
-const uploadImage = (req, res, next) => {
+const uploadImage = async (req, res, next) => {
   try {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
-    const imageUrl = `/uploads/${req.file.filename}`;
+    
+    // Check if Azure is configured
+    if (!process.env.AZURE_STORAGE_CONNECTION_STRING) {
+      return res.status(500).json({ success: false, message: 'Azure Storage not configured' });
+    }
+
+    const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
+    const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME || 'uploads';
+    const containerClient = blobServiceClient.getContainerClient(containerName);
+
+    // Generate unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const blobName = req.file.fieldname + '-' + uniqueSuffix + path.extname(req.file.originalname);
+    
+    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
+
+    // Upload to Azure
+    await blockBlobClient.uploadData(req.file.buffer, {
+      blobHTTPHeaders: { blobContentType: req.file.mimetype }
+    });
+
+    const imageUrl = blockBlobClient.url;
     res.json({ success: true, url: imageUrl });
   } catch (error) {
     next(error);

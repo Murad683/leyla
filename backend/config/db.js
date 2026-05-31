@@ -4,7 +4,7 @@ require('dotenv').config();
 
 /**
  * Smart Database Configuration
- * Works seamlessly in Local (Docker/Native) and Production (Vercel/Supabase)
+ * Works seamlessly in Local (Docker/Native) and Production (Azure PostgreSQL)
  * Uses modern WHATWG URL API for URI construction
  */
 
