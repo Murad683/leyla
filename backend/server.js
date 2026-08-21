@@ -62,6 +62,10 @@ if (!isProduction) {
 }
 
 // Routes
+// Mounted at both '/' (legacy — kept for backward compatibility with any
+// client still configured without the /api prefix) and '/api' (the
+// documented convention used by nginx.conf, .env.example and /api/health).
+app.use('/', routes);
 app.use('/api', routes);
 
 // API Documentation (Swagger)
