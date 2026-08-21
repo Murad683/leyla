@@ -22,9 +22,10 @@
   color: var(--color-text-primary);
   margin: 0 0 var(--space-16);
   max-width: 16ch;
+  overflow-wrap: break-word;
 }
-.wordMask { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
-.word { display: inline-block; will-change: transform; }
+.wordMask { display: inline-block; max-width: 100%; overflow: hidden; vertical-align: top; padding-bottom: 0.06em; }
+.word { display: inline-block; max-width: 100%; overflow-wrap: break-word; word-break: break-word; will-change: transform; }
 
 .bottomRow {
   display: flex;
@@ -76,7 +77,7 @@
 }
 
 @media (max-width: 767px) {
-  .title { margin-bottom: var(--space-10); }
+  .title { font-size: clamp(2.25rem, 11vw, 3.5rem); margin-bottom: var(--space-10); }
   .ctaGroup { flex-direction: column; align-items: stretch; }
   .ctaGroup button { width: 100%; }
 }
