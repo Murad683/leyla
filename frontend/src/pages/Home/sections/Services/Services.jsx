@@ -38,9 +38,9 @@ const Services = () => {
   return (
     <Section id="services" bg="secondary" spacing="xl">
       <RevealOnScroll>
-        <SectionLabel 
-          overline="Nə edirəm" 
-          heading="Nəticə verən xidmətlər"
+        <SectionLabel
+          overline="Təlimlər"
+          heading="Bacarıq qazandıran, nəticə verən proqramlar"
           align="center"
         />
       </RevealOnScroll>

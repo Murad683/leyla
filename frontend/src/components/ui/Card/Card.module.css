@@ -1,40 +1,31 @@
 .card {
   position: relative;
   background-color: var(--color-surface);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sm);
   padding: var(--space-6);
-  transition: transform 220ms var(--ease-out-back), box-shadow var(--transition-base), border-color var(--transition-base);
-  overflow: hidden;
+  transition: border-color var(--transition-base), transform var(--transition-base), box-shadow var(--transition-base);
 }
 .default {
   border: 1px solid var(--color-border);
 }
 .elevated {
   border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-md);
 }
 .elevated:hover {
-  box-shadow: var(--shadow-lg);
-  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
-  transform: translateY(-3px);
-}
-.elevated::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(115deg, transparent 40%, color-mix(in srgb, var(--color-accent) 10%, transparent) 50%, transparent 60%);
-  transform: translateX(-120%);
-  transition: transform 700ms ease;
-  pointer-events: none;
-}
-.elevated:hover::after {
-  transform: translateX(120%);
+  border-color: var(--color-text-primary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
 .bordered {
-  border: 2px solid var(--color-border);
+  border-top: 1px solid var(--color-text-primary);
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .elevated:hover { transform: none; }
-  .elevated::after { display: none; }
 }

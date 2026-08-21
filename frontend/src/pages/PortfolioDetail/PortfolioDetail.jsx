@@ -5,7 +5,6 @@ import styles from './PortfolioDetail.module.css';
 import { getPortfolioItem, getPortfolioItems } from '../../services/portfolioService';
 import useSEO from '../../hooks/useSEO';
 import Section from '../../components/ui/Section';
-import Badge from '../../components/ui/Badge';
 import LazyImage from '../../components/ui/LazyImage';
 import { getImageUrl } from '../../utils/imageUrl';
 import NotFound from '../NotFound/NotFound';
@@ -31,7 +30,7 @@ const PortfolioDetail = () => {
   });
 
   useSEO({
-    title: project ? `${project.title} | Case Study` : 'Loading...',
+    title: project ? `${project.title} | Nəticə` : 'Yüklənir...',
     description: project ? project.summary : ''
   });
 
@@ -66,9 +65,9 @@ const PortfolioDetail = () => {
       <header className={styles.header}>
         <Section bg="secondary" spacing="md">
           <div className={styles.backLinkWrapper}>
-            <Link to="/portfolio" className={styles.backLink}>&larr; Back to Portfolio</Link>
+            <Link to="/portfolio" className={styles.backLink}>&larr; Nəticələrə qayıt</Link>
           </div>
-          <Badge className={styles.categoryBadge}>{project.category}</Badge>
+          <span className={styles.categoryKicker}>{project.category}</span>
           <h1 className={styles.title}>{project.title}</h1>
           <div className={styles.metaRow}>
             <span>{project.client}</span>
@@ -85,9 +84,11 @@ const PortfolioDetail = () => {
       <Section spacing="xl">
         <div className={styles.layout}>
           <div className={styles.mainContent}>
-            <div className={styles.coverImage}>
-              <LazyImage src={getImageUrl(project.thumbnail)} alt={project.title} />
-            </div>
+            {project.thumbnail && (
+              <div className={styles.coverImage}>
+                <LazyImage src={getImageUrl(project.thumbnail)} alt={project.title} />
+              </div>
+            )}
 
             <div className={styles.resultsRow}>
               {project.results.map((res, i) => (
@@ -99,12 +100,12 @@ const PortfolioDetail = () => {
             </div>
 
             <div className={styles.contentSection}>
-              <h2 className={styles.sectionHeading}>The Challenge</h2>
+              <h2 className={styles.sectionHeading}>Başlanğıc Nöqtəsi</h2>
               <p className={styles.paragraph}>{project.challenge}</p>
             </div>
 
             <div className={styles.contentSection}>
-              <h2 className={styles.sectionHeading}>The Solution</h2>
+              <h2 className={styles.sectionHeading}>Necə Nail Oldu</h2>
               <p className={styles.paragraph}>{project.solution}</p>
             </div>
 
@@ -124,12 +125,12 @@ const PortfolioDetail = () => {
 
       {relatedProjects.length > 0 && (
         <Section bg="tertiary" spacing="lg">
-          <h2 className={styles.relatedTitle}>More like this</h2>
+          <h2 className={styles.relatedTitle}>Bənzər Nəticələr</h2>
           <div className={styles.relatedGrid}>
             {relatedProjects.map(p => (
               <Link key={p.id} to={`/portfolio/${p.slug}`} className={styles.relatedCard}>
-                <div className={styles.relatedImage}><LazyImage src={getImageUrl(p.thumbnail)} alt={p.title} /></div>
-                <h4 className={styles.relatedCardTitle}>{p.title}</h4>
+                <span className={styles.relatedKicker}>{p.category}</span>
+                <h4 className={styles.relatedCardTitle}>{p.title} &rarr;</h4>
               </Link>
             ))}
           </div>

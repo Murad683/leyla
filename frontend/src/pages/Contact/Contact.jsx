@@ -15,25 +15,24 @@ import { submitContact } from '../../services/contactService';
 import { MailIcon, WhatsAppIcon, LocationIcon, ClockIcon, CheckIcon } from '../../assets/icons';
 
 const SERVICE_OPTIONS = [
-  { value: '', label: 'Xidmət seçin' },
-  { value: 'Performance Marketing', label: 'Performans Marketinqi' },
-  { value: 'Brand Strategy', label: 'Brend Strategiyası' },
-  { value: 'SMM', label: 'Sosial Media Marketinqi' },
-  { value: 'SEO', label: 'SEO Optimizasiyası' },
-  { value: 'Consulting', label: 'Konsaltinq' }
+  { value: '', label: 'Təlim seçin' },
+  { value: 'Social Media Marketing', label: 'Sosial Media Marketinq Təlimi' },
+  { value: 'Performance Marketing', label: 'Performans Marketinqi Təlimi' },
+  { value: 'Brand Strategy', label: 'Brend Strategiyası Təlimi' },
+  { value: 'SEO', label: 'SEO və Rəqəmsal Artım Təlimi' },
+  { value: 'Copywriting', label: 'Kopiraytinq Təlimi' },
+  { value: 'Mentorship', label: 'Fərdi Karyera Mentorluğu' }
 ];
 
-const BUDGET_OPTIONS = [
-  { value: '', label: 'Büdcə aralığını seçin' },
-  { value: 'Under $5k', label: '5.000$-dan aşağı' },
-  { value: '$5k - $15k', label: '5.000$ - 15.000$' },
-  { value: '$15k - $30k', label: '15.000$ - 30.000$' },
-  { value: '$30k - $50k', label: '30.000$ - 50.000$' },
-  { value: '$50k+', label: '50.000$+' }
+const FORMAT_OPTIONS = [
+  { value: '', label: 'Format seçin' },
+  { value: 'Online', label: 'Onlayn' },
+  { value: 'Offline', label: 'Oflayn (Bakı)' },
+  { value: 'No preference', label: 'Fərqi yoxdur' }
 ];
 
 const Contact = () => {
-  useSEO({ title: 'Əlaqə | LeylaDigital', description: 'Rəqəmsal strategiya və veb inkişaf layihələri üçün bizimlə əlaqə saxlayın.' });
+  useSEO({ title: 'Əlaqə | LeylaDigital', description: 'Təlimlərimiz haqqında məlumat almaq və ya qeydiyyatdan keçmək üçün bizimlə əlaqə saxlayın.' });
 
   const { data: settings } = useQuery({
     queryKey: ['settings'],
@@ -92,8 +91,8 @@ const Contact = () => {
       <header className={styles.header}>
         <Section bg="secondary" spacing="xl">
           <RevealOnScroll>
-            <h1 className={styles.title}>Gəlin Birlikdə İşləyək</h1>
-            <p className={styles.subtitle}>Bir layihəniz var? Gəlin onu necə böyütməyi müzakirə edək.</p>
+            <h1 className={styles.title}>Təlimə Qeydiyyatdan Keçin</h1>
+            <p className={styles.subtitle}>Sizə uyğun proqramı, qrup tarixini və qiymətini öyrənmək üçün formu doldurun.</p>
           </RevealOnScroll>
         </Section>
       </header>
@@ -103,7 +102,7 @@ const Contact = () => {
           <div className={styles.infoPanel}>
             <RevealOnScroll>
               <h2 className={styles.panelTitle}>Əlaqə Məlumatları</h2>
-              <p className={styles.panelSubtitle}>Bizimlə birbaşa əlaqə saxlayın və ya formu doldurun. 24 saat ərzində cavab verməyə çalışırıq.</p>
+              <p className={styles.panelSubtitle}>Sualınız var və ya birbaşa qeydiyyatdan keçmək istəyirsiniz? Bizimlə əlaqə saxlayın. 24 saat ərzində cavab verməyə çalışırıq.</p>
 
               <div className={styles.infoBlocks}>
                 <div className={styles.infoBlock}>
@@ -141,7 +140,7 @@ const Contact = () => {
               </div>
 
               <div className={styles.availability}>
-                <strong>Cari Status:</strong> Q3 üçün yeni layihələr qəbul edilir.
+                <strong>Cari Status:</strong> Yeni qrup üçün qeydiyyat davam edir.
               </div>
             </RevealOnScroll>
           </div>
@@ -209,7 +208,7 @@ const Contact = () => {
                   </div>
 
                   <div className={styles.gridRow}>
-                    <FormField label="Maraqlandığınız Xidmət" id="service">
+                    <FormField label="Maraqlandığınız Təlim" id="service">
                       <Select
                         id="service"
                         name="service"
@@ -218,13 +217,13 @@ const Contact = () => {
                         options={SERVICE_OPTIONS}
                       />
                     </FormField>
-                    <FormField label="Büdcə Aralığı" id="budget">
+                    <FormField label="Təlim Formatı" id="budget">
                       <Select
                         id="budget"
                         name="budget"
                         value={values.budget}
                         onChange={handleChange}
-                        options={BUDGET_OPTIONS}
+                        options={FORMAT_OPTIONS}
                       />
                     </FormField>
                   </div>
@@ -247,12 +246,12 @@ const Contact = () => {
                       onChange={handleChange}
                       hasError={!!errors.message}
                       rows={5}
-                      placeholder="Layihəniz haqqında danışın..."
+                      placeholder="Hazırkı səviyyəniz və hədəfləriniz haqqında qısaca danışın..."
                     />
                   </FormField>
 
                   <Button type="submit" variant="primary" size="lg" className={styles.submitBtn} isLoading={isSubmitting}>
-                    Mesajı Göndər
+                    Qeydiyyat Sorğusu Göndər
                   </Button>
                 </form>
               </RevealOnScroll>

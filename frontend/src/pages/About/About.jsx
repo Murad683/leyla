@@ -12,12 +12,11 @@ import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
 import LazyImage from '../../components/ui/LazyImage';
 import Skeleton from '../../components/ui/Skeleton';
-import * as Icons from '../../assets/icons';
 
 const About = () => {
-  useSEO({ 
-    title: 'Haqqımızda | LeylaDigital', 
-    description: 'LeylaDigital haqqında öyrənin - rəqəmsal strategiya, performans marketinqi və auditoriya analitikasına yönəlmiş yaradıcı reklam agentliyi.' 
+  useSEO({
+    title: 'Haqqımızda | LeylaDigital',
+    description: 'LeylaDigital Akademiya haqqında öyrənin — praktik marketinq təlimləri və mentorluqla bacarıq qazandıran təlim proqramı.'
   });
 
   const { data: aboutData, isLoading } = useQuery({
@@ -53,25 +52,25 @@ const About = () => {
     );
   }
 
-  const storyText = aboutData?.story || "Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi. Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur. Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.";
+  const storyText = aboutData?.story || "Marketinq biliklərinin sadəcə nəzəriyyədə qalmaması lazım olduğu inancı ilə başlayan LeylaDigital Akademiya, praktik təlim proqramları hazırlayan bir mərkəzə çevrildi. Biz sadəcə mövzu izah etmirik; hər iştirakçının real layihə üzərində işləyərək öyrənməsini təmin edirik. Hazırladığımız hər bir təlim modulu, sənayedə qazanılmış real təcrübəyə əsaslanır və məzunlarımızın işə tətbiq edə biləcəyi konkret bacarıqlar üzərində qurulub. Yanaşmamız sadədir: kiçik qruplar, fərdi rəy və davamlı dəstək.";
   const mainImage = getImageUrl(aboutData?.mainImage);
   const experienceYears = aboutData?.experienceYears || 8;
 
   const defaultValues = [
     {
       icon: "QualityIcon",
-      title: "Nəticəyə Fokus",
-      desc: "Biz bəyənmə sayı üçün deyil, satış sayı üçün işləyirik. Hər bir kampaniyanın konversiya gətirməsini təmin edirik."
+      title: "Praktik Fokus",
+      desc: "Hər mövzu real tapşırıq və nümunə layihə ilə möhkəmləndirilir — sadəcə nəzəriyyə ilə kifayətlənmirik."
     },
     {
       icon: "SeoIcon",
-      title: "Data Analitikası",
-      desc: "Qərarlarimizi ehtimallar üzərində deyil, dəqiq bazar və istifadəçi davranış məlumatları üzərində qururuq."
+      title: "Sənayeyə Uyğun Kurikulum",
+      desc: "Təlim proqramları real bazar tələblərinə və güncəl alqoritmlərə uyğun daim yenilənir."
     },
     {
       icon: "InnovationIcon",
-      title: "Sürətli Adaptasiya",
-      desc: "Dəyişən bazar trendlərinə və alqoritmlərə anında uyğunlaşaraq kampaniyalarınızı həmişə aktual saxlayırıq."
+      title: "Fərdi İnkişaf",
+      desc: "Kiçik qrup ölçüləri sayəsində hər iştirakçının irəliləyişini yaxından izləyirik."
     }
   ];
 
@@ -88,9 +87,9 @@ const About = () => {
         <Section spacing="xl">
           <RevealOnScroll>
             <div className={styles.heroContent}>
-              <h1 className={styles.heroTitle}>Məqsədli Reklam Kampaniyalarının Memarı</h1>
+              <h1 className={styles.heroTitle}>Praktik bacarıqların memarı</h1>
               <p className={styles.heroLead}>
-                LeylaDigital, perspektivli brendlərin yüksək performanslı reklam strategiyaları və data analitikası vasitəsilə böyüməsinə kömək edən butik marketinq agentliyidir.
+                LeylaDigital Akademiya, marketinq öyrənmək istəyənlərə praktik təlim proqramları və fərdi mentorluqla real bacarıq qazandıran bir təlim mərkəzidir.
               </p>
             </div>
           </RevealOnScroll>
@@ -100,15 +99,14 @@ const About = () => {
       {/* Story Section */}
       <Section spacing="xl">
         <div className={styles.storyGrid}>
-          <RevealOnScroll className={styles.storyImage}>
-            {mainImage ? (
-              <LazyImage src={mainImage} alt="Bizim yaradıcı agentliyimiz" aspectRatio="4/3" />
-            ) : (
-              <div className={styles.storyGraphic}>
-                <span className={styles.storyStat}>{experienceYears}+</span>
-                <span className={styles.storyStatLabel}>İllik Təcrübə</span>
+          <RevealOnScroll className={styles.storyMeta}>
+            {mainImage && (
+              <div className={styles.storyImage}>
+                <LazyImage src={mainImage} alt="LeylaDigital Akademiya" aspectRatio="4/3" />
               </div>
             )}
+            <span className={styles.storyStat}>{experienceYears}+</span>
+            <span className={styles.storyStatLabel}>İllik Təcrübə</span>
           </RevealOnScroll>
           <RevealOnScroll delay={200} className={styles.storyText}>
             <SectionLabel overline="Hekayəmiz" heading="Vizyondan Reallığa" />
@@ -124,22 +122,19 @@ const About = () => {
       {/* Values Section */}
       <Section bg="secondary" spacing="xl">
         <RevealOnScroll>
-          <SectionLabel overline="Fəlsəfəmiz" heading="Bizi İdarə Edən Əsas Dəyərlər" align="center" />
+          <SectionLabel overline="Fəlsəfəmiz" heading="Bizi İdarə Edən Əsas Dəyərlər" align="left" />
         </RevealOnScroll>
-        
+
         <div className={styles.valuesGrid}>
-          {values.map((value, idx) => {
-            const ValueIcon = Icons[value.icon] || Icons.QualityIcon;
-            return (
-              <RevealOnScroll key={idx} delay={idx * 100}>
-                <div className={styles.valueCard}>
-                  <span className={styles.valueIcon}><ValueIcon /></span>
-                  <h4 className={styles.valueTitle}>{value.title}</h4>
-                  <p className={styles.valueDesc}>{value.desc}</p>
-                </div>
-              </RevealOnScroll>
-            );
-          })}
+          {values.map((value, idx) => (
+            <RevealOnScroll key={idx} delay={idx * 100}>
+              <div className={styles.valueCard}>
+                <span className={styles.valueIndex}>{String(idx + 1).padStart(2, '0')}</span>
+                <h4 className={styles.valueTitle}>{value.title}</h4>
+                <p className={styles.valueDesc}>{value.desc}</p>
+              </div>
+            </RevealOnScroll>
+          ))}
         </div>
       </Section>
 
@@ -147,21 +142,21 @@ const About = () => {
       <Section spacing="xl" className={styles.expertiseSection}>
         <div className={styles.expertiseGrid}>
           <RevealOnScroll>
-            <SectionLabel overline="Ekspertiza" heading="Marketinq Sənəti" />
+            <SectionLabel overline="Ekspertiza" heading="Öyrədilən Sahələr" />
             <div className={styles.skillsList}>
               {["Performans Reklamları", "SMM Strategiyası", "Kopiraytinq", "SEO və Growth", "Data Analitika", "Brendinq"].map((skill, idx) => (
                 <Badge key={idx}>{skill}</Badge>
               ))}
             </div>
           </RevealOnScroll>
-          
+
           <RevealOnScroll delay={300} className={styles.statsWrapper}>
             <div className={styles.statsGrid}>
               {[
-                { label: "Uğurlu Kampaniya", value: "100+" },
-                { label: "Müştəri Məmnuniyyəti", value: "99%" },
+                { label: "Məzun", value: "500+" },
+                { label: "Məmnuniyyət", value: "99%" },
                 { label: "İllik Təcrübə", value: `${experienceYears}+` },
-                { label: "İdarə Olunan Büdcə", value: "1M+" }
+                { label: "Təlim Proqramı", value: "10+" }
               ].map((stat, idx) => (
                 <div key={idx} className={styles.statItem}>
                   <h4>{stat.value}</h4>
@@ -177,12 +172,12 @@ const About = () => {
       <Section spacing="xl">
         <RevealOnScroll>
           <div className={styles.ctaBox}>
-            <h2 className={styles.ctaTitle}>Rəqəmsal varlığınızı dəyişdirməyə hazırsınız?</h2>
+            <h2 className={styles.ctaTitle}>Bacarıqlarınızı inkişaf etdirməyə hazırsınız?</h2>
             <p className={styles.ctaDesc}>
-              İstər konkret bir layihəniz olsun, istərsə də sadəcə imkanları araşdırmaq istəyin, gəlin söhbətə başlayaq.
+              İstər sıfırdan başlayın, istərsə də mövcud biliklərinizi dərinləşdirin — sizə uyğun təlimi birlikdə tapaq.
             </p>
-            <Button as={Link} to="/contact" variant="primary" size="lg">
-              Əlaqə Saxlayın
+            <Button as={Link} to="/services" variant="primary" size="lg">
+              Təlimlərə Bax
             </Button>
           </div>
         </RevealOnScroll>

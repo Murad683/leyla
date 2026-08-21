@@ -1,79 +1,137 @@
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
 import { getHero } from '../../../../services/settingsService';
 import styles from './Hero.module.css';
 import Button from '../../../../components/ui/Button';
 import Badge from '../../../../components/ui/Badge';
 import Skeleton from '../../../../components/ui/Skeleton';
-import { StrategyIcon, SeoIcon, DesignIcon, ContentIcon, ConsultIcon } from '../../../../assets/icons';
 
-const pillars = [
-  { icon: StrategyIcon, label: 'Brend Strategiyası' },
-  { icon: DesignIcon, label: 'Sosial Media' },
-  { icon: SeoIcon, label: 'SEO və Artım' },
-  { icon: ContentIcon, label: 'Kopiraytinq' },
-  { icon: ConsultIcon, label: 'Konsaltinq' },
+const tracks = ['Marketinq Strategiyası', 'Sosial Media', 'SEO və Artım', 'Kopiraytinq', 'Karyera Konsaltinqi'];
+
+const stats = [
+  { value: 500, suffix: '+', label: 'Məzun' },
+  { value: 10, suffix: '+', label: 'Təlim Proqramı' },
+  { value: 4.9, suffix: '/5', label: 'Orta Reytinq', decimals: 1 },
 ];
 
 const Hero = () => {
   const navigate = useNavigate();
+  const rootRef = useRef(null);
+  const statRefs = useRef([]);
 
   const { data: heroData, isLoading } = useQuery({
     queryKey: ['hero'],
     queryFn: getHero,
   });
 
+  useEffect(() => {
+    if (isLoading || !rootRef.current) return undefined;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ctx = gsap.context(() => {
+      if (reduceMotion) {
+        gsap.set('[data-hero-word]', { yPercent: 0 });
+        gsap.set('[data-hero-anim]', { opacity: 1, y: 0 });
+        statRefs.current.forEach((el, i) => { if (el) el.textContent = formatStat(stats[i]); });
+        return;
+      }
+
+      const tl = gsap.timeline({ defaults: { ease: 'expo.out' } });
+      tl.fromTo('[data-hero-word]', { yPercent: 110 }, { yPercent: 0, duration: 0.9, stagger: 0.06 })
+        .fromTo('[data-hero-anim]', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.08 }, '-=0.4');
+
+      statRefs.current.forEach((el, i) => {
+        if (!el) return;
+        const stat = stats[i];
+        const counter = { val: 0 };
+        tl.to(counter, {
+          val: stat.value,
+          duration: 1.1,
+          ease: 'power2.out',
+          onUpdate: () => { el.textContent = formatStat(stat, counter.val); },
+        }, '-=0.5');
+      });
+    }, rootRef);
+
+    return () => ctx.revert();
+  }, [isLoading]);
+
   if (isLoading) {
     return (
       <section className={styles.hero}>
         <div className={styles.container}>
-          <Skeleton width="180px" height="28px" style={{ margin: '0 auto 1.5rem', borderRadius: '999px' }} />
-          <Skeleton width="80%" height="56px" style={{ margin: '0 auto 0.75rem' }} />
-          <Skeleton width="60%" height="56px" style={{ margin: '0 auto 1.75rem' }} />
-          <Skeleton width="50%" height="24px" style={{ margin: '0 auto 0.5rem' }} />
-          <Skeleton width="40%" height="24px" style={{ margin: '0 auto 2.5rem' }} />
-          <Skeleton width="220px" height="52px" style={{ margin: '0 auto', borderRadius: '999px' }} />
+          <Skeleton width="220px" height="24px" style={{ marginBottom: '2rem' }} />
+          <Skeleton width="90%" height="120px" style={{ marginBottom: '0.75rem' }} />
+          <Skeleton width="70%" height="120px" style={{ marginBottom: '2.5rem' }} />
+          <Skeleton width="45%" height="24px" />
         </div>
       </section>
     );
   }
 
-  const badgeText = heroData?.subtitle || 'Layihələr üçün əlçatandır';
-  const titleText = heroData?.title || 'Strateji Marketinq vasitəsilə Brendlərin böyüməsinə kömək edirəm';
-  const descText = heroData?.description || 'Mən yaradıcı baxış və data analitikasını birləşdirərək, hədəf auditoriyanı sadiq müştərilərə çevirən yüksək effektivlikli reklam kampaniyaları yaradıram.';
-  const ctaLabel = heroData?.ctaLabel || 'Kampaniyalarıma baxın';
-  const ctaHref = heroData?.ctaHref || '/portfolio';
+  const badgeText = heroData?.subtitle || 'Yeni kurs mövsümü açıqdır';
+  const titleText = heroData?.title || 'Bacarıqlarınızı növbəti səviyyəyə aparan təlimlər';
+  const descText = heroData?.description || 'Praktik, nəticə yönümlü təlim proqramları ilə marketinq bacarıqlarınızı inkişaf etdirin, real layihələr üzərində işləyin və karyeranızı irəli aparın.';
+  const ctaLabel = heroData?.ctaLabel || 'Təlimlərə bax';
+  const ctaHref = heroData?.ctaHref || '/services';
+  const words = titleText.split(' ');
 
   return (
-    <section className={styles.hero}>
+    <section className={styles.hero} ref={rootRef}>
       <div className={styles.container}>
-        <div className={styles.staggered}>
+        <div data-hero-anim>
           <Badge className={styles.badge}>{badgeText}</Badge>
         </div>
-        <h1 className={`${styles.title} ${styles.staggered}`} style={{ animationDelay: '60ms' }}>{titleText}</h1>
-        <div className={styles.staggered} style={{ animationDelay: '140ms' }}>
-          <p className={styles.subtitle}>{descText}</p>
-        </div>
-        <div className={`${styles.ctaGroup} ${styles.staggered}`} style={{ animationDelay: '200ms' }}>
-          <Button variant="primary" size="lg" onClick={() => navigate(ctaHref)}>{ctaLabel}</Button>
-        </div>
-        <div className={`${styles.trustRow} ${styles.staggered}`} style={{ animationDelay: '260ms' }}>
-          <div className={styles.stat}><span className={styles.statNumber}>100+</span><span className={styles.statLabel}>Uğurlu Kampaniya</span></div>
-          <div className={styles.divider}></div>
-          <div className={styles.stat}><span className={styles.statNumber}>8</span><span className={styles.statLabel}>İllik Təcrübə</span></div>
-          <div className={styles.divider}></div>
-          <div className={styles.stat}><span className={styles.statNumber}>1M+</span><span className={styles.statLabel}>Reklam Büdcəsi</span></div>
-        </div>
-        <div className={`${styles.pillarRow} ${styles.staggered}`} style={{ animationDelay: '320ms' }}>
-          {pillars.map(({ icon: Icon, label }) => (
-            <span key={label} className={styles.pillarChip}>
-              <Icon />
-              {label}
+
+        <h1 className={styles.title}>
+          {words.map((word, i) => (
+            <span key={i}>
+              <span className={styles.wordMask}>
+                <span className={styles.word} data-hero-word>{word}</span>
+              </span>
+              {i < words.length - 1 ? ' ' : null}
             </span>
           ))}
+        </h1>
+
+        <div className={styles.bottomRow}>
+          <div data-hero-anim className={styles.subtitleCol}>
+            <p className={styles.subtitle}>{descText}</p>
+            <div className={styles.ctaGroup}>
+              <Button variant="primary" size="lg" onClick={() => navigate(ctaHref)}>{ctaLabel}</Button>
+              <Button variant="link" size="lg" onClick={() => navigate('/contact')}>Pulsuz məsləhət al</Button>
+            </div>
+          </div>
+
+          <div data-hero-anim className={styles.statCol}>
+            {stats.map((stat, i) => (
+              <div className={styles.stat} key={stat.label}>
+                <span className={styles.statNumber} ref={(el) => { statRefs.current[i] = el; }}>{formatStat(stat)}</span>
+                <span className={styles.statLabel}>{stat.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div data-hero-anim className={styles.trackRow}>
+          <span className={styles.trackKicker}>İstiqamətlər</span>
+          <div className={styles.trackList}>
+            {tracks.map((t, i) => (
+              <span key={t} className={styles.track}>{t}{i < tracks.length - 1 && <span className={styles.trackDot} />}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
   );
 };
+
+function formatStat(stat, val) {
+  const n = val === undefined ? stat.value : val;
+  const formatted = stat.decimals ? n.toFixed(stat.decimals) : Math.round(n).toLocaleString('az-AZ');
+  return `${formatted}${stat.suffix}`;
+}
+
 export default Hero;

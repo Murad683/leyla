@@ -14,8 +14,8 @@ import * as Icons from '../../assets/icons';
 
 const Services = () => {
   useSEO({
-    title: 'Xidmətlər | LeylaDigital',
-    description: 'Brend Strategiyası, Performans Marketinqi, SMM və Reklam Optimizasiyası daxil olmaqla peşəkar marketinq xidmətləri.'
+    title: 'Təlimlər | LeylaDigital',
+    description: 'Sosial Media, Performans Marketinqi, SEO və Kopiraytinq daxil olmaqla praktik, nəticə yönümlü marketinq təlimləri.'
   });
 
   const { data: servicesList, isLoading } = useQuery({
@@ -58,16 +58,16 @@ const Services = () => {
   const mainServices = services.slice(0, 4);
 
   const workflow = [
-    { number: '01', title: 'Audit', desc: 'Mövcud bazar vəziyyətinizin və rəqiblərin dərindən analizi.' },
-    { number: '02', title: 'Strategiya', desc: 'Hədəf auditoriyanın müəyyən edilməsi və reklam kanallarının seçilməsi.' },
-    { number: '03', title: 'Kampaniya', desc: 'Kreativlərin hazırlanması və reklam kampaniyalarının işə salınması.' },
-    { number: '04', title: 'Optimizasiya', desc: 'Maksimum ROI üçün davamlı testlər və nəticələrin yaxşılaşdırılması.' }
+    { number: '01', title: 'Qeydiyyat', desc: 'Sizə uyğun təlimi seçin və formu doldurub yerinizi bron edin.' },
+    { number: '02', title: 'Təlim', desc: 'Canlı və praktik dərslərlə addım-addım nəzəriyyəni tətbiqlə birləşdirin.' },
+    { number: '03', title: 'Praktika', desc: 'Real layihə üzərində işləyərək öyrəndiklərinizi tətbiq edin.' },
+    { number: '04', title: 'Nəticə', desc: 'Sertifikatınızı əldə edin və qazandığınız bacarıqları işə tətbiq edin.' }
   ];
 
   const faqs = [
-    { q: "Reklam kampaniyasından nə vaxt nəticə gözləməliyəm?", a: "Performans reklamlarında ilk nəticələr adətən 48-72 saat ərzində görünür, lakin tam optimallaşdırma 2-4 həftə çəkir." },
-    { q: "Aylıq reklam büdcəsi nə qədər olmalıdır?", a: "Büdcə biznes hədəflərinizə və rəqabətə görə dəyişir. Biz sizə optimal büdcə bölüşdürülməsi üçün məsləhət veririk." },
-    { q: "Hesabatlılıq necə aparılır?", a: "Hər həftə və ya ay sonu bütün əsas göstəriciləri (ROAS, CPA, CTR) əks etdirən ətraflı analitik hesabatlar təqdim edirik." }
+    { q: "Təlimlər onlayn, yoxsa canlı keçirilir?", a: "Təlimlərin əksəriyyəti canlı (onlayn/oflayn) formatda keçirilir, dərs qeydləri iştirakçılarla paylaşılır ki, istənilən vaxt təkrar baxıla bilsin." },
+    { q: "Təlim üçün əvvəlcədən təcrübə lazımdırmı?", a: "Xeyr. Hər təlimin proqramı sıfırdan başlayanlar üçün nəzərdə tutulub, tapşırıqlar isə mövcud səviyyənizə uyğun dərinləşdirilir." },
+    { q: "Qiymət və qrup tarixləri haqqında necə məlumat ala bilərəm?", a: "Aşağıdakı formu doldurun — komandamız 24 saat ərzində sizinlə əlaqə saxlayıb aktual qiymət, tarix və qeydiyyat detallarını göndərəcək." }
   ];
 
   return (
@@ -76,23 +76,21 @@ const Services = () => {
       <section className={styles.hero}>
         <Section spacing="xl">
           <RevealOnScroll>
-            <h1 className={styles.heroTitle}>Rəqəmsal Artım üçün Strateji Xidmətlər</h1>
+            <h1 className={styles.heroTitle}>Bacarıqlarınızı<br />inkişaf etdirən təlimlər</h1>
             <p className={styles.heroDesc}>
-              Biz yaradıcı baxışı texniki dəqiqliklə birləşdirərək, nişanlılığı artıran və ölçülə bilən biznes dəyəri verən rəqəmsal məhsullar qururuq.
+              Nəzəriyyəni praktika ilə birləşdirən, real layihələr üzərində işlədən və ölçülə bilən nəticə verən marketinq təlim proqramları.
             </p>
           </RevealOnScroll>
         </Section>
       </section>
 
       {/* Detailed Services */}
-      {mainServices.map((service, idx) => {
-        const IconComponent = Icons[service.icon] || Icons.StrategyIcon;
-        return (
+      {mainServices.map((service, idx) => (
         <section key={service.id || idx} className={styles.detailSection}>
           <Section spacing="lg">
             <div className={styles.detailGrid}>
               <RevealOnScroll className={styles.detailContent} delay={idx % 2 === 0 ? 0 : 200}>
-                <SectionLabel overline={`Xidmət ${String(idx + 1).padStart(2, '0')}`} heading={service.title} />
+                <SectionLabel overline={`Təlim ${String(idx + 1).padStart(2, '0')}`} heading={service.title} />
                 <p className={styles.detailText}>{service.description}</p>
                 <ul className={styles.featureList}>
                   {service.features.map((feature, fIdx) => (
@@ -104,18 +102,17 @@ const Services = () => {
               </RevealOnScroll>
 
               <RevealOnScroll className={styles.detailImage} delay={idx % 2 === 0 ? 200 : 0}>
-                <div className={styles.largeIcon}><IconComponent /></div>
+                <span className={styles.detailNumber}>{String(idx + 1).padStart(2, '0')}</span>
               </RevealOnScroll>
             </div>
           </Section>
         </section>
-        );
-      })}
+      ))}
 
       {/* Workflow Section */}
       <Section bg="secondary" spacing="xl" className={styles.processSection}>
         <RevealOnScroll>
-          <SectionLabel overline="Proses" heading="İdeyaları Necə Həyata Keçiririk" align="center" />
+          <SectionLabel overline="Proses" heading="Qeydiyyatdan Sertifikata Qədər" align="center" />
         </RevealOnScroll>
 
         <div className={styles.processGrid}>
@@ -149,11 +146,11 @@ const Services = () => {
       <Section spacing="xl">
         <RevealOnScroll>
           <div className={styles.ctaBox}>
-            <h2 className={styles.ctaTitle}>Xüsusi tələbiniz var?</h2>
+            <h2 className={styles.ctaTitle}>Hansı təlim sizə uyğundur?</h2>
             <p className={styles.ctaText}>
-              Biz həmçinin sizin xüsusi ehtiyaclarınıza uyğunlaşdırılmış fərdi konsaltinq və texniki dəstək paketləri təklif edirik.
+              Səviyyənizi və hədəflərinizi bizimlə paylaşın — komandamız sizə ən uyğun proqramı və qrup tarixini tövsiyə etsin.
             </p>
-            <Button as={Link} to="/contact" variant="primary" size="lg">Məsləhət alın</Button>
+            <Button as={Link} to="/contact" variant="primary" size="lg">Pulsuz məsləhət alın</Button>
           </div>
         </RevealOnScroll>
       </Section>

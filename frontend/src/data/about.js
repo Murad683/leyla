@@ -1,14 +1,14 @@
 export const about = {
-  story: "Mən brendləri ucaldan və biznesləri böyüdən strateji kampaniyalar yaratmağa həvəsli rəqəmsal marketoloq və reklam strateqiyəm. Yaradıcı yanaşma və analitik təhlil ehtirası ilə mən yaradıcı baxış və effektiv satış nəticələri arasındakı boşluğu doldururam. Yanaşmam hər bir müştərinin unikal dəyər təklifini başa düşmək və onu gəlir gətirən rəqəmsal reklam kampaniyalarına çevirmək üzərində qurulub.",
+  story: "Mən marketinq bacarıqlarını öyrətməyə həvəsli bir təlimçi və mentoram. İllər boyu qazandığım praktik təcrübəni struktur təlim proqramlarına çevirərək, iştirakçıların nəzəriyyədən real nəticəyə keçməsinə kömək edirəm. Yanaşmam sadədir: hər mövzu praktik tapşırıqla möhkəmləndirilir və hər məzun real layihə təcrübəsi ilə kursu bitirir.",
   values: [
-    { icon: 'QualityIcon', title: 'Nəticəyə Yönümlülük', description: 'Təqdim olunan hər bir kampaniyanın real satış və artım gətirməsini təmin etmək.' },
-    { icon: 'InnovationIcon', title: 'Data-Driven Yanaşma', description: 'Həmişə rəqəmlərə və analitikaya əsaslanan qərarlar qəbul etmək.' },
-    { icon: 'CollaborationIcon', title: 'Strateji Tərəfdaşlıq', description: 'Müştərilərimizi sadəcə sifarişçi deyil, ortaq hədəflərə qaçan tərəfdaş kimi görmək.' }
+    { icon: 'QualityIcon', title: 'Praktik Yanaşma', description: 'Hər dərs real tapşırıq və nümunələrlə dəstəklənir, sadəcə nəzəriyyə ilə kifayətlənmirik.' },
+    { icon: 'InnovationIcon', title: 'Fərdi Diqqət', description: 'Qrup ölçüləri kiçik saxlanılır ki, hər iştirakçıya fərdi rəy vermək mümkün olsun.' },
+    { icon: 'CollaborationIcon', title: 'Davamlı Dəstək', description: 'Təlim bitdikdən sonra da suallarınızla yanınızdayıq — məzunlarımızla əlaqə kəsilmir.' }
   ],
   experience: [
-    { year: '2023 - Hazırda', role: 'Baş Marketinq Strateqi', company: 'AdVantage Agency' },
-    { year: '2020 - 2023', role: 'Performans Marketoloq', company: 'Growth Hub' },
-    { year: '2018 - 2020', role: 'SMM Menecer', company: 'Digital Pulse' }
+    { year: '2023 - Hazırda', role: 'Təlimçi və Kurikulum Rəhbəri', company: 'LeylaDigital Akademiya' },
+    { year: '2020 - 2023', role: 'Baş Marketinq Strateqi', company: 'AdVantage Agency' },
+    { year: '2018 - 2020', role: 'Performans Marketoloq', company: 'Growth Hub' }
   ],
-  skills: ['Google Ads', 'Facebook/Meta Reklamları', 'Data Analitika', 'Kopiraytinq', 'SMM Strategiyası', 'Brendinq']
+  skills: ['Google Ads', 'Facebook/Meta Reklamları', 'Data Analitika', 'Kopiraytinq', 'SMM Strategiyası', 'Kurikulum Dizaynı']
 };

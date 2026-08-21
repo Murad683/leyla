@@ -5,7 +5,6 @@ import { getSettings } from '../../../services/settingsService';
 import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
-import useScrollDirection from '../../../hooks/useScrollDirection';
 import useClickOutside from '../../../hooks/useClickOutside';
 import Button from '../../ui/Button';
 import Skeleton from '../../ui/Skeleton';
@@ -13,8 +12,8 @@ import { MenuIcon, CloseIcon } from '../../../assets/icons';
 
 const navLinks = [
   { path: '/', label: 'Ana Səhifə' },
-  { path: '/services', label: 'Xidmətlər' },
-  { path: '/portfolio', label: 'Portfolio' },
+  { path: '/services', label: 'Təlimlər' },
+  { path: '/portfolio', label: 'Nəticələr' },
   { path: '/blog', label: 'Bloq' },
   { path: '/about', label: 'Haqqımızda' },
   { path: '/contact', label: 'Əlaqə' },
@@ -22,9 +21,8 @@ const navLinks = [
 
 const Navbar = () => {
   const scrollPosition = useScrollPosition();
-  const isHidden = useScrollDirection({ threshold: 160 });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isScrolled = scrollPosition > 60;
+  const isScrolled = scrollPosition > 40;
   const navRef = useRef(null);
 
   const { data: settings, isLoading } = useQuery({
@@ -36,19 +34,22 @@ const Navbar = () => {
     if (isMenuOpen) setIsMenuOpen(false);
   });
 
+  useEffect(() => {
+    document.body.style.overflow = isMenuOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [isMenuOpen]);
+
   const logoContent = isLoading ? (
-    <Skeleton width="120px" height="32px" />
+    <Skeleton width="140px" height="28px" />
   ) : settings?.logoUrl ? (
-    <img src={getImageUrl(settings.logoUrl)} alt="Logo" className={styles.logoImage} style={{ height: '32px' }} />
+    <img src={getImageUrl(settings.logoUrl)} alt="Logo" className={styles.logoImage} style={{ height: '28px' }} />
   ) : (
     "LeylaDigital"
   );
 
-  const effectiveHidden = isHidden && !isMenuOpen;
-
   return (
-    <header ref={navRef} className={`${styles.header} ${effectiveHidden ? styles.hidden : ''}`}>
-      <div className={`${styles.pill} ${isScrolled ? styles.scrolled : ''}`}>
+    <header ref={navRef} className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+      <div className={styles.bar}>
         <Link to="/" className={styles.logo} onClick={() => setIsMenuOpen(false)}>
           {logoContent}
         </Link>
@@ -65,7 +66,7 @@ const Navbar = () => {
             ))}
           </ul>
           <Button as={Link} to="/contact" variant="secondary" size="sm" className={styles.ctaButton}>
-            Gəlin danışaq
+            Qeydiyyatdan keç
           </Button>
         </nav>
 
@@ -80,16 +81,17 @@ const Navbar = () => {
         </button>
       </div>
 
-      {/* Mobile Nav */}
+      {/* Mobile Nav — full-screen overlay */}
       <div className={`${styles.mobileNav} ${isMenuOpen ? styles.mobileNavOpen : ''}`}>
         <ul className={styles.mobileNavList}>
-          {navLinks.map((link) => (
-            <li key={link.path}>
+          {navLinks.map((link, i) => (
+            <li key={link.path} style={{ transitionDelay: isMenuOpen ? `${i * 40}ms` : '0ms' }}>
               <NavLink
                 to={link.path}
                 className={({ isActive }) => `${styles.mobileNavLink} ${isActive ? styles.active : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
+                <span className={styles.mobileNavIndex}>{String(i + 1).padStart(2, '0')}</span>
                 {link.label}
               </NavLink>
             </li>
@@ -97,7 +99,7 @@ const Navbar = () => {
         </ul>
         <div className={styles.mobileActions}>
           <Button as={Link} to="/contact" variant="primary" size="lg" className={styles.mobileButton} onClick={() => setIsMenuOpen(false)}>
-            Gəlin danışaq
+            Qeydiyyatdan keç
           </Button>
         </div>
       </div>

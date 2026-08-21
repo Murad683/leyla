@@ -1,29 +1,29 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Portfolio.module.css';
-import Card from '../../components/ui/Card';
-import Badge from '../../components/ui/Badge';
-import LazyImage from '../../components/ui/LazyImage';
-import { getImageUrl } from '../../utils/imageUrl';
 
-const PortfolioCard = ({ project, isFeatured }) => (
-  <Card variant="elevated" className={`${styles.card} ${isFeatured ? styles.featuredCard : ''}`}>
-    <div className={styles.imageArea}>
-      <LazyImage src={getImageUrl(project.thumbnail)} alt={project.title} />
-    </div>
-    <div className={styles.cardContent}>
-      <div className={styles.tagsRow}>
-        {project.tags.slice(0, 3).map(tag => <Badge key={tag} className={styles.tag}>{tag}</Badge>)}
+const PortfolioCard = ({ project, index = 0, isFeatured }) => {
+  const topResult = project.results?.[0];
+  return (
+    <Link to={`/portfolio/${project.slug}`} className={`${styles.row} ${isFeatured ? styles.featuredRow : ''}`}>
+      <span className={styles.rowNumber}>{String(index + 1).padStart(2, '0')}</span>
+      <div className={styles.rowMain}>
+        <span className={styles.rowKicker}>{project.category}</span>
+        <h3 className={styles.rowTitle}>{project.title}</h3>
+        <p className={styles.rowSummary}>{project.summary}</p>
+        <div className={styles.rowMeta}>
+          <span>{project.client}</span>
+          <span className={styles.dot}>•</span>
+          <span>{project.year}</span>
+        </div>
       </div>
-      <h3 className={styles.cardTitle}>{project.title}</h3>
-      <p className={styles.summary}>{project.summary}</p>
-      <div className={styles.metaRow}>
-        <span>{project.year}</span>
-        <span className={styles.dot}>•</span>
-        <span>{project.client}</span>
-      </div>
-      <Link to={`/portfolio/${project.slug}`} className={styles.link}>Layihəni araşdır &rarr;</Link>
-    </div>
-  </Card>
-);
+      {topResult && (
+        <div className={styles.rowResult}>
+          <span className={styles.resultValue}>{topResult.metric}</span>
+          <span className={styles.resultLabel}>{topResult.value}</span>
+        </div>
+      )}
+    </Link>
+  );
+};
 export default PortfolioCard;

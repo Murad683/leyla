@@ -1,58 +1,31 @@
-.container { display: grid; grid-template-columns: 45% 55%; gap: var(--space-16); align-items: stretch; }
-.leftCol { position: relative; display: flex; flex-direction: column; justify-content: center; }
-.visualContainer { position: relative; width: 100%; aspect-ratio: 3/4; border-radius: var(--radius-lg); }
-.aboutGraphic {
-  width: 100%;
-  height: 100%;
-  border-radius: inherit;
-  background-color: var(--color-bg-tertiary);
-  background-image: radial-gradient(var(--color-border) 1.5px, transparent 1.5px);
-  background-size: 22px 22px;
-  border: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.monogram {
-  font-family: var(--font-display);
-  font-weight: var(--font-weight-bold);
-  font-size: clamp(9rem, 22vw, 14rem);
-  line-height: 1;
-  color: var(--color-surface);
-  -webkit-text-stroke: 2px var(--color-accent);
-  color: transparent;
-}
+.container { display: grid; grid-template-columns: 30% 70%; gap: var(--space-16); align-items: start; }
+.leftCol { position: sticky; top: var(--space-24); display: flex; flex-direction: column; }
+.bigStat { font-family: var(--font-display); font-weight: var(--font-weight-heavy); font-size: var(--text-8xl); line-height: 0.9; letter-spacing: var(--tracking-tighter); color: var(--color-text-primary); }
+.bigStatLabel { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-widest); color: var(--color-text-muted); margin: var(--space-3) 0 var(--space-10); display: block; }
+.quote { font-family: var(--font-display); font-size: var(--text-xl); font-weight: var(--font-weight-medium); color: var(--color-accent); line-height: var(--leading-snug); padding-left: var(--space-4); border-left: 2px solid var(--color-accent); max-width: 24ch; }
 
-.accentCard { position: absolute; bottom: var(--space-8); right: calc(var(--space-8) * -1); background-color: var(--color-surface); padding: var(--space-4) var(--space-6); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); border: 1px solid var(--color-border); }
-.accentText { font-family: var(--font-body); font-size: var(--text-sm); color: var(--color-text-secondary); line-height: var(--leading-tight); }
-.accentText strong { font-size: var(--text-xl); color: var(--color-accent); font-family: var(--font-display); }
 .rightCol { display: flex; flex-direction: column; }
-.story { font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-10); }
-.valuesGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-bottom: var(--space-12); }
-.subHeading { font-family: var(--font-display); font-size: var(--text-xl); color: var(--color-text-primary); margin-bottom: var(--space-6); }
-.experienceBlock { margin-bottom: var(--space-10); }
-.timeline { display: flex; flex-direction: column; gap: var(--space-4); }
-.timelineItem { display: flex; align-items: baseline; gap: var(--space-4); padding-left: var(--space-4); border-left: 2px solid var(--color-border); transition: border-color var(--transition-fast); }
-.timelineItem:hover { border-color: var(--color-accent); }
-.timelineYear { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); min-width: 120px; }
-.timelineContent { font-family: var(--font-body); font-size: var(--text-base); color: var(--color-text-secondary); }
+.story { font-family: var(--font-body); font-size: var(--text-lg); font-weight: var(--font-weight-light); color: var(--color-text-secondary); line-height: var(--leading-relaxed); margin-bottom: var(--space-12); max-width: 68ch; }
+.valuesGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); margin-bottom: var(--space-16); padding-top: var(--space-10); border-top: 1px solid var(--color-border); }
+.subHeading { font-family: var(--font-mono); font-size: var(--text-xs); text-transform: uppercase; letter-spacing: var(--tracking-widest); color: var(--color-text-muted); margin-bottom: var(--space-6); }
+.experienceBlock { margin-bottom: var(--space-12); }
+.timeline { display: flex; flex-direction: column; }
+.timelineItem { display: flex; align-items: baseline; gap: var(--space-6); padding: var(--space-4) 0; border-bottom: 1px solid var(--color-border); transition: gap var(--transition-base); }
+.timelineItem:hover { gap: var(--space-8); }
+.timelineYear { font-family: var(--font-mono); font-size: var(--text-sm); color: var(--color-text-muted); min-width: 130px; flex-shrink: 0; }
+.timelineContent { font-family: var(--font-body); font-size: var(--text-lg); color: var(--color-text-secondary); }
 .timelineContent strong { color: var(--color-text-primary); font-weight: var(--font-weight-semibold); }
 .skillsBlock { margin-bottom: var(--space-10); }
-.skillsList { display: flex; flex-wrap: wrap; gap: var(--space-3); }
-.ctaWrapper { margin-top: auto; }
-@media (max-width: 1024px) { 
-  .container { grid-template-columns: 55% 45%; } 
-  .leftCol { order: 2; align-items: center; } 
-  .visualContainer { aspect-ratio: 1; } 
-  .rightCol { order: 1; } 
-  .accentCard { right: var(--space-6); bottom: calc(var(--space-6) * -1); } 
-}
-@media (max-width: 767px) { 
+.skillsList { display: flex; flex-wrap: wrap; gap: var(--space-3) var(--space-6); }
+.ctaWrapper { margin-top: var(--space-4); }
+
+@media (max-width: 1024px) {
   .container { grid-template-columns: 1fr; }
-  .leftCol { order: 1; align-items: center; }
-  .rightCol { order: 2; }
-  .visualContainer { max-width: 500px; }
-  .valuesGrid { grid-template-columns: 1fr; } 
-  .timelineItem { flex-direction: column; gap: var(--space-1); } 
+  .leftCol { position: static; flex-direction: row; align-items: baseline; gap: var(--space-4); flex-wrap: wrap; }
+  .bigStatLabel { margin: 0; }
+  .quote { border-left: none; border-top: 2px solid var(--color-accent); padding-left: 0; padding-top: var(--space-3); max-width: none; width: 100%; }
+}
+@media (max-width: 767px) {
+  .valuesGrid { grid-template-columns: 1fr; gap: var(--space-8); }
+  .timelineItem { flex-direction: column; gap: var(--space-1); }
 }

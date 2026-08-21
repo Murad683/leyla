@@ -10,9 +10,10 @@ import PortfolioCard from './PortfolioCard';
 import FilterBar from './FilterBar';
 import Pagination from '../../components/ui/Pagination';
 import Skeleton from '../../components/ui/Skeleton';
+import { portfolioProjects as portfolioFallback } from '../../data/portfolio';
 
 const Portfolio = () => {
-  useSEO({ title: 'Portfolio | LeylaDigital', description: 'Ən son keys-stadilərimizi və rəqəmsal transformasiya layihələrimizi araşdırın.' });
+  useSEO({ title: 'Nəticələr | LeylaDigital', description: 'Təlimlərimizi bitirən məzunların əldə etdiyi real nəticələr və uğur hekayələri.' });
   const [activeCategory, setActiveCategory] = useState('Hamısı');
 
   const { data, isLoading, isError, error } = useQuery({
@@ -21,7 +22,7 @@ const Portfolio = () => {
     staleTime: 1000 * 60 * 5,
   });
 
-  const portfolioProjects = data?.items || [];
+  const portfolioProjects = data?.items?.length ? data.items : portfolioFallback;
 
   const categories = useMemo(() => {
     const cats = new Set(portfolioProjects.map(p => p.category));
@@ -52,8 +53,8 @@ const Portfolio = () => {
       <header className={styles.header}>
         <Section bg="secondary" spacing="xl">
           <RevealOnScroll>
-            <h1 className={styles.title}>Seçilmiş İşlər</h1>
-            <p className={styles.subtitle}>Artımı təmin etmək və istifadəçiləri cəlb etmək üçün hazırlanmış rəqəmsal təcrübələr kolleksiyası.</p>
+            <h1 className={styles.title}>Məzunlarımızın Nəticələri</h1>
+            <p className={styles.subtitle}>Təlimlərimizi bitirən iştirakçıların real bacarıq və nəticələrindən nümunələr.</p>
           </RevealOnScroll>
         </Section>
       </header>
@@ -62,9 +63,9 @@ const Portfolio = () => {
         <FilterBar categories={categories} activeCategory={activeCategory} onSelect={setActiveCategory} />
         
         {isLoading && (
-          <div className={styles.grid}>
+          <div className={styles.list}>
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} style={{ height: '300px' }}><Skeleton /></div>
+              <div key={i} style={{ height: '140px', padding: '2rem 0' }}><Skeleton /></div>
             ))}
           </div>
         )}
@@ -77,14 +78,14 @@ const Portfolio = () => {
         )}
 
         {!isLoading && !isError && (
-          <div className={styles.grid}>
+          <div className={styles.list}>
             {currentProjects.map((project, idx) => (
-              <RevealOnScroll key={project.id} delay={idx * 100} className={project.featured && activeCategory === 'Hamısı' && idx === 0 ? styles.featuredWrapper : ''}>
-                <PortfolioCard project={project} isFeatured={project.featured && activeCategory === 'Hamısı' && idx === 0} />
+              <RevealOnScroll key={project.id} delay={idx * 60}>
+                <PortfolioCard project={project} index={idx} isFeatured={project.featured && activeCategory === 'Hamısı' && idx === 0} />
               </RevealOnScroll>
             ))}
             {currentProjects.length === 0 && (
-              <div className={styles.emptyState}>Bu kateqoriya üçün layihə tapılmadı.</div>
+              <div className={styles.emptyState}>Bu kateqoriya üçün nəticə tapılmadı.</div>
             )}
           </div>
         )}

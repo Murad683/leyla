@@ -17,13 +17,13 @@ import { LinkedInIcon, InstagramIcon, XIcon } from '../../assets/icons';
 const ITEMS_PER_PAGE = 6;
 
 const faqs = [
-  { q: 'Leyla kimdir?', a: 'Rəqəmsal marketinq sahəsində fəaliyyət göstərən strateqəm. Brendlərin performans reklamları, SMM və data analitikası vasitəsilə böyüməsinə kömək edirəm.', link: { href: '/about', label: 'Haqqımda səhifəsinə keçid edin →' } },
+  { q: 'Leyla kimdir?', a: 'Marketinq sahəsində təlimçi və mentoram. İştirakçılara performans reklamları, SMM və data analitikası bacarıqlarını praktik təlimlər vasitəsilə öyrədirəm.', link: { href: '/about', label: 'Haqqımda səhifəsinə keçid edin →' } },
   { q: 'Hansı mövzularda yazılar hazırlayırsınız?', a: 'Performans marketinqi, SMM strategiyası, SEO, kopiraytinq və rəqəmsal artım mövzularında praktiki bələdçilər və nümunələr paylaşıram.' },
-  { q: 'Xidmətləriniz haqqında necə məlumat ala bilərəm?', a: 'Xidmətlər səhifəsindən ətraflı məlumat ala, ya da birbaşa əlaqə formu vasitəsilə bizimlə yazışa bilərsiniz.' }
+  { q: 'Təlimləriniz haqqında necə məlumat ala bilərəm?', a: 'Təlimlər səhifəsindən ətraflı məlumat ala, ya da birbaşa əlaqə formu vasitəsilə bizimlə yazışa bilərsiniz.' }
 ];
 
 const Blog = () => {
-  useSEO({ title: 'Blog & Insights | LeylaDigital', description: 'Thoughts, insights, and technical deep dives into digital strategy.' });
+  useSEO({ title: 'Bloq və İnsaytlar | LeylaDigital', description: 'Marketinq təlimləri, praktik bələdçilər və rəqəmsal strategiya haqqında düşüncələr.' });
   const [currentPage, setCurrentPage] = useState(1);
 
   const { data, isLoading, isError, error } = useQuery({
@@ -111,8 +111,8 @@ const Blog = () => {
               <div className={styles.authorCard}>
                 <Avatar size="xl" alt="Leyla" />
                 <h5 className={styles.authorName}>Leyla</h5>
-                <p className={styles.authorRole}>Rəqəmsal Marketoloq</p>
-                <p className={styles.authorBio}>Brendlərin performans reklamları, SMM və data analitikası vasitəsilə böyüməsinə kömək edirəm.</p>
+                <p className={styles.authorRole}>Marketinq Təlimçisi</p>
+                <p className={styles.authorBio}>Praktik təlimlər və mentorluqla iştirakçıların marketinq bacarıqlarını inkişaf etdirirəm.</p>
                 <Button as={Link} to="/about" variant="secondary" size="sm">Haqqımda</Button>
               </div>
             </div>

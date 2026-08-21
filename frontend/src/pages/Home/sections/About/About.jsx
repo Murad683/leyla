@@ -24,7 +24,8 @@ const About = () => {
       <Section id="about" bg="primary" spacing="xl">
         <div className={styles.container}>
           <div className={styles.leftCol}>
-            <Skeleton width="100%" height="500px" style={{ borderRadius: 'var(--radius-3xl)' }} />
+            <Skeleton width="140px" height="90px" style={{ marginBottom: '1rem' }} />
+            <Skeleton width="180px" height="20px" />
           </div>
           <div className={styles.rightCol}>
             <Skeleton width="150px" height="24px" style={{ marginBottom: '1rem' }} />
@@ -61,25 +62,22 @@ const About = () => {
     <Section id="about" bg="primary" spacing="xl">
       <div className={styles.container}>
         <div className={styles.leftCol}>
-          <RevealOnScroll delay={100} className={styles.visualContainer}>
-            <div className={styles.aboutGraphic}>
-              <span className={styles.monogram}>L</span>
-            </div>
-            <div className={styles.accentCard}>
-              <span className={styles.accentText}><strong>{experienceYears}+</strong> İllik<br/>Təcrübə</span>
-            </div>
+          <RevealOnScroll delay={100}>
+            <span className={styles.bigStat}>{experienceYears}+</span>
+            <span className={styles.bigStatLabel}>İllik Təcrübə</span>
+            <p className={styles.quote}>"Hər mövzu praktik tapşırıqla möhkəmləndirilir."</p>
           </RevealOnScroll>
         </div>
         <div className={styles.rightCol}>
           <RevealOnScroll>
-             <SectionLabel overline="Haqqımda" heading="Profesionallıqla İdarə Olunan, Nəticələrlə Müəyyən Edilən" align="left" />
+             <SectionLabel overline="Haqqımda" heading="Təcrübədən Qazanılan, Sizə Öyrədilən" align="left" />
              <p className={styles.story}>{story}</p>
           </RevealOnScroll>
           
           <RevealOnScroll delay={150}>
             <div className={styles.valuesGrid}>
                {values.map((val, idx) => (
-                 <ValueItem key={idx} value={val} />
+                 <ValueItem key={idx} value={val} index={idx} />
                ))}
             </div>
           </RevealOnScroll>

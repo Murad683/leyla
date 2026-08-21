@@ -6,7 +6,7 @@
 
 .header { margin-bottom: var(--space-12); }
 .categoryBadge { margin-bottom: var(--space-6); }
-.title { font-family: var(--font-display); font-size: clamp(var(--text-3xl), 5vw, var(--text-5xl)); color: var(--color-text-primary); margin-bottom: var(--space-6); line-height: var(--leading-tight); }
+.title { font-family: var(--font-display); font-weight: var(--font-weight-heavy); font-size: clamp(var(--text-4xl), 6vw, var(--text-7xl)); letter-spacing: var(--tracking-tight); color: var(--color-text-primary); margin-bottom: var(--space-6); line-height: var(--leading-flat); }
 .metaRow { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4); border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); padding: var(--space-4) 0; }
 .author { display: flex; align-items: center; gap: var(--space-3); }
 .authorName { font-family: var(--font-body); font-size: var(--text-sm); font-weight: var(--font-weight-medium); color: var(--color-text-primary); }
