@@ -27,6 +27,7 @@ const allowedOrigins = [
   'https://digitaleyla.az',
   'https://www.digitaleyla.az',
   'http://localhost:3000',
+  'http://localhost:5173',
   /\.azurestaticapps\.net$/,
   /\.vercel\.app$/
 ].filter(Boolean);
@@ -61,7 +62,7 @@ if (!isProduction) {
 }
 
 // Routes
-app.use('/', routes);
+app.use('/api', routes);
 
 // API Documentation (Swagger)
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

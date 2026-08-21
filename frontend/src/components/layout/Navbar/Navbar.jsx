@@ -5,6 +5,7 @@ import { getSettings } from '../../../services/settingsService';
 import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
+import useScrollDirection from '../../../hooks/useScrollDirection';
 import useClickOutside from '../../../hooks/useClickOutside';
 import Button from '../../ui/Button';
 import Skeleton from '../../ui/Skeleton';
@@ -21,6 +22,7 @@ const navLinks = [
 
 const Navbar = () => {
   const scrollPosition = useScrollPosition();
+  const isHidden = useScrollDirection({ threshold: 160 });
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isScrolled = scrollPosition > 60;
   const navRef = useRef(null);
@@ -42,13 +44,15 @@ const Navbar = () => {
     "LeylaDigital"
   );
 
+  const effectiveHidden = isHidden && !isMenuOpen;
+
   return (
-    <header ref={navRef} className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
-      <div className={styles.container}>
+    <header ref={navRef} className={`${styles.header} ${effectiveHidden ? styles.hidden : ''}`}>
+      <div className={`${styles.pill} ${isScrolled ? styles.scrolled : ''}`}>
         <Link to="/" className={styles.logo} onClick={() => setIsMenuOpen(false)}>
           {logoContent}
         </Link>
-        
+
         {/* Desktop Nav */}
         <nav className={styles.desktopNav}>
           <ul className={styles.navList}>
@@ -60,16 +64,15 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <div className={styles.separator}></div>
-          <Button variant="primary" size="md" onClick={() => window.location.href='/contact'}>
+          <Button as={Link} to="/contact" variant="secondary" size="sm" className={styles.ctaButton}>
             Gəlin danışaq
           </Button>
         </nav>
 
         {/* Mobile Toggle */}
-        <button 
-          className={styles.mobileToggle} 
-          onClick={() => setIsMenuOpen(!isMenuOpen)} 
+        <button
+          className={styles.mobileToggle}
+          onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
           aria-expanded={isMenuOpen}
         >
@@ -82,9 +85,9 @@ const Navbar = () => {
         <ul className={styles.mobileNavList}>
           {navLinks.map((link) => (
             <li key={link.path}>
-              <NavLink 
-                to={link.path} 
-                className={({ isActive }) => `${styles.mobileNavLink} ${isActive ? styles.active : ''}`} 
+              <NavLink
+                to={link.path}
+                className={({ isActive }) => `${styles.mobileNavLink} ${isActive ? styles.active : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
                 {link.label}
@@ -93,7 +96,7 @@ const Navbar = () => {
           ))}
         </ul>
         <div className={styles.mobileActions}>
-          <Button variant="primary" size="lg" className={styles.mobileButton} onClick={() => { window.location.href='/contact'; setIsMenuOpen(false); }}>
+          <Button as={Link} to="/contact" variant="primary" size="lg" className={styles.mobileButton} onClick={() => setIsMenuOpen(false)}>
             Gəlin danışaq
           </Button>
         </div>

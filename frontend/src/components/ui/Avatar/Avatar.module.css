@@ -4,3 +4,4 @@
 .sm { width: 32px; height: 32px; font-size: var(--text-sm); }
 .md { width: 48px; height: 48px; font-size: var(--text-base); }
 .lg { width: 64px; height: 64px; font-size: var(--text-xl); }
+.xl { width: 112px; height: 112px; font-size: var(--text-4xl); }

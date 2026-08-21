@@ -10,6 +10,7 @@ import SectionLabel from '../../components/ui/SectionLabel';
 import RevealOnScroll from '../../components/ui/RevealOnScroll';
 import Button from '../../components/ui/Button';
 import Skeleton from '../../components/ui/Skeleton';
+import * as Icons from '../../assets/icons';
 
 const Services = () => {
   useSEO({
@@ -84,32 +85,32 @@ const Services = () => {
       </section>
 
       {/* Detailed Services */}
-      {mainServices.map((service, idx) => (
+      {mainServices.map((service, idx) => {
+        const IconComponent = Icons[service.icon] || Icons.StrategyIcon;
+        return (
         <section key={service.id || idx} className={styles.detailSection}>
           <Section spacing="lg">
             <div className={styles.detailGrid}>
               <RevealOnScroll className={styles.detailContent} delay={idx % 2 === 0 ? 0 : 200}>
-                <SectionLabel overline={`Xidmət ${idx + 1}`} heading={service.title} />
+                <SectionLabel overline={`Xidmət ${String(idx + 1).padStart(2, '0')}`} heading={service.title} />
                 <p className={styles.detailText}>{service.description}</p>
                 <ul className={styles.featureList}>
                   {service.features.map((feature, fIdx) => (
                     <li key={fIdx} className={styles.featureItem}>
-                      <span className={styles.checkIcon}>✓</span> {feature}
+                      <span className={styles.checkIcon}><Icons.CheckIcon /></span> {feature}
                     </li>
                   ))}
                 </ul>
               </RevealOnScroll>
 
               <RevealOnScroll className={styles.detailImage} delay={idx % 2 === 0 ? 200 : 0}>
-                {/* Visual representation */}
-                <div className={styles.largeIcon}>
-                  {idx === 0 ? "📈" : idx === 1 ? "💻" : idx === 2 ? "🎨" : "⚡"}
-                </div>
+                <div className={styles.largeIcon}><IconComponent /></div>
               </RevealOnScroll>
             </div>
           </Section>
         </section>
-      ))}
+        );
+      })}
 
       {/* Workflow Section */}
       <Section bg="secondary" spacing="xl" className={styles.processSection}>
@@ -147,11 +148,9 @@ const Services = () => {
       {/* Final CTA */}
       <Section spacing="xl">
         <RevealOnScroll>
-          <div style={{ textAlign: 'center', background: 'var(--color-surface)', padding: 'var(--space-16)', borderRadius: 'var(--radius-2xl)', border: '1px solid var(--color-border)' }}>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--text-4xl)', marginBottom: 'var(--space-4)' }}>
-              Xüsusi tələbiniz var?
-            </h2>
-            <p style={{ color: 'var(--color-text-secondary)', marginBottom: 'var(--space-8)', maxWidth: '600px', marginInline: 'auto' }}>
+          <div className={styles.ctaBox}>
+            <h2 className={styles.ctaTitle}>Xüsusi tələbiniz var?</h2>
+            <p className={styles.ctaText}>
               Biz həmçinin sizin xüsusi ehtiyaclarınıza uyğunlaşdırılmış fərdi konsaltinq və texniki dəstək paketləri təklif edirik.
             </p>
             <Button as={Link} to="/contact" variant="primary" size="lg">Məsləhət alın</Button>

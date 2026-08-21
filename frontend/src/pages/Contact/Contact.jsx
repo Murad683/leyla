@@ -12,6 +12,7 @@ import Select from '../../components/ui/form/Select';
 import Textarea from '../../components/ui/form/Textarea';
 import useForm from '../../hooks/useForm';
 import { submitContact } from '../../services/contactService';
+import { MailIcon, WhatsAppIcon, LocationIcon, ClockIcon, CheckIcon } from '../../assets/icons';
 
 const SERVICE_OPTIONS = [
   { value: '', label: 'Xidmət seçin' },
@@ -106,32 +107,32 @@ const Contact = () => {
 
               <div className={styles.infoBlocks}>
                 <div className={styles.infoBlock}>
-                  <div className={styles.icon}>✉</div>
+                  <div className={styles.icon}><MailIcon /></div>
                   <div>
                     <h4 className={styles.infoLabel}>E-poçt</h4>
                     <p className={styles.infoValue}>
-                      <a href={`mailto:${emailVal}`} style={{ color: 'inherit', textDecoration: 'none' }}>{emailVal}</a>
+                      <a href={`mailto:${emailVal}`} className={styles.plainLink}>{emailVal}</a>
                     </p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>
-                  <div className={styles.icon}>💬</div>
+                  <div className={styles.icon}><WhatsAppIcon /></div>
                   <div>
                     <h4 className={styles.infoLabel}>WhatsApp</h4>
                     <p className={styles.infoValue}>
-                      <a href={`tel:${phoneVal.replace(/\s+/g, '')}`} style={{ color: 'inherit', textDecoration: 'none' }}>{phoneVal}</a>
+                      <a href={`tel:${phoneVal.replace(/\s+/g, '')}`} className={styles.plainLink}>{phoneVal}</a>
                     </p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>
-                  <div className={styles.icon}>📍</div>
+                  <div className={styles.icon}><LocationIcon /></div>
                   <div>
                     <h4 className={styles.infoLabel}>Məkan</h4>
                     <p className={styles.infoValue}>{addressVal}</p>
                   </div>
                 </div>
                 <div className={styles.infoBlock}>
-                  <div className={styles.icon}>⏱</div>
+                  <div className={styles.icon}><ClockIcon /></div>
                   <div>
                     <h4 className={styles.infoLabel}>Cavab müddəti</h4>
                     <p className={styles.infoValue}>Adətən 24 saat ərzində</p>
@@ -148,7 +149,7 @@ const Contact = () => {
           <div className={styles.formArea} id="contact">
             {isSuccess ? (
               <RevealOnScroll className={styles.successState}>
-                <div className={styles.successIcon}>✓</div>
+                <div className={styles.successIcon}><CheckIcon /></div>
                 <h2 className={styles.successTitle}>Təşəkkür edirik!</h2>
                 <p className={styles.successMessage}>Mesajınız qəbul edildi. 24 saat ərzində sizinlə əlaqə saxlayacağıq.</p>
                 <Button variant="ghost" onClick={reset}>Başqa bir mesaj göndər</Button>

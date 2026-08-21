@@ -2,7 +2,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-full);
   font-family: var(--font-body);
   font-weight: var(--font-weight-medium);
   cursor: pointer;
@@ -22,33 +22,57 @@
   background-color: var(--color-accent);
   color: var(--color-surface);
   border: 1.5px solid var(--color-accent);
+  transition: transform 220ms var(--ease-out-back), box-shadow var(--transition-base), background-color var(--transition-fast), border-color var(--transition-fast);
 }
-.primary:hover:not(:disabled) { background-color: var(--color-accent-hover); border-color: var(--color-accent-hover); }
+.primary:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--color-accent) 55%, transparent);
+}
+.primary:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+
 .secondary {
   background-color: transparent;
   color: var(--color-accent);
   border: 1.5px solid var(--color-accent);
+  transition: transform 220ms var(--ease-out-back), box-shadow var(--transition-base), background-color var(--transition-fast), color var(--transition-fast);
 }
 .secondary:hover:not(:disabled) {
   background-color: var(--color-accent);
   color: var(--color-surface);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -8px color-mix(in srgb, var(--color-accent) 45%, transparent);
 }
+.secondary:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+
 .ghost {
   background-color: transparent;
   color: var(--color-text-secondary);
   border: 1.5px solid transparent;
+  transition: color var(--transition-fast), background-color var(--transition-fast), transform 220ms var(--ease-out-back);
 }
 .ghost:hover:not(:disabled) {
   color: var(--color-accent);
   background-color: var(--color-bg-secondary);
 }
+.ghost:active:not(:disabled) { transform: scale(0.97); }
 .link {
   background-color: transparent;
   color: var(--color-accent);
   border: none;
   padding: 0 !important;
   display: inline;
+  background-image: linear-gradient(var(--color-accent), var(--color-accent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1.5px;
+  transition: background-size var(--transition-base);
 }
-.link:hover:not(:disabled) { text-decoration: underline; }
+.link:hover:not(:disabled) { background-size: 100% 1.5px; }
 .spinner { position: absolute; }
 .hiddenText { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .primary:hover:not(:disabled), .secondary:hover:not(:disabled) { transform: none; }
+}

@@ -56,14 +56,15 @@ const About = () => {
   const experience = aboutData?.experience || aboutFallback.experience;
   const skills = aboutData?.skills || aboutFallback.skills;
   const experienceYears = aboutData?.experienceYears || 7;
-  const mainImage = aboutData?.mainImage || '/about_visual.png';
 
   return (
     <Section id="about" bg="primary" spacing="xl">
       <div className={styles.container}>
         <div className={styles.leftCol}>
           <RevealOnScroll delay={100} className={styles.visualContainer}>
-            <img src={mainImage} alt="Marketing Professional" className={styles.aboutImage} />
+            <div className={styles.aboutGraphic}>
+              <span className={styles.monogram}>L</span>
+            </div>
             <div className={styles.accentCard}>
               <span className={styles.accentText}><strong>{experienceYears}+</strong> İllik<br/>Təcrübə</span>
             </div>

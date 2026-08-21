@@ -1,8 +1,10 @@
 .card {
+  position: relative;
   background-color: var(--color-surface);
   border-radius: var(--radius-lg);
   padding: var(--space-6);
-  transition: all var(--transition-base);
+  transition: transform 220ms var(--ease-out-back), box-shadow var(--transition-base), border-color var(--transition-base);
+  overflow: hidden;
 }
 .default {
   border: 1px solid var(--color-border);
@@ -13,8 +15,26 @@
 }
 .elevated:hover {
   box-shadow: var(--shadow-lg);
-  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  transform: translateY(-3px);
+}
+.elevated::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 40%, color-mix(in srgb, var(--color-accent) 10%, transparent) 50%, transparent 60%);
+  transform: translateX(-120%);
+  transition: transform 700ms ease;
+  pointer-events: none;
+}
+.elevated:hover::after {
+  transform: translateX(120%);
 }
 .bordered {
   border: 2px solid var(--color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .elevated:hover { transform: none; }
+  .elevated::after { display: none; }
 }

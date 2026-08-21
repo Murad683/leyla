@@ -9,11 +9,10 @@ import Section from '../../components/ui/Section';
 import RevealOnScroll from '../../components/ui/RevealOnScroll';
 import SectionLabel from '../../components/ui/SectionLabel';
 import Button from '../../components/ui/Button';
+import Badge from '../../components/ui/Badge';
 import LazyImage from '../../components/ui/LazyImage';
 import Skeleton from '../../components/ui/Skeleton';
-
-// Path to the generated image in public folder
-const STORY_IMAGE = "/about_hero_bg.png";
+import * as Icons from '../../assets/icons';
 
 const About = () => {
   useSEO({ 
@@ -55,29 +54,29 @@ const About = () => {
   }
 
   const storyText = aboutData?.story || "Reklam kampaniyalarının həm yaradıcı, həm də gəlir gətirən olmalı olduğu inancı ilə qurulan LeylaDigital, ixtisaslaşmış bir rəqəmsal marketinq agentliyinə çevrildi. Biz sadəcə reklam yerləşdirmirik; davamlı satış gətirən sistemlər yaradırıq. Hazırladığımız hər bir reklam mətni və dizayn etdiyimiz hər bir vizual ölçülə bilən biznes artımı və ROAS (reklam xərclərinin geri dönüşü) göstəricisinə yönəlmiş strategiya ilə idarə olunur. Yanaşmamız məlumatlara əsaslanır. Biz rəqəmsal dünyada sadəcə səs-küy yaratmaq yox, brendinizin real bazar payını artırmaq üçün çalışırıq.";
-  const mainImage = getImageUrl(aboutData?.mainImage) || STORY_IMAGE;
+  const mainImage = getImageUrl(aboutData?.mainImage);
   const experienceYears = aboutData?.experienceYears || 8;
 
   const defaultValues = [
     {
-      icon: "🎯",
+      icon: "QualityIcon",
       title: "Nəticəyə Fokus",
       desc: "Biz bəyənmə sayı üçün deyil, satış sayı üçün işləyirik. Hər bir kampaniyanın konversiya gətirməsini təmin edirik."
     },
     {
-      icon: "📊",
+      icon: "SeoIcon",
       title: "Data Analitikası",
       desc: "Qərarlarimizi ehtimallar üzərində deyil, dəqiq bazar və istifadəçi davranış məlumatları üzərində qururuq."
     },
     {
-      icon: "🚀",
+      icon: "InnovationIcon",
       title: "Sürətli Adaptasiya",
       desc: "Dəyişən bazar trendlərinə və alqoritmlərə anında uyğunlaşaraq kampaniyalarınızı həmişə aktual saxlayırıq."
     }
   ];
 
   const values = aboutData?.values?.map(v => ({
-    icon: v.icon === "QualityIcon" ? "🎯" : v.icon === "InnovationIcon" ? "📊" : "🚀",
+    icon: v.icon,
     title: v.title,
     desc: v.description
   })) || defaultValues;
@@ -102,11 +101,14 @@ const About = () => {
       <Section spacing="xl">
         <div className={styles.storyGrid}>
           <RevealOnScroll className={styles.storyImage}>
-            <LazyImage 
-              src={mainImage} 
-              alt="Bizim yaradıcı agentliyimiz" 
-              aspectRatio="4/3"
-            />
+            {mainImage ? (
+              <LazyImage src={mainImage} alt="Bizim yaradıcı agentliyimiz" aspectRatio="4/3" />
+            ) : (
+              <div className={styles.storyGraphic}>
+                <span className={styles.storyStat}>{experienceYears}+</span>
+                <span className={styles.storyStatLabel}>İllik Təcrübə</span>
+              </div>
+            )}
           </RevealOnScroll>
           <RevealOnScroll delay={200} className={styles.storyText}>
             <SectionLabel overline="Hekayəmiz" heading="Vizyondan Reallığa" />
@@ -126,15 +128,18 @@ const About = () => {
         </RevealOnScroll>
         
         <div className={styles.valuesGrid}>
-          {values.map((value, idx) => (
-            <RevealOnScroll key={idx} delay={idx * 100}>
-              <div className={styles.valueCard}>
-                <span className={styles.valueIcon}>{value.icon}</span>
-                <h4 className={styles.valueTitle}>{value.title}</h4>
-                <p className={styles.valueDesc}>{value.desc}</p>
-              </div>
-            </RevealOnScroll>
-          ))}
+          {values.map((value, idx) => {
+            const ValueIcon = Icons[value.icon] || Icons.QualityIcon;
+            return (
+              <RevealOnScroll key={idx} delay={idx * 100}>
+                <div className={styles.valueCard}>
+                  <span className={styles.valueIcon}><ValueIcon /></span>
+                  <h4 className={styles.valueTitle}>{value.title}</h4>
+                  <p className={styles.valueDesc}>{value.desc}</p>
+                </div>
+              </RevealOnScroll>
+            );
+          })}
         </div>
       </Section>
 
@@ -143,22 +148,9 @@ const About = () => {
         <div className={styles.expertiseGrid}>
           <RevealOnScroll>
             <SectionLabel overline="Ekspertiza" heading="Marketinq Sənəti" />
-            <div className={styles.skills}>
-              {[
-                { name: "Performans Reklamları", level: 98 },
-                { name: "SMM Strategiyası", level: 92 },
-                { name: "Kopiraytinq", level: 90 },
-                { name: "SEO və Growth", level: 88 }
-              ].map((skill, idx) => (
-                <div key={idx} className={styles.skillItem}>
-                  <div className={styles.skillLabel}>
-                    <span>{skill.name}</span>
-                    <span>{skill.level}%</span>
-                  </div>
-                  <div className={styles.skillBar}>
-                    <div className={styles.skillProgress} style={{ width: `${skill.level}%` }}></div>
-                  </div>
-                </div>
+            <div className={styles.skillsList}>
+              {["Performans Reklamları", "SMM Strategiyası", "Kopiraytinq", "SEO və Growth", "Data Analitika", "Brendinq"].map((skill, idx) => (
+                <Badge key={idx}>{skill}</Badge>
               ))}
             </div>
           </RevealOnScroll>

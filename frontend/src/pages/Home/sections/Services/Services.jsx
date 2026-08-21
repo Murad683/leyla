@@ -22,10 +22,10 @@ const Services = () => {
           <Skeleton width="120px" height="24px" style={{ margin: '0 auto 1rem' }} />
           <Skeleton width="300px" height="40px" style={{ margin: '0 auto' }} />
         </div>
-        <div className={styles.grid}>
+        <div className={styles.list}>
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className={styles.cardWrapper}>
-              <Skeleton width="100%" height="280px" />
+            <div key={i} className={styles.rowWrapper}>
+              <Skeleton width="100%" height="120px" />
             </div>
           ))}
         </div>
@@ -44,10 +44,10 @@ const Services = () => {
           align="center"
         />
       </RevealOnScroll>
-      <div className={styles.grid}>
+      <div className={styles.list}>
         {services.map((service, index) => (
-          <RevealOnScroll key={service.id || index} delay={index * 80} className={styles.cardWrapper}>
-            <ServiceCard service={service} />
+          <RevealOnScroll key={service.id || index} delay={index * 70} className={styles.rowWrapper}>
+            <ServiceCard service={service} index={index} />
           </RevealOnScroll>
         ))}
       </div>
