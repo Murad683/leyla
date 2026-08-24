@@ -5,10 +5,7 @@ import gsap from 'gsap';
 import { getHero } from '../../../../services/settingsService';
 import styles from './Hero.module.css';
 import Button from '../../../../components/ui/Button';
-import Badge from '../../../../components/ui/Badge';
 import Skeleton from '../../../../components/ui/Skeleton';
-
-const tracks = ['Marketinq Strategiyası', 'Sosial Media', 'SEO və Artım', 'Kopiraytinq', 'Karyera Konsaltinqi'];
 
 const stats = [
   { value: 500, suffix: '+', label: 'Məzun' },
@@ -19,12 +16,18 @@ const stats = [
 const Hero = () => {
   const navigate = useNavigate();
   const rootRef = useRef(null);
+  const videoRef = useRef(null);
   const statRefs = useRef([]);
 
   const { data: heroData, isLoading } = useQuery({
     queryKey: ['hero'],
     queryFn: getHero,
   });
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion && videoRef.current) videoRef.current.pause();
+  }, []);
 
   useEffect(() => {
     if (isLoading || !rootRef.current) return undefined;
@@ -62,16 +65,13 @@ const Hero = () => {
     return (
       <section className={styles.hero}>
         <div className={styles.container}>
-          <Skeleton width="220px" height="24px" style={{ marginBottom: '2rem' }} />
-          <Skeleton width="90%" height="120px" style={{ marginBottom: '0.75rem' }} />
-          <Skeleton width="70%" height="120px" style={{ marginBottom: '2.5rem' }} />
+          <Skeleton width="90%" height="90px" style={{ marginBottom: '0.75rem' }} />
           <Skeleton width="45%" height="24px" />
         </div>
       </section>
     );
   }
 
-  const badgeText = heroData?.subtitle || 'Yeni kurs mövsümü açıqdır';
   const titleText = heroData?.title || 'Bacarıqlarınızı növbəti səviyyəyə aparan təlimlər';
   const descText = heroData?.description || 'Praktik, nəticə yönümlü təlim proqramları ilə marketinq bacarıqlarınızı inkişaf etdirin, real layihələr üzərində işləyin və karyeranızı irəli aparın.';
   const ctaLabel = heroData?.ctaLabel || 'Təlimlərə bax';
@@ -80,11 +80,20 @@ const Hero = () => {
 
   return (
     <section className={styles.hero} ref={rootRef}>
-      <div className={styles.container}>
-        <div data-hero-anim>
-          <Badge className={styles.badge}>{badgeText}</Badge>
-        </div>
+      <video
+        ref={videoRef}
+        className={styles.bgVideo}
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+      >
+        <source src="/hero-bg.mp4" type="video/mp4" />
+      </video>
+      <div className={styles.overlay} aria-hidden="true" />
 
+      <div className={styles.container}>
         <h1 className={styles.title}>
           {words.map((word, i) => (
             <span key={i}>
@@ -96,30 +105,21 @@ const Hero = () => {
           ))}
         </h1>
 
-        <div className={styles.bottomRow}>
-          <div data-hero-anim className={styles.subtitleCol}>
+        <div data-hero-anim className={styles.glassPanel}>
+          <div className={styles.subtitleCol}>
             <p className={styles.subtitle}>{descText}</p>
             <div className={styles.ctaGroup}>
-              <Button variant="primary" size="lg" onClick={() => navigate(ctaHref)}>{ctaLabel}</Button>
-              <Button variant="link" size="lg" onClick={() => navigate('/contact')}>Pulsuz məsləhət al</Button>
+              <Button variant="primary" size="lg" className={styles.primaryOnDark} onClick={() => navigate(ctaHref)}>{ctaLabel}</Button>
+              <Button variant="link" size="lg" className={styles.ghostLink} onClick={() => navigate('/contact')}>Pulsuz məsləhət al</Button>
             </div>
           </div>
 
-          <div data-hero-anim className={styles.statCol}>
+          <div className={styles.statCol}>
             {stats.map((stat, i) => (
               <div className={styles.stat} key={stat.label}>
                 <span className={styles.statNumber} ref={(el) => { statRefs.current[i] = el; }}>{formatStat(stat)}</span>
                 <span className={styles.statLabel}>{stat.label}</span>
               </div>
-            ))}
-          </div>
-        </div>
-
-        <div data-hero-anim className={styles.trackRow}>
-          <span className={styles.trackKicker}>İstiqamətlər</span>
-          <div className={styles.trackList}>
-            {tracks.map((t, i) => (
-              <span key={t} className={styles.track}>{t}{i < tracks.length - 1 && <span className={styles.trackDot} />}</span>
             ))}
           </div>
         </div>

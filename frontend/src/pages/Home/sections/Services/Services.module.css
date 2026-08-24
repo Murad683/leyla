@@ -1,17 +1,45 @@
-.list { display: flex; flex-direction: column; margin-top: var(--space-10); border-top: 1px solid var(--color-border); }
+.listWrap { position: relative; margin-top: var(--space-10); }
+.list { display: flex; flex-direction: column; border-top: 1px solid var(--color-border); }
 .rowWrapper { width: 100%; }
+.rowInner { width: 100%; }
+
+.progressTrack {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 47px;
+  width: 1px;
+  background-color: var(--color-border);
+  z-index: 0;
+}
+.progressLine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-accent);
+  transform-origin: top;
+  transform: scaleY(0);
+}
+
+.rowInner.active .rowNumber { color: var(--color-accent); }
+
+@media (max-width: 767px) {
+  .progressTrack { left: 23px; }
+}
 
 .row {
   position: relative;
+  z-index: 1;
+  background-color: var(--color-bg-secondary);
   display: grid;
   grid-template-columns: 96px 1fr auto;
   align-items: start;
   gap: var(--space-8);
   padding: var(--space-10) var(--space-3) var(--space-10) 0;
   border-bottom: 1px solid var(--color-border);
-  transition: padding-left var(--transition-base);
 }
-.row:hover { padding-left: var(--space-4); }
 
 .rowNumber {
   font-family: var(--font-display);
@@ -21,7 +49,6 @@
   color: var(--color-border);
   transition: color var(--transition-base);
 }
-.row:hover .rowNumber { color: var(--color-accent); }
 
 .rowMain { min-width: 0; }
 .title { font-family: var(--font-display); font-size: var(--text-3xl); font-weight: var(--font-weight-bold); letter-spacing: var(--tracking-tight); color: var(--color-text-primary); margin: 0 0 var(--space-3); }
@@ -37,5 +64,4 @@
   .row { grid-template-columns: 48px 1fr; padding: var(--space-8) 0; }
   .rowNumber { font-size: var(--text-3xl); }
   .rowCta { grid-column: 2; padding-top: var(--space-2); }
-  .row:hover { padding-left: 0; }
 }

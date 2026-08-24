@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../../services/settingsService';
 import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Navbar.module.css';
 import useScrollPosition from '../../../hooks/useScrollPosition';
+import useScrollDirection from '../../../hooks/useScrollDirection';
 import useClickOutside from '../../../hooks/useClickOutside';
 import Button from '../../ui/Button';
 import Skeleton from '../../ui/Skeleton';
@@ -21,8 +22,12 @@ const navLinks = [
 
 const Navbar = () => {
   const scrollPosition = useScrollPosition();
+  const isHidden = useScrollDirection({ threshold: 160 });
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isScrolled = scrollPosition > 40;
+  const isOnDarkHero = location.pathname === '/' && !isScrolled && !isMenuOpen;
+  const effectiveHidden = isHidden && !isMenuOpen;
   const navRef = useRef(null);
 
   const { data: settings, isLoading } = useQuery({
@@ -48,7 +53,7 @@ const Navbar = () => {
   );
 
   return (
-    <header ref={navRef} className={`${styles.header} ${isScrolled ? styles.scrolled : ''}`}>
+    <header ref={navRef} className={`${styles.header} ${isOnDarkHero ? styles.onDark : ''} ${effectiveHidden ? styles.hidden : ''}`}>
       <div className={styles.bar}>
         <Link to="/" className={styles.logo} onClick={() => setIsMenuOpen(false)}>
           {logoContent}
@@ -65,16 +70,16 @@ const Navbar = () => {
               </li>
             ))}
           </ul>
-          <Button as={Link} to="/contact" variant="secondary" size="sm" className={styles.ctaButton}>
+          <Button as={Link} to="/contact" variant="primary" size="sm" className={styles.ctaButton}>
             Qeydiyyatdan keç
           </Button>
         </nav>
 
         {/* Mobile Toggle */}
         <button
-          className={styles.mobileToggle}
+          className={`${styles.mobileToggle} ${isMenuOpen ? styles.mobileToggleOpen : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          aria-label="Toggle menu"
+          aria-label={isMenuOpen ? 'Bağla' : 'Menyu'}
           aria-expanded={isMenuOpen}
         >
           {isMenuOpen ? <CloseIcon /> : <MenuIcon />}

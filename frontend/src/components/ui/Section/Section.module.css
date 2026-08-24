@@ -12,3 +12,10 @@
   margin: 0 auto;
   padding: 0 var(--container-padding);
 }
+
+@media (max-width: 767px) {
+  .spacing-sm { padding-top: var(--space-8); padding-bottom: var(--space-8); }
+  .spacing-md { padding-top: var(--space-10); padding-bottom: var(--space-10); }
+  .spacing-lg { padding-top: var(--space-12); padding-bottom: var(--space-12); }
+  .spacing-xl { padding-top: var(--space-16); padding-bottom: var(--space-16); }
+}

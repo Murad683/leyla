@@ -1,1 +1,0 @@
-import{m as n}from"./index-DdgpSMx-.js";const a="_badge_16bo4_1",i="_outline_16bo4_12",l="_solid_16bo4_24",o={badge:a,outline:i,solid:l},d=({children:s,variant:t="outline",className:e=""})=>n.jsx("span",{className:`${o.badge} ${o[t]} ${e}`,children:s});export{d as B};

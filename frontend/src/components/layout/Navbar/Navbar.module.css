@@ -1,28 +1,39 @@
 .header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 100;
-  border-bottom: 1px solid transparent;
-  transition: background-color var(--transition-base), border-color var(--transition-base);
+  padding: var(--space-4) var(--container-padding) 0;
+  pointer-events: none;
+  transition: transform var(--transition-base);
 }
-.header.scrolled {
-  background-color: color-mix(in srgb, var(--color-bg-primary) 92%, transparent);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border-bottom-color: var(--color-border);
-}
+.header.hidden { transform: translateY(-140%); }
 
 .bar {
+  position: relative;
+  z-index: 102;
+  pointer-events: auto;
   width: 100%;
-  max-width: var(--container-2xl);
+  max-width: calc(var(--container-2xl) - 2 * var(--container-padding));
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: var(--space-6);
-  padding: var(--space-5) var(--container-padding);
+  padding: var(--space-3) var(--space-3) var(--space-3) var(--space-6);
+  border-radius: var(--radius-full);
+  background-color: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(16px) saturate(160%);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  box-shadow: var(--shadow-sm);
+  transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.header.onDark .bar {
+  background-color: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.4);
 }
 
 .logo {
@@ -55,13 +66,32 @@
 .navLink.active { color: var(--color-text-primary); }
 .navLink.active::after { transform: scaleX(1); background-color: var(--color-accent); }
 
-.ctaButton { border-radius: var(--radius-sm); }
+.ctaButton.ctaButton { border-radius: var(--radius-full); }
 
-.mobileToggle { display: flex; background: none; border: none; cursor: pointer; color: var(--color-text-primary); padding: var(--space-2); margin-right: calc(var(--space-1) * -1); z-index: 101; position: relative; }
+.onDark .logo,
+.onDark .mobileToggle { color: #FFFFFF; }
+.onDark .navLink { color: rgba(255, 255, 255, 0.75); }
+.onDark .navLink::after { background-color: #FFFFFF; }
+.onDark .navLink:hover { color: #FFFFFF; }
+.onDark .navLink.active { color: #FFFFFF; }
+.onDark.onDark .ctaButton {
+  background-color: #FFFFFF;
+  border-color: #FFFFFF;
+  color: var(--color-text-primary);
+}
+.onDark.onDark .ctaButton:hover {
+  background-color: var(--color-accent-light);
+  border-color: var(--color-accent-light);
+  color: #FFFFFF;
+}
+
+.mobileToggle { display: flex; background: none; border: none; cursor: pointer; color: var(--color-text-primary); padding: var(--space-2); margin-right: calc(var(--space-1) * -1); z-index: 101; position: relative; border-radius: var(--radius-full); transition: background-color var(--transition-fast), color var(--transition-fast); }
+.mobileToggleOpen { color: var(--color-text-primary) !important; background-color: var(--color-bg-secondary); }
 
 .mobileNav {
   position: fixed;
   inset: 0;
+  z-index: 90;
   background-color: var(--color-bg-primary);
   display: flex;
   flex-direction: column;
