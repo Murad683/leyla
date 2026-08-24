@@ -91,7 +91,6 @@ const Hero = () => {
         loop
         playsInline
         preload="auto"
-        poster={heroData?.backgroundImage || undefined}
         key={videoSrc}
       >
         <source src={videoSrc} type="video/mp4" />
