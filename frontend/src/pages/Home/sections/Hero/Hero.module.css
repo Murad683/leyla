@@ -1,11 +1,13 @@
 .hero {
   position: relative;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background-color: var(--color-ink);
   overflow: hidden;
+  padding-top: 96px;
   padding-bottom: var(--space-16);
 }
 
@@ -88,7 +90,7 @@
 }
 
 @media (max-width: 767px) {
-  .hero { min-height: 100vh; padding-bottom: var(--space-8); }
+  .hero { min-height: 100vh; min-height: 100dvh; padding-top: 84px; padding-bottom: var(--space-8); }
   .title { font-size: clamp(2.25rem, 11vw, 3.5rem); margin-bottom: var(--space-8); text-align: center; }
   .glassPanel { padding: var(--space-6); align-items: center; text-align: center; }
   .subtitleCol { max-width: none; }
