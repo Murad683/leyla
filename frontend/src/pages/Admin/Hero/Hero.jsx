@@ -24,6 +24,7 @@ const Hero = () => {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const [successMsg, setSuccessMsg] = useState('');
 
   useEffect(() => {
@@ -59,6 +60,21 @@ const Hero = () => {
       alert('Şəkil yüklənməsində xəta baş verdi');
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploadingVideo(true);
+
+    try {
+      const res = await uploadImage(file);
+      setHero(prev => ({ ...prev, videoUrl: res.url }));
+    } catch (error) {
+      alert('Video yüklənməsində xəta baş verdi');
+    } finally {
+      setUploadingVideo(false);
     }
   };
 
@@ -203,16 +219,45 @@ const Hero = () => {
               <span className={styles.helpText}>Tövsiyə olunan ölçü: 1920x1080 (HD). Maksimum ölçü: 5MB.</span>
             </div>
 
+            <div className={styles.imagePreviewWrapper}>
+              <label className={styles.label}>Cari Video</label>
+              <div className={styles.imageBox}>
+                {hero.videoUrl ? (
+                  <video src={hero.videoUrl} className={styles.previewImg} muted loop autoPlay playsInline />
+                ) : (
+                  <span className={styles.noImg}>Video Yoxdur (standart video göstərilir)</span>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>Yeni Fon Videosu Yüklə</label>
+              <div className={styles.uploadBtnWrapper}>
+                <button type="button" className={styles.uploadBtn}>
+                  {uploadingVideo ? 'Yüklənir...' : '🎬 Video Seç'}
+                </button>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={handleVideoUpload}
+                  className={styles.fileInput}
+                  disabled={uploadingVideo}
+                />
+              </div>
+              <span className={styles.helpText}>MP4 formatı tövsiyə olunur. Maksimum ölçü: 50MB.</span>
+            </div>
+
             <div className={styles.inputGroupFull}>
-              <label className={styles.label}>Video Linki (YouTube / Vimeo / Direct URL)</label>
+              <label className={styles.label}>Və ya Birbaşa Video Linki (Direct MP4 URL)</label>
               <input
                 type="text"
                 name="videoUrl"
                 value={hero.videoUrl || ''}
                 onChange={handleChange}
                 className={styles.input}
-                placeholder="https://www.youtube.com/watch?v=..."
+                placeholder="https://.../video.mp4"
               />
+              <span className={styles.helpText}>Qeyd: YouTube/Vimeo linkləri dəstəklənmir, yalnız birbaşa .mp4 faylının linki.</span>
             </div>
           </div>
         </div>

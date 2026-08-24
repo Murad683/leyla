@@ -1,5 +1,29 @@
 const prisma = require('../config/prisma');
 
+const mapHero = (hero) => ({
+  id: hero.id,
+  title: hero.title || '',
+  description: hero.description || '',
+
+  // Database fields (used by public homepage Hero.jsx)
+  subtitle: hero.subtitle || '',
+  ctaLabel: hero.ctaLabel || '',
+  ctaHref: hero.ctaHref || '',
+  backgroundImage: hero.backgroundImage || '',
+  videoUrl: hero.videoUrl || '',
+  secondaryBtnText: hero.secondaryBtnText || '',
+  secondaryBtnHref: hero.secondaryBtnHref || '',
+
+  // Mapped fields (used by Admin Hero.jsx form)
+  badge: hero.subtitle || '',
+  primaryBtnText: hero.ctaLabel || '',
+  primaryBtnUrl: hero.ctaHref || '',
+  secondaryBtnUrl: hero.secondaryBtnHref || '',
+  bgImage: hero.backgroundImage || '',
+
+  updatedAt: hero.updatedAt
+});
+
 const getHero = async (req, res, next) => {
   try {
     const hero = await prisma.heroSection.findUnique({ where: { id: 1 } });
@@ -7,31 +31,7 @@ const getHero = async (req, res, next) => {
       return res.json({ success: true, data: null });
     }
 
-    // Map database fields to the expected frontend fields (return both sets of keys for compatibility)
-    const mappedHero = {
-      id: hero.id,
-      title: hero.title || '',
-      description: hero.description || '',
-      
-      // Database fields (used by public homepage Hero.jsx)
-      subtitle: hero.subtitle || '',
-      ctaLabel: hero.ctaLabel || '',
-      ctaHref: hero.ctaHref || '',
-      backgroundImage: hero.backgroundImage || '',
-      
-      // Mapped fields (used by Admin Hero.jsx form)
-      badge: hero.subtitle || '',
-      primaryBtnText: hero.ctaLabel || '',
-      primaryBtnUrl: hero.ctaHref || '',
-      secondaryBtnText: '',
-      secondaryBtnUrl: '',
-      bgImage: hero.backgroundImage || '',
-      videoUrl: '',
-      
-      updatedAt: hero.updatedAt
-    };
-
-    res.json({ success: true, data: mappedHero });
+    res.json({ success: true, data: mapHero(hero) });
   } catch (error) {
     next(error);
   }
@@ -39,7 +39,7 @@ const getHero = async (req, res, next) => {
 
 const updateHero = async (req, res, next) => {
   try {
-    const { title, badge, description, primaryBtnText, primaryBtnUrl, bgImage } = req.body;
+    const { title, badge, description, primaryBtnText, primaryBtnUrl, bgImage, videoUrl, secondaryBtnText, secondaryBtnUrl } = req.body;
 
     // Map incoming frontend fields to the database fields
     const mappedData = {
@@ -48,7 +48,10 @@ const updateHero = async (req, res, next) => {
       description: description || '',
       ctaLabel: primaryBtnText || '',
       ctaHref: primaryBtnUrl || '',
-      backgroundImage: bgImage || ''
+      backgroundImage: bgImage || '',
+      videoUrl: videoUrl || '',
+      secondaryBtnText: secondaryBtnText || '',
+      secondaryBtnHref: secondaryBtnUrl || ''
     };
 
     const hero = await prisma.heroSection.upsert({
@@ -57,31 +60,7 @@ const updateHero = async (req, res, next) => {
       create: { ...mappedData, id: 1 }
     });
 
-    // Map saved database fields back to the expected frontend fields (return both sets of keys for compatibility)
-    const mappedHero = {
-      id: hero.id,
-      title: hero.title || '',
-      description: hero.description || '',
-      
-      // Database fields (used by public homepage Hero.jsx)
-      subtitle: hero.subtitle || '',
-      ctaLabel: hero.ctaLabel || '',
-      ctaHref: hero.ctaHref || '',
-      backgroundImage: hero.backgroundImage || '',
-      
-      // Mapped fields (used by Admin Hero.jsx form)
-      badge: hero.subtitle || '',
-      primaryBtnText: hero.ctaLabel || '',
-      primaryBtnUrl: hero.ctaHref || '',
-      secondaryBtnText: '',
-      secondaryBtnUrl: '',
-      bgImage: hero.backgroundImage || '',
-      videoUrl: '',
-      
-      updatedAt: hero.updatedAt
-    };
-
-    res.json({ success: true, data: mappedHero });
+    res.json({ success: true, data: mapHero(hero) });
   } catch (error) {
     next(error);
   }

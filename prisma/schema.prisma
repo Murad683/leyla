@@ -90,14 +90,17 @@ model SiteSettings {
 }
 
 model HeroSection {
-  id              Int      @id @default(1)
-  title           String
-  subtitle        String?
-  description     String?
-  backgroundImage String?
-  ctaLabel        String?
-  ctaHref         String?
-  updatedAt       DateTime @updatedAt
+  id                Int      @id @default(1)
+  title             String
+  subtitle          String?
+  description       String?
+  backgroundImage   String?
+  ctaLabel          String?
+  ctaHref           String?
+  videoUrl          String?
+  secondaryBtnText  String?
+  secondaryBtnHref  String?
+  updatedAt         DateTime @updatedAt
 }
 
 model AboutSection {

@@ -210,6 +210,9 @@ exports.Prisma.HeroSectionScalarFieldEnum = {
   backgroundImage: 'backgroundImage',
   ctaLabel: 'ctaLabel',
   ctaHref: 'ctaHref',
+  videoUrl: 'videoUrl',
+  secondaryBtnText: 'secondaryBtnText',
+  secondaryBtnHref: 'secondaryBtnHref',
   updatedAt: 'updatedAt'
 };
 

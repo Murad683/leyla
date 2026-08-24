@@ -76,6 +76,9 @@ const Hero = () => {
   const descText = heroData?.description || 'Praktik, nəticə yönümlü təlim proqramları ilə marketinq bacarıqlarınızı inkişaf etdirin, real layihələr üzərində işləyin və karyeranızı irəli aparın.';
   const ctaLabel = heroData?.ctaLabel || 'Təlimlərə bax';
   const ctaHref = heroData?.ctaHref || '/services';
+  const secondaryLabel = heroData?.secondaryBtnText || 'Pulsuz məsləhət al';
+  const secondaryHref = heroData?.secondaryBtnHref || '/contact';
+  const videoSrc = heroData?.videoUrl || '/hero-bg.mp4';
   const words = titleText.split(' ');
 
   return (
@@ -88,8 +91,10 @@ const Hero = () => {
         loop
         playsInline
         preload="auto"
+        poster={heroData?.backgroundImage || undefined}
+        key={videoSrc}
       >
-        <source src="/hero-bg.mp4" type="video/mp4" />
+        <source src={videoSrc} type="video/mp4" />
       </video>
       <div className={styles.overlay} aria-hidden="true" />
 
@@ -110,7 +115,7 @@ const Hero = () => {
             <p className={styles.subtitle}>{descText}</p>
             <div className={styles.ctaGroup}>
               <Button variant="primary" size="lg" className={styles.primaryOnDark} onClick={() => navigate(ctaHref)}>{ctaLabel}</Button>
-              <Button variant="link" size="lg" className={styles.ghostLink} onClick={() => navigate('/contact')}>Pulsuz məsləhət al</Button>
+              <Button variant="link" size="lg" className={styles.ghostLink} onClick={() => navigate(secondaryHref)}>{secondaryLabel}</Button>
             </div>
           </div>
 

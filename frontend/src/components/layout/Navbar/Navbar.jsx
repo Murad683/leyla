@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getSettings } from '../../../services/settingsService';
 import { getImageUrl } from '../../../utils/imageUrl';
 import styles from './Navbar.module.css';
-import useScrollPosition from '../../../hooks/useScrollPosition';
 import useScrollDirection from '../../../hooks/useScrollDirection';
 import useClickOutside from '../../../hooks/useClickOutside';
 import Button from '../../ui/Button';
@@ -21,12 +20,8 @@ const navLinks = [
 ];
 
 const Navbar = () => {
-  const scrollPosition = useScrollPosition();
   const isHidden = useScrollDirection({ threshold: 160 });
-  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isScrolled = scrollPosition > 40;
-  const isOnDarkHero = location.pathname === '/' && !isScrolled && !isMenuOpen;
   const effectiveHidden = isHidden && !isMenuOpen;
   const navRef = useRef(null);
 
@@ -53,7 +48,7 @@ const Navbar = () => {
   );
 
   return (
-    <header ref={navRef} className={`${styles.header} ${isOnDarkHero ? styles.onDark : ''} ${effectiveHidden ? styles.hidden : ''}`}>
+    <header ref={navRef} className={`${styles.header} ${effectiveHidden ? styles.hidden : ''}`}>
       <div className={styles.bar}>
         <Link to="/" className={styles.logo} onClick={() => setIsMenuOpen(false)}>
           {logoContent}

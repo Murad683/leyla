@@ -7379,6 +7379,9 @@ export namespace Prisma {
     backgroundImage: string | null
     ctaLabel: string | null
     ctaHref: string | null
+    videoUrl: string | null
+    secondaryBtnText: string | null
+    secondaryBtnHref: string | null
     updatedAt: Date | null
   }
 
@@ -7390,6 +7393,9 @@ export namespace Prisma {
     backgroundImage: string | null
     ctaLabel: string | null
     ctaHref: string | null
+    videoUrl: string | null
+    secondaryBtnText: string | null
+    secondaryBtnHref: string | null
     updatedAt: Date | null
   }
 
@@ -7401,6 +7407,9 @@ export namespace Prisma {
     backgroundImage: number
     ctaLabel: number
     ctaHref: number
+    videoUrl: number
+    secondaryBtnText: number
+    secondaryBtnHref: number
     updatedAt: number
     _all: number
   }
@@ -7422,6 +7431,9 @@ export namespace Prisma {
     backgroundImage?: true
     ctaLabel?: true
     ctaHref?: true
+    videoUrl?: true
+    secondaryBtnText?: true
+    secondaryBtnHref?: true
     updatedAt?: true
   }
 
@@ -7433,6 +7445,9 @@ export namespace Prisma {
     backgroundImage?: true
     ctaLabel?: true
     ctaHref?: true
+    videoUrl?: true
+    secondaryBtnText?: true
+    secondaryBtnHref?: true
     updatedAt?: true
   }
 
@@ -7444,6 +7459,9 @@ export namespace Prisma {
     backgroundImage?: true
     ctaLabel?: true
     ctaHref?: true
+    videoUrl?: true
+    secondaryBtnText?: true
+    secondaryBtnHref?: true
     updatedAt?: true
     _all?: true
   }
@@ -7542,6 +7560,9 @@ export namespace Prisma {
     backgroundImage: string | null
     ctaLabel: string | null
     ctaHref: string | null
+    videoUrl: string | null
+    secondaryBtnText: string | null
+    secondaryBtnHref: string | null
     updatedAt: Date
     _count: HeroSectionCountAggregateOutputType | null
     _avg: HeroSectionAvgAggregateOutputType | null
@@ -7572,6 +7593,9 @@ export namespace Prisma {
     backgroundImage?: boolean
     ctaLabel?: boolean
     ctaHref?: boolean
+    videoUrl?: boolean
+    secondaryBtnText?: boolean
+    secondaryBtnHref?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["heroSection"]>
 
@@ -7583,6 +7607,9 @@ export namespace Prisma {
     backgroundImage?: boolean
     ctaLabel?: boolean
     ctaHref?: boolean
+    videoUrl?: boolean
+    secondaryBtnText?: boolean
+    secondaryBtnHref?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["heroSection"]>
 
@@ -7594,6 +7621,9 @@ export namespace Prisma {
     backgroundImage?: boolean
     ctaLabel?: boolean
     ctaHref?: boolean
+    videoUrl?: boolean
+    secondaryBtnText?: boolean
+    secondaryBtnHref?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["heroSection"]>
 
@@ -7605,10 +7635,13 @@ export namespace Prisma {
     backgroundImage?: boolean
     ctaLabel?: boolean
     ctaHref?: boolean
+    videoUrl?: boolean
+    secondaryBtnText?: boolean
+    secondaryBtnHref?: boolean
     updatedAt?: boolean
   }
 
-  export type HeroSectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "description" | "backgroundImage" | "ctaLabel" | "ctaHref" | "updatedAt", ExtArgs["result"]["heroSection"]>
+  export type HeroSectionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "subtitle" | "description" | "backgroundImage" | "ctaLabel" | "ctaHref" | "videoUrl" | "secondaryBtnText" | "secondaryBtnHref" | "updatedAt", ExtArgs["result"]["heroSection"]>
 
   export type $HeroSectionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "HeroSection"
@@ -7621,6 +7654,9 @@ export namespace Prisma {
       backgroundImage: string | null
       ctaLabel: string | null
       ctaHref: string | null
+      videoUrl: string | null
+      secondaryBtnText: string | null
+      secondaryBtnHref: string | null
       updatedAt: Date
     }, ExtArgs["result"]["heroSection"]>
     composites: {}
@@ -8052,6 +8088,9 @@ export namespace Prisma {
     readonly backgroundImage: FieldRef<"HeroSection", 'String'>
     readonly ctaLabel: FieldRef<"HeroSection", 'String'>
     readonly ctaHref: FieldRef<"HeroSection", 'String'>
+    readonly videoUrl: FieldRef<"HeroSection", 'String'>
+    readonly secondaryBtnText: FieldRef<"HeroSection", 'String'>
+    readonly secondaryBtnHref: FieldRef<"HeroSection", 'String'>
     readonly updatedAt: FieldRef<"HeroSection", 'DateTime'>
   }
     
@@ -12766,6 +12805,9 @@ export namespace Prisma {
     backgroundImage: 'backgroundImage',
     ctaLabel: 'ctaLabel',
     ctaHref: 'ctaHref',
+    videoUrl: 'videoUrl',
+    secondaryBtnText: 'secondaryBtnText',
+    secondaryBtnHref: 'secondaryBtnHref',
     updatedAt: 'updatedAt'
   };
 
@@ -13438,6 +13480,9 @@ export namespace Prisma {
     backgroundImage?: StringNullableFilter<"HeroSection"> | string | null
     ctaLabel?: StringNullableFilter<"HeroSection"> | string | null
     ctaHref?: StringNullableFilter<"HeroSection"> | string | null
+    videoUrl?: StringNullableFilter<"HeroSection"> | string | null
+    secondaryBtnText?: StringNullableFilter<"HeroSection"> | string | null
+    secondaryBtnHref?: StringNullableFilter<"HeroSection"> | string | null
     updatedAt?: DateTimeFilter<"HeroSection"> | Date | string
   }
 
@@ -13449,6 +13494,9 @@ export namespace Prisma {
     backgroundImage?: SortOrderInput | SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaHref?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    secondaryBtnText?: SortOrderInput | SortOrder
+    secondaryBtnHref?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
   }
 
@@ -13463,6 +13511,9 @@ export namespace Prisma {
     backgroundImage?: StringNullableFilter<"HeroSection"> | string | null
     ctaLabel?: StringNullableFilter<"HeroSection"> | string | null
     ctaHref?: StringNullableFilter<"HeroSection"> | string | null
+    videoUrl?: StringNullableFilter<"HeroSection"> | string | null
+    secondaryBtnText?: StringNullableFilter<"HeroSection"> | string | null
+    secondaryBtnHref?: StringNullableFilter<"HeroSection"> | string | null
     updatedAt?: DateTimeFilter<"HeroSection"> | Date | string
   }, "id">
 
@@ -13474,6 +13525,9 @@ export namespace Prisma {
     backgroundImage?: SortOrderInput | SortOrder
     ctaLabel?: SortOrderInput | SortOrder
     ctaHref?: SortOrderInput | SortOrder
+    videoUrl?: SortOrderInput | SortOrder
+    secondaryBtnText?: SortOrderInput | SortOrder
+    secondaryBtnHref?: SortOrderInput | SortOrder
     updatedAt?: SortOrder
     _count?: HeroSectionCountOrderByAggregateInput
     _avg?: HeroSectionAvgOrderByAggregateInput
@@ -13493,6 +13547,9 @@ export namespace Prisma {
     backgroundImage?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
     ctaLabel?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
     ctaHref?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
+    videoUrl?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
+    secondaryBtnText?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
+    secondaryBtnHref?: StringNullableWithAggregatesFilter<"HeroSection"> | string | null
     updatedAt?: DateTimeWithAggregatesFilter<"HeroSection"> | Date | string
   }
 
@@ -14320,6 +14377,9 @@ export namespace Prisma {
     backgroundImage?: string | null
     ctaLabel?: string | null
     ctaHref?: string | null
+    videoUrl?: string | null
+    secondaryBtnText?: string | null
+    secondaryBtnHref?: string | null
     updatedAt?: Date | string
   }
 
@@ -14331,6 +14391,9 @@ export namespace Prisma {
     backgroundImage?: string | null
     ctaLabel?: string | null
     ctaHref?: string | null
+    videoUrl?: string | null
+    secondaryBtnText?: string | null
+    secondaryBtnHref?: string | null
     updatedAt?: Date | string
   }
 
@@ -14342,6 +14405,9 @@ export namespace Prisma {
     backgroundImage?: NullableStringFieldUpdateOperationsInput | string | null
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaHref?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnText?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnHref?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -14353,6 +14419,9 @@ export namespace Prisma {
     backgroundImage?: NullableStringFieldUpdateOperationsInput | string | null
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaHref?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnText?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnHref?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -14364,6 +14433,9 @@ export namespace Prisma {
     backgroundImage?: string | null
     ctaLabel?: string | null
     ctaHref?: string | null
+    videoUrl?: string | null
+    secondaryBtnText?: string | null
+    secondaryBtnHref?: string | null
     updatedAt?: Date | string
   }
 
@@ -14375,6 +14447,9 @@ export namespace Prisma {
     backgroundImage?: NullableStringFieldUpdateOperationsInput | string | null
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaHref?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnText?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnHref?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -14386,6 +14461,9 @@ export namespace Prisma {
     backgroundImage?: NullableStringFieldUpdateOperationsInput | string | null
     ctaLabel?: NullableStringFieldUpdateOperationsInput | string | null
     ctaHref?: NullableStringFieldUpdateOperationsInput | string | null
+    videoUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnText?: NullableStringFieldUpdateOperationsInput | string | null
+    secondaryBtnHref?: NullableStringFieldUpdateOperationsInput | string | null
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -15176,6 +15254,9 @@ export namespace Prisma {
     backgroundImage?: SortOrder
     ctaLabel?: SortOrder
     ctaHref?: SortOrder
+    videoUrl?: SortOrder
+    secondaryBtnText?: SortOrder
+    secondaryBtnHref?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -15191,6 +15272,9 @@ export namespace Prisma {
     backgroundImage?: SortOrder
     ctaLabel?: SortOrder
     ctaHref?: SortOrder
+    videoUrl?: SortOrder
+    secondaryBtnText?: SortOrder
+    secondaryBtnHref?: SortOrder
     updatedAt?: SortOrder
   }
 
@@ -15202,6 +15286,9 @@ export namespace Prisma {
     backgroundImage?: SortOrder
     ctaLabel?: SortOrder
     ctaHref?: SortOrder
+    videoUrl?: SortOrder
+    secondaryBtnText?: SortOrder
+    secondaryBtnHref?: SortOrder
     updatedAt?: SortOrder
   }
 

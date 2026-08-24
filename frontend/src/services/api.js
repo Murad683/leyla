@@ -16,6 +16,15 @@ const api = axios.create({
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (error.response?.status === 401 && localStorage.getItem('adminToken')) {
+      // Session expired or token invalid — clear it and send the admin back to login
+      localStorage.removeItem('adminToken');
+      delete api.defaults.headers.common['Authorization'];
+      if (!window.location.pathname.startsWith('/admin/login')) {
+        window.location.href = '/admin/login';
+      }
+    }
+
     const message = error.response?.data?.message || 'Bağlantı xətası baş verdi.';
     return Promise.reject({ ...error, message });
   }

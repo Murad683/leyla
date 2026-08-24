@@ -13,7 +13,9 @@ const Services = () => {
     title: '',
     description: '',
     icon: 'QualityIcon',
-    features: ''
+    features: '',
+    ctaLabel: '',
+    ctaHref: ''
   });
 
   const { data: services, isLoading } = useQuery({
@@ -50,7 +52,9 @@ const Services = () => {
       title: '',
       description: '',
       icon: 'QualityIcon',
-      features: ''
+      features: '',
+      ctaLabel: 'Qeydiyyatdan keç',
+      ctaHref: '/contact'
     });
     setModalOpen(true);
   };
@@ -61,7 +65,9 @@ const Services = () => {
       title: service.title,
       description: service.description,
       icon: service.icon || 'QualityIcon',
-      features: Array.isArray(service.features) ? service.features.join(', ') : service.features || ''
+      features: Array.isArray(service.features) ? service.features.join(', ') : service.features || '',
+      ctaLabel: service.ctaLabel || 'Qeydiyyatdan keç',
+      ctaHref: service.ctaHref || '/contact'
     });
     setModalOpen(true);
   };
@@ -188,6 +194,30 @@ const Services = () => {
                   className={styles.input}
                   placeholder="Xidmət 1, Xidmət 2, Xidmət 3"
                   required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Düymə Mətni</label>
+                <input
+                  type="text"
+                  name="ctaLabel"
+                  value={formData.ctaLabel}
+                  onChange={handleChange}
+                  className={styles.input}
+                  placeholder="Qeydiyyatdan keç"
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Düymə Linki</label>
+                <input
+                  type="text"
+                  name="ctaHref"
+                  value={formData.ctaHref}
+                  onChange={handleChange}
+                  className={styles.input}
+                  placeholder="/contact"
                 />
               </div>
 

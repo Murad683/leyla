@@ -21,7 +21,7 @@ const ServiceCard = ({ service, index = 0 }) => {
         </div>
       </div>
       <div className={styles.rowCta}>
-        <Button variant="link" onClick={() => navigate(service.ctaHref)}>{service.ctaLabel} &rarr;</Button>
+        <Button variant="link" onClick={() => navigate(service.ctaHref || '/contact')}>{service.ctaLabel || 'Qeydiyyatdan keç'} &rarr;</Button>
       </div>
     </div>
   );
