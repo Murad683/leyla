@@ -90,15 +90,17 @@
 }
 
 @media (max-width: 767px) {
-  .hero { min-height: 100vh; min-height: 100dvh; padding-top: 84px; padding-bottom: var(--space-8); }
-  .title { font-size: clamp(2.25rem, 11vw, 3.5rem); margin-bottom: var(--space-8); text-align: center; }
-  .glassPanel { padding: var(--space-6); align-items: center; text-align: center; }
+  .hero { min-height: 100vh; min-height: 100dvh; padding-top: 84px; padding-bottom: var(--space-5); }
+  .title { font-size: clamp(1.75rem, 8vw, 2.5rem); margin-bottom: var(--space-5); text-align: center; }
+  .glassPanel { padding: var(--space-5); gap: var(--space-5); align-items: center; text-align: center; }
   .subtitleCol { max-width: none; }
-  .ctaGroup { flex-direction: column; align-items: center; width: 100%; }
-  .ctaGroup .primaryOnDark { width: 100%; }
-  .ctaGroup .ghostLink { width: auto; }
-  .statCol { justify-content: center; gap: var(--space-6); }
+  .subtitle { font-size: var(--text-sm); line-height: var(--leading-normal); margin-bottom: var(--space-4); }
+  .ctaGroup { flex-direction: column; align-items: center; width: 100%; gap: var(--space-3); }
+  .ctaGroup .primaryOnDark { width: 100%; padding: var(--space-3) var(--space-6); font-size: var(--text-base); }
+  .ctaGroup .ghostLink { width: auto; font-size: var(--text-sm); }
+  .statCol { justify-content: center; gap: var(--space-5); padding-top: var(--space-4); }
   .stat { align-items: center; }
+  .statNumber { font-size: var(--text-lg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
