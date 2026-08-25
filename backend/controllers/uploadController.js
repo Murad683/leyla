@@ -1,8 +1,13 @@
 const multer = require('multer');
-const path = require('path');
-const { BlobServiceClient } = require('@azure/storage-blob');
+const { v2: cloudinary } = require('cloudinary');
 
-// Use memory storage so we can buffer the image and send it directly to Azure
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Use memory storage so we can buffer the file and stream it directly to Cloudinary
 const storage = multer.memoryStorage();
 
 const upload = multer({
@@ -22,29 +27,25 @@ const uploadImage = async (req, res, next) => {
     if (!req.file) {
       return res.status(400).json({ success: false, message: 'No file uploaded' });
     }
-    
-    // Check if Azure is configured
-    if (!process.env.AZURE_STORAGE_CONNECTION_STRING) {
-      return res.status(500).json({ success: false, message: 'Azure Storage not configured' });
+
+    if (!process.env.CLOUDINARY_CLOUD_NAME) {
+      return res.status(500).json({ success: false, message: 'Cloudinary not configured' });
     }
 
-    const blobServiceClient = BlobServiceClient.fromConnectionString(process.env.AZURE_STORAGE_CONNECTION_STRING);
-    const containerName = process.env.AZURE_STORAGE_CONTAINER_NAME || 'uploads';
-    const containerClient = blobServiceClient.getContainerClient(containerName);
+    const resourceType = req.file.mimetype.startsWith('video/') ? 'video' : 'image';
 
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const blobName = req.file.fieldname + '-' + uniqueSuffix + path.extname(req.file.originalname);
-    
-    const blockBlobClient = containerClient.getBlockBlobClient(blobName);
-
-    // Upload to Azure
-    await blockBlobClient.uploadData(req.file.buffer, {
-      blobHTTPHeaders: { blobContentType: req.file.mimetype }
+    const result = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(
+        { folder: 'uploads', resource_type: resourceType },
+        (error, uploadResult) => {
+          if (error) return reject(error);
+          resolve(uploadResult);
+        }
+      );
+      uploadStream.end(req.file.buffer);
     });
 
-    const imageUrl = blockBlobClient.url;
-    res.json({ success: true, url: imageUrl });
+    res.json({ success: true, url: result.secure_url });
   } catch (error) {
     next(error);
   }
