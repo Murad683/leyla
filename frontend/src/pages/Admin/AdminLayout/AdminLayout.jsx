@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { NavLink, Link, Outlet, useNavigate } from 'react-router-dom';
 import { logout } from '../../../services/adminService';
+import { AdminUIProvider } from '../../../components/admin/ui';
 import styles from './AdminLayout.module.css';
 
 const navLinks = [
@@ -12,6 +13,7 @@ const navLinks = [
   { path: '/admin/courses', label: 'Kurslar', icon: '🎓' },
   { path: '/admin/portfolio', label: 'Portfolio', icon: '🎨' },
   { path: '/admin/testimonials', label: 'Rəylər', icon: '💬' },
+  { path: '/admin/guide', label: 'Təlimat', icon: '📘' },
 ];
 
 const AdminLayout = () => {
@@ -24,6 +26,7 @@ const AdminLayout = () => {
   };
 
   return (
+    <AdminUIProvider>
     <div className={styles.container}>
       {/* Sidebar */}
       <aside className={`${styles.sidebar} ${mobileOpen ? styles.mobileOpen : ''}`}>
@@ -80,6 +83,7 @@ const AdminLayout = () => {
         </main>
       </div>
     </div>
+    </AdminUIProvider>
   );
 };
 

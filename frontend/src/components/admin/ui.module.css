@@ -1,0 +1,94 @@
+/* toasts */
+.toastWrap {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+.toast {
+  pointer-events: auto;
+  min-width: 240px;
+  max-width: 380px;
+  padding: 13px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: #fff;
+  background: #232228;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-left-width: 3px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  animation: toastIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.toast.success { border-left-color: #34c17a; }
+.toast.error { border-left-color: #e5544b; }
+.toast.info { border-left-color: #4a90d9; }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+/* confirm dialog */
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.55);
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  animation: fade 0.15s ease;
+}
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.dialog {
+  width: min(420px, 100%);
+  background: #1c1b21;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  padding: 24px;
+  color: #eee;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+}
+.dialogTitle {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #fff;
+}
+.dialogBody {
+  margin: 0 0 20px;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: #b7b6bd;
+}
+.dialogActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.btnGhost,
+.btnSolid {
+  font: inherit;
+  font-size: 0.88rem;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+.btnGhost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #cfcfd4;
+}
+.btnGhost:hover { background: rgba(255, 255, 255, 0.06); }
+.btnSolid {
+  color: #fff;
+  border: none;
+}
+.btnSolid.danger { background: #e5544b; }
+.btnSolid.danger:hover { background: #cf463d; }
+.btnSolid.primary { background: #4a90d9; }

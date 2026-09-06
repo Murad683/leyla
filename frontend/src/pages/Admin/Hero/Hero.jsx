@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAdminHero, updateAdminHero, uploadImage } from '../../../services/adminService';
+import { useToast } from '../../../components/admin/ui';
 import styles from './Hero.module.css';
 
 const Hero = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
 
   const { data: heroData, isLoading } = useQuery({
     queryKey: ['admin', 'hero'],
@@ -25,7 +27,6 @@ const Hero = () => {
 
   const [uploading, setUploading] = useState(false);
   const [uploadingVideo, setUploadingVideo] = useState(false);
-  const [successMsg, setSuccessMsg] = useState('');
 
   useEffect(() => {
     if (heroData) {
@@ -38,9 +39,9 @@ const Hero = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'hero'] });
       queryClient.invalidateQueries({ queryKey: ['hero'] });
-      setSuccessMsg('Hero bölməsi uğurla yeniləndi!');
-      setTimeout(() => setSuccessMsg(''), 4000);
-    }
+      toast.success('Yadda saxlanıldı');
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const handleChange = (e) => {
@@ -57,7 +58,7 @@ const Hero = () => {
       const res = await uploadImage(file);
       setHero(prev => ({ ...prev, bgImage: res.url }));
     } catch (error) {
-      alert('Şəkil yüklənməsində xəta baş verdi');
+      toast.error('Şəkil yüklənmədi');
     } finally {
       setUploading(false);
     }
@@ -72,7 +73,7 @@ const Hero = () => {
       const res = await uploadImage(file);
       setHero(prev => ({ ...prev, videoUrl: res.url }));
     } catch (error) {
-      alert('Video yüklənməsində xəta baş verdi');
+      toast.error('Video yüklənmədi');
     } finally {
       setUploadingVideo(false);
     }
@@ -91,8 +92,6 @@ const Hero = () => {
         <h2 className={styles.title}>Hero Bölməsi</h2>
         <p className={styles.subtitle}>Ana səhifənin ən üst hissəsindəki başlıq, mətn, düymələr və arxa plan.</p>
       </div>
-
-      {successMsg && <div className={styles.successAlert}>{successMsg}</div>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {/* Main Content Card */}

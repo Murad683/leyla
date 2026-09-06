@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getCourses } from '../../../services/settingsService';
 import { createCourse, updateCourse, deleteCourse } from '../../../services/adminService';
+import { useToast, useConfirm, useDragReorder } from '../../../components/admin/ui';
 import styles from '../Services/Services.module.css';
 
 const EMPTY = {
@@ -11,20 +12,33 @@ const EMPTY = {
 
 const AdminCourses = () => {
   const qc = useQueryClient();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [f, setF] = useState(EMPTY);
 
   const { data: courses, isLoading } = useQuery({ queryKey: ['courses'], queryFn: getCourses });
 
-  const inval = () => {
+  const inval = (msg) => {
     qc.invalidateQueries({ queryKey: ['courses'] });
+    if (msg) toast.success(msg);
     setOpen(false);
     setEditing(null);
   };
-  const createM = useMutation({ mutationFn: createCourse, onSuccess: inval });
-  const updateM = useMutation({ mutationFn: ({ id, data }) => updateCourse(id, data), onSuccess: inval });
-  const deleteM = useMutation({ mutationFn: deleteCourse, onSuccess: () => qc.invalidateQueries({ queryKey: ['courses'] }) });
+  const createM = useMutation({ mutationFn: createCourse, onSuccess: () => inval('Kurs əlavə olundu'), onError: () => toast.error('Xəta baş verdi') });
+  const updateM = useMutation({ mutationFn: ({ id, data }) => updateCourse(id, data), onSuccess: () => inval('Yadda saxlanıldı'), onError: () => toast.error('Xəta baş verdi') });
+  const deleteM = useMutation({ mutationFn: deleteCourse, onSuccess: () => { qc.invalidateQueries({ queryKey: ['courses'] }); toast.success('Silindi'); }, onError: () => toast.error('Silinmədi') });
+
+  const persistOrder = async (next) => {
+    qc.setQueryData(['courses'], next);
+    try {
+      await Promise.all(next.map((it, i) => (it.sortOrder === i ? null : updateCourse(it.id, { sortOrder: i }))).filter(Boolean));
+      toast.success('Sıra yeniləndi');
+    } catch { toast.error('Sıra yenilənmədi'); }
+    finally { qc.invalidateQueries({ queryKey: ['courses'] }); }
+  };
+  const dnd = useDragReorder(courses || [], persistOrder);
 
   const openAdd = () => {
     setEditing(null);
@@ -72,19 +86,24 @@ const AdminCourses = () => {
       <div className={styles.header}>
         <div>
           <h2 className={styles.title}>Kurslar</h2>
-          <p className={styles.subtitle}>«Kurslar» səhifəsi və ana səhifədəki kurs siyahısı.</p>
+          <p className={styles.subtitle}>«Kurslar» səhifəsi və ana səhifədəki kurs siyahısı. Kartları sürükləyərək sırala.</p>
         </div>
         <button onClick={openAdd} className={styles.addBtn}>➕ Yeni Kurs</button>
       </div>
 
       <div className={styles.grid}>
-        {courses?.map((c) => (
-          <div key={c.id} className={styles.card}>
+        {courses?.map((c, i) => (
+          <div
+            key={c.id}
+            className={styles.card}
+            {...dnd.row(i)}
+            style={{ cursor: 'grab', opacity: dnd.dragging === i ? 0.4 : 1, outline: dnd.over === i && dnd.dragging !== i ? '2px dashed #e5544b' : 'none', outlineOffset: 2 }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.serviceIcon}>🎓</span>
               <div className={styles.actions}>
                 <button onClick={() => openEdit(c)} className={styles.editBtn}>✏️ Redaktə</button>
-                <button onClick={() => window.confirm('Silinsin?') && deleteM.mutate(c.id)} className={styles.deleteBtn}>🗑️ Sil</button>
+                <button onClick={async () => { if (await confirm({ body: 'Bu kurs silinsin?' })) deleteM.mutate(c.id); }} className={styles.deleteBtn}>🗑️ Sil</button>
               </div>
             </div>
             <h3 className={styles.serviceTitle}>{c.title}</h3>

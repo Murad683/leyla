@@ -1,7 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAdminHome, updateAdminHome } from '../../../services/adminService';
+import { useToast } from '../../../components/admin/ui';
 import styles from '../Settings/Settings.module.css';
+
+function Section({ title, children, open = false }) {
+  return (
+    <details className={styles.card} open={open}>
+      <summary className={styles.cardTitle} style={{ cursor: 'pointer', listStyle: 'revert' }}>
+        {title}
+      </summary>
+      <div style={{ marginTop: 14 }}>{children}</div>
+    </details>
+  );
+}
 
 const EMPTY = {
   introEyebrow: '', introStatement: '', introAccent: '',
@@ -51,9 +63,9 @@ function Repeater({ label, rows, cols, onChange }) {
 
 const AdminHome = () => {
   const qc = useQueryClient();
+  const toast = useToast();
   const { data, isLoading } = useQuery({ queryKey: ['admin', 'home'], queryFn: getAdminHome });
   const [f, setF] = useState(EMPTY);
-  const [msg, setMsg] = useState('');
 
   useEffect(() => {
     if (data) setF({ ...EMPTY, ...data, _introParagraphs: undefined, _introTags: undefined });
@@ -64,9 +76,9 @@ const AdminHome = () => {
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['admin', 'home'] });
       qc.invalidateQueries({ queryKey: ['home'] });
-      setMsg('Yadda saxlanıldı.');
-      setTimeout(() => setMsg(''), 4000);
+      toast.success('Yadda saxlanıldı');
     },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const ch = (name) => (e) => setF((p) => ({ ...p, [name]: e.target.value }));
@@ -95,11 +107,9 @@ const AdminHome = () => {
           <p className={styles.subtitle}>Yanaşma bölməsi, rəqəmlər, iş prosesi və kurs bölməsinin köməkçi mətnləri.</p>
         </div>
       </div>
-      {msg && <div className={styles.successAlert}>{msg}</div>}
 
       <form onSubmit={submit} className={styles.form}>
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Yanaşma (Intro)</h3>
+        <Section title="Yanaşma (Intro)" open>
           <div className={styles.grid2}>
             <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.introEyebrow || ''} onChange={ch('introEyebrow')} /></div>
             <div className={styles.inputGroup}><label className={styles.label}>Vurğu sözü</label><input className={styles.input} value={f.introAccent || ''} onChange={ch('introAccent')} /></div>
@@ -107,41 +117,37 @@ const AdminHome = () => {
           <div className={styles.inputGroup}><label className={styles.label}>Bəyanat (böyük cümlə)</label><textarea className={styles.textarea} rows={2} value={f.introStatement || ''} onChange={ch('introStatement')} /></div>
           <div className={styles.inputGroup}><label className={styles.label}>Paraqraflar (hər sətir — ayrı paraqraf)</label><textarea className={styles.textarea} rows={4} value={f._introParagraphs ?? toLines(f.introParagraphs)} onChange={ch('_introParagraphs')} /></div>
           <div className={styles.inputGroup}><label className={styles.label}>Teqlər (vergüllə)</label><input className={styles.input} value={f._introTags ?? toCsv(f.introTags)} onChange={ch('_introTags')} /></div>
-        </div>
+        </Section>
 
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Rəqəmlər</h3>
+        <Section title="Rəqəmlər">
           <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.numbersEyebrow || ''} onChange={ch('numbersEyebrow')} /></div>
-        </div>
-        <Repeater label="Statistika" rows={f.stats || []} onChange={(v) => setF((p) => ({ ...p, stats: v }))}
-          cols={[{ key: 'value', label: 'Rəqəm (məs. 16)' }, { key: 'suffix', label: 'Şəkilçi (məs. K+)' }, { key: 'label', label: 'Ad' }]} />
+          <Repeater label="Statistika" rows={f.stats || []} onChange={(v) => setF((p) => ({ ...p, stats: v }))}
+            cols={[{ key: 'value', label: 'Rəqəm (məs. 16)' }, { key: 'suffix', label: 'Şəkilçi (məs. K+)' }, { key: 'label', label: 'Ad' }]} />
+        </Section>
 
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>İş prosesi</h3>
+        <Section title="İş prosesi">
           <div className={styles.grid2}>
             <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.processEyebrow || ''} onChange={ch('processEyebrow')} /></div>
             <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.processHeadline || ''} onChange={ch('processHeadline')} /></div>
           </div>
-        </div>
-        <Repeater label="Mərhələlər" rows={(f.processSteps || []).map((s) => ({ ...s, tags: Array.isArray(s.tags) ? s.tags.join(', ') : s.tags }))} onChange={(v) => setF((p) => ({ ...p, processSteps: v }))}
-          cols={[{ key: 'title', label: 'Başlıq' }, { key: 'text', label: 'Mətn', textarea: true }, { key: 'tags', label: 'Teqlər (vergüllə)' }]} />
+          <Repeater label="Mərhələlər" rows={(f.processSteps || []).map((s) => ({ ...s, tags: Array.isArray(s.tags) ? s.tags.join(', ') : s.tags }))} onChange={(v) => setF((p) => ({ ...p, processSteps: v }))}
+            cols={[{ key: 'title', label: 'Başlıq' }, { key: 'text', label: 'Mətn', textarea: true }, { key: 'tags', label: 'Teqlər (vergüllə)' }]} />
+        </Section>
 
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Kurslar bölməsi (Home)</h3>
+        <Section title="Kurslar bölməsi + «Kurslar» səhifəsi köməkçi mətnləri">
           <div className={styles.grid2}>
             <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.coursesEyebrow || ''} onChange={ch('coursesEyebrow')} /></div>
             <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.coursesHeadline || ''} onChange={ch('coursesHeadline')} /></div>
           </div>
-        </div>
-        <Repeater label="Kurs — «Necə keçir»" rows={f.courseHow || []} onChange={(v) => setF((p) => ({ ...p, courseHow: v }))}
-          cols={[{ key: 't', label: 'Başlıq' }, { key: 'd', label: 'Mətn', textarea: true }]} />
-        <Repeater label="Kurs — Suallar (FAQ)" rows={f.courseFaq || []} onChange={(v) => setF((p) => ({ ...p, courseFaq: v }))}
-          cols={[{ key: 'q', label: 'Sual' }, { key: 'a', label: 'Cavab', textarea: true }]} />
+          <Repeater label="Kurs — «Necə keçir»" rows={f.courseHow || []} onChange={(v) => setF((p) => ({ ...p, courseHow: v }))}
+            cols={[{ key: 't', label: 'Başlıq' }, { key: 'd', label: 'Mətn', textarea: true }]} />
+          <Repeater label="Kurs — Suallar (FAQ)" rows={f.courseFaq || []} onChange={(v) => setF((p) => ({ ...p, courseFaq: v }))}
+            cols={[{ key: 'q', label: 'Sual' }, { key: 'a', label: 'Cavab', textarea: true }]} />
+        </Section>
 
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Rəylər</h3>
+        <Section title="Rəylər bölməsi">
           <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.quotesEyebrow || ''} onChange={ch('quotesEyebrow')} /></div>
-        </div>
+        </Section>
 
         <button type="submit" className={styles.submitBtn} disabled={mut.isPending}>
           {mut.isPending ? 'Saxlanılır...' : '💾 Yadda Saxla'}

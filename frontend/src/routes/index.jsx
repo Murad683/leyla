@@ -20,6 +20,7 @@ const AdminServices = lazy(() => import("../pages/Admin/Services/Services"));
 const AdminCourses = lazy(() => import("../pages/Admin/Courses/Courses"));
 const AdminPortfolio = lazy(() => import("../pages/Admin/Portfolio/Portfolio"));
 const AdminTestimonials = lazy(() => import("../pages/Admin/Testimonials/Testimonials"));
+const AdminGuide = lazy(() => import("../pages/Admin/Guide/Guide"));
 
 const Fallback = () => (
   <div style={{ minHeight: "60vh", display: "grid", placeItems: "center" }}>
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
       { path: "courses", element: <S><AdminCourses /></S> },
       { path: "portfolio", element: <S><AdminPortfolio /></S> },
       { path: "testimonials", element: <S><AdminTestimonials /></S> },
+      { path: "guide", element: <S><AdminGuide /></S> },
     ],
   },
 ]);

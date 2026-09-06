@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getPortfolioItems } from '../../../services/portfolioService';
 import { createPortfolioItem, updatePortfolioItem, deletePortfolioItem, uploadImage } from '../../../services/adminService';
+import { useToast, useConfirm, useDragReorder } from '../../../components/admin/ui';
 import styles from './Portfolio.module.css';
 
 const Portfolio = () => {
@@ -37,27 +38,36 @@ const Portfolio = () => {
     queryFn: getPortfolioItems
   });
 
+  const toast = useToast();
+  const confirm = useConfirm();
+
   const createMutation = useMutation({
     mutationFn: createPortfolioItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+      toast.success('Layihə əlavə olundu');
       closeModal();
-    }
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => updatePortfolioItem(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+      toast.success('Yadda saxlanıldı');
       closeModal();
-    }
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const deleteMutation = useMutation({
     mutationFn: deletePortfolioItem,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['portfolio'] });
-    }
+      toast.success('Silindi');
+    },
+    onError: () => toast.error('Silinmədi'),
   });
 
   const openAddModal = () => {
@@ -157,8 +167,9 @@ const Portfolio = () => {
     try {
       const res = await uploadImage(file);
       setFormData(prev => ({ ...prev, thumbnail: res.url }));
+      toast.success('Şəkil yükləndi');
     } catch (error) {
-      alert('Şəkil yüklənməsində xəta baş verdi');
+      toast.error('Şəkil yüklənmədi');
     } finally {
       setUploading(false);
     }
@@ -220,13 +231,28 @@ const Portfolio = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Bu layihəni silmək istədiyinizdən əminsiniz?')) {
+  const handleDelete = async (id) => {
+    if (await confirm({ body: 'Bu layihə silinsin? Bu əməliyyat geri qaytarıla bilməz.' })) {
       deleteMutation.mutate(id);
     }
   };
 
   const items = portfolioData?.items || [];
+
+  const persistOrder = async (next) => {
+    queryClient.setQueryData(['portfolio', 'list'], { ...portfolioData, items: next });
+    try {
+      await Promise.all(
+        next.map((it, i) => (it.sortOrder === i ? null : updatePortfolioItem(it.id, { sortOrder: i }))).filter(Boolean)
+      );
+      toast.success('Sıra yeniləndi');
+    } catch {
+      toast.error('Sıra yenilənmədi');
+    } finally {
+      queryClient.invalidateQueries({ queryKey: ['portfolio'] });
+    }
+  };
+  const dnd = useDragReorder(items, persistOrder);
 
   if (isLoading) return <p className={styles.loading}>Yüklənir...</p>;
 
@@ -248,19 +274,28 @@ const Portfolio = () => {
           <table className={styles.table}>
             <thead>
               <tr>
+                <th></th>
                 <th>Şəkil</th>
                 <th>Layihə Adı</th>
-                <th>Kateqoriya</th>
-                <th>Müştəri</th>
+                <th>Teqlər</th>
+                <th>Nəticə</th>
                 <th>Status</th>
-                <th>Xüsusiyyət</th>
                 <th>Tarix</th>
                 <th>Əməliyyatlar</th>
               </tr>
             </thead>
             <tbody>
-              {items.map((item) => (
-                <tr key={item.id}>
+              {items.map((item, i) => (
+                <tr
+                  key={item.id}
+                  {...dnd.row(i)}
+                  style={{
+                    cursor: 'grab',
+                    opacity: dnd.dragging === i ? 0.4 : 1,
+                    outline: dnd.over === i && dnd.dragging !== i ? '2px dashed #e5544b' : 'none',
+                  }}
+                >
+                  <td style={{ color: '#8a8a90', userSelect: 'none' }}>⠿</td>
                   <td>
                     <div className={styles.thumbnailBox}>
                       {item.thumbnail ? (
@@ -275,20 +310,13 @@ const Portfolio = () => {
                     <br />
                     <span className={styles.slugText}>/{item.slug}</span>
                   </td>
-                  <td>{item.category}</td>
-                  <td>{item.client}</td>
+                  <td>{Array.isArray(item.tags) ? item.tags.join(', ') : ''}</td>
+                  <td>{item.resultHeadline}</td>
                   <td>
                     {item.isPublished ? (
                       <span className={styles.publishedBadge}>Dərc edilib</span>
                     ) : (
                       <span className={styles.draftBadge}>Qaralama</span>
-                    )}
-                  </td>
-                  <td>
-                    {item.featured ? (
-                      <span className={styles.featuredBadge}>Seçilmiş ⭐</span>
-                    ) : (
-                      <span className={styles.normalBadge}>Standart</span>
                     )}
                   </td>
                   <td>

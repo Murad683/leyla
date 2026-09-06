@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getAdminSettings, updateAdminSettings, uploadImage } from '../../../services/adminService';
+import { useToast } from '../../../components/admin/ui';
 import styles from './Settings.module.css';
 
 const Settings = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
   
   const { data: settingsData, isLoading } = useQuery({
     queryKey: ['admin', 'settings'],
@@ -25,7 +27,6 @@ const Settings = () => {
   });
 
   const [uploading, setUploading] = useState(false);
-  const [successMsg, setSuccessMsg] = useState('');
 
   useEffect(() => {
     if (settingsData) {
@@ -38,9 +39,9 @@ const Settings = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin', 'settings'] });
       queryClient.invalidateQueries({ queryKey: ['settings'] });
-      setSuccessMsg('Nizamlamalar uğurla yadda saxlanıldı!');
-      setTimeout(() => setSuccessMsg(''), 4000);
-    }
+      toast.success('Yadda saxlanıldı');
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const handleChange = (e) => {
@@ -57,7 +58,7 @@ const Settings = () => {
       const res = await uploadImage(file);
       setSettings(prev => ({ ...prev, logoUrl: res.url }));
     } catch (error) {
-      alert('Şəkil yüklənməsində xəta baş verdi');
+      toast.error('Şəkil yüklənmədi');
     } finally {
       setUploading(false);
     }
@@ -78,8 +79,6 @@ const Settings = () => {
           <p className={styles.subtitle}>Saytınızın qlobal SEO nizamlamaları, logo və əlaqə məlumatları.</p>
         </div>
       </div>
-
-      {successMsg && <div className={styles.successAlert}>{successMsg}</div>}
 
       <form onSubmit={handleSubmit} className={styles.form}>
         {/* SEO Grid */}

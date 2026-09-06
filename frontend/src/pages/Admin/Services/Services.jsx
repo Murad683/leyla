@@ -2,13 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getServices } from '../../../services/settingsService';
 import { createService, updateService, deleteService } from '../../../services/adminService';
+import { useToast, useConfirm, useDragReorder } from '../../../components/admin/ui';
 import styles from './Services.module.css';
 
 const Services = () => {
   const queryClient = useQueryClient();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [modalOpen, setModalOpen] = useState(false);
   const [editingService, setEditingService] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -29,24 +32,47 @@ const Services = () => {
     mutationFn: createService,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
+      toast.success('Xidmət əlavə olundu');
       closeModal();
-    }
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const updateMutation = useMutation({
     mutationFn: ({ id, data }) => updateService(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
+      toast.success('Yadda saxlanıldı');
       closeModal();
-    }
+    },
+    onError: () => toast.error('Xəta baş verdi'),
   });
 
   const deleteMutation = useMutation({
     mutationFn: deleteService,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['services'] });
-    }
+      toast.success('Silindi');
+    },
+    onError: () => toast.error('Silinmədi'),
   });
+
+  const persistOrder = async (next) => {
+    queryClient.setQueryData(['services'], next);
+    try {
+      await Promise.all(
+        next
+          .map((it, i) => (it.sortOrder === i ? null : updateService(it.id, { sortOrder: i })))
+          .filter(Boolean)
+      );
+      toast.success('Sıra yeniləndi');
+    } catch {
+      toast.error('Sıra yenilənmədi');
+    } finally {
+      queryClient.invalidateQueries({ queryKey: ['services'] });
+    }
+  };
+  const dnd = useDragReorder(services || [], persistOrder);
 
   const openAddModal = () => {
     setEditingService(null);
@@ -113,8 +139,8 @@ const Services = () => {
     }
   };
 
-  const handleDelete = (id) => {
-    if (window.confirm('Bu xidməti silmək istədiyinizdən əminsiniz?')) {
+  const handleDelete = async (id) => {
+    if (await confirm({ body: 'Bu xidmət silinsin? Bu əməliyyat geri qaytarıla bilməz.' })) {
       deleteMutation.mutate(id);
     }
   };
@@ -126,7 +152,7 @@ const Services = () => {
       <div className={styles.header}>
         <div>
           <h2 className={styles.title}>Xidmətlər Meneceri</h2>
-          <p className={styles.subtitle}>Saytınızda təqdim olunan rəqəmsal marketinq xidmətlərini idarə edin.</p>
+          <p className={styles.subtitle}>Saytınızda təqdim olunan xidmətlər. Kartları sürükləyərək sırala.</p>
         </div>
         <button onClick={openAddModal} className={styles.addBtn}>
           ➕ Yeni Xidmət
@@ -135,8 +161,18 @@ const Services = () => {
 
       {/* Grid of services */}
       <div className={styles.grid}>
-        {services?.map((service) => (
-          <div key={service.id} className={styles.card}>
+        {services?.map((service, i) => (
+          <div
+            key={service.id}
+            className={styles.card}
+            {...dnd.row(i)}
+            style={{
+              cursor: 'grab',
+              opacity: dnd.dragging === i ? 0.4 : 1,
+              outline: dnd.over === i && dnd.dragging !== i ? '2px dashed #e5544b' : 'none',
+              outlineOffset: 2,
+            }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.serviceIcon}>📈</span>
               <div className={styles.actions}>

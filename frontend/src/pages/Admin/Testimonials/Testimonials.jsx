@@ -2,26 +2,40 @@ import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTestimonials } from '../../../services/settingsService';
 import { createTestimonial, updateTestimonial, deleteTestimonial } from '../../../services/adminService';
+import { useToast, useConfirm, useDragReorder } from '../../../components/admin/ui';
 import styles from '../Services/Services.module.css';
 
 const EMPTY = { quote: '', author: '', role: '', sortOrder: 0, isPublished: true };
 
 const AdminTestimonials = () => {
   const qc = useQueryClient();
+  const toast = useToast();
+  const confirm = useConfirm();
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [f, setF] = useState(EMPTY);
 
   const { data: items, isLoading } = useQuery({ queryKey: ['testimonials'], queryFn: getTestimonials });
 
-  const inval = () => {
+  const inval = (msg) => {
     qc.invalidateQueries({ queryKey: ['testimonials'] });
+    if (msg) toast.success(msg);
     setOpen(false);
     setEditing(null);
   };
-  const createM = useMutation({ mutationFn: createTestimonial, onSuccess: inval });
-  const updateM = useMutation({ mutationFn: ({ id, data }) => updateTestimonial(id, data), onSuccess: inval });
-  const deleteM = useMutation({ mutationFn: deleteTestimonial, onSuccess: () => qc.invalidateQueries({ queryKey: ['testimonials'] }) });
+  const createM = useMutation({ mutationFn: createTestimonial, onSuccess: () => inval('Rəy əlavə olundu'), onError: () => toast.error('Xəta baş verdi') });
+  const updateM = useMutation({ mutationFn: ({ id, data }) => updateTestimonial(id, data), onSuccess: () => inval('Yadda saxlanıldı'), onError: () => toast.error('Xəta baş verdi') });
+  const deleteM = useMutation({ mutationFn: deleteTestimonial, onSuccess: () => { qc.invalidateQueries({ queryKey: ['testimonials'] }); toast.success('Silindi'); }, onError: () => toast.error('Silinmədi') });
+
+  const persistOrder = async (next) => {
+    qc.setQueryData(['testimonials'], next);
+    try {
+      await Promise.all(next.map((it, i) => (it.sortOrder === i ? null : updateTestimonial(it.id, { sortOrder: i }))).filter(Boolean));
+      toast.success('Sıra yeniləndi');
+    } catch { toast.error('Sıra yenilənmədi'); }
+    finally { qc.invalidateQueries({ queryKey: ['testimonials'] }); }
+  };
+  const dnd = useDragReorder(items || [], persistOrder);
 
   const openAdd = () => { setEditing(null); setF({ ...EMPTY, sortOrder: items?.length || 0 }); setOpen(true); };
   const openEdit = (t) => {
@@ -55,19 +69,24 @@ const AdminTestimonials = () => {
       <div className={styles.header}>
         <div>
           <h2 className={styles.title}>Rəylər</h2>
-          <p className={styles.subtitle}>Ana səhifədəki müştəri rəyləri.</p>
+          <p className={styles.subtitle}>Ana səhifədəki müştəri rəyləri. Kartları sürükləyərək sırala.</p>
         </div>
         <button onClick={openAdd} className={styles.addBtn}>➕ Yeni Rəy</button>
       </div>
 
       <div className={styles.grid}>
-        {items?.map((t) => (
-          <div key={t.id} className={styles.card}>
+        {items?.map((t, i) => (
+          <div
+            key={t.id}
+            className={styles.card}
+            {...dnd.row(i)}
+            style={{ cursor: 'grab', opacity: dnd.dragging === i ? 0.4 : 1, outline: dnd.over === i && dnd.dragging !== i ? '2px dashed #e5544b' : 'none', outlineOffset: 2 }}
+          >
             <div className={styles.cardHeader}>
               <span className={styles.serviceIcon}>💬</span>
               <div className={styles.actions}>
                 <button onClick={() => openEdit(t)} className={styles.editBtn}>✏️ Redaktə</button>
-                <button onClick={() => window.confirm('Silinsin?') && deleteM.mutate(t.id)} className={styles.deleteBtn}>🗑️ Sil</button>
+                <button onClick={async () => { if (await confirm({ body: 'Bu rəy silinsin?' })) deleteM.mutate(t.id); }} className={styles.deleteBtn}>🗑️ Sil</button>
               </div>
             </div>
             <p className={styles.serviceDesc}>“{t.quote}”</p>
