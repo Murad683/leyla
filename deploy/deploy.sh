@@ -16,15 +16,15 @@ $Cj up -d --build
 
 echo "== wait for api =="
 for i in $(seq 1 30); do
-  if curl -sf -m 5 http://127.0.0.1:4100/health >/dev/null; then break; fi
+  if curl -sf -m 5 http://127.0.0.1:4100/api/health >/dev/null; then break; fi
   sleep 2
 done
 
 echo "== db schema sync (prisma db push) =="
-$Cj exec -T leyla-api npx prisma db push --schema=prisma/schema.prisma --skip-generate
+$Cj exec -T leyla-api npx prisma db push --schema=/app/prisma/schema.prisma --skip-generate
 
 echo "== health =="
-curl -sf -m 10 http://127.0.0.1:4100/health && echo " <- OK"
+curl -sf -m 10 http://127.0.0.1:4100/api/health && echo " <- OK"
 
 echo "== prune old images =="
 docker image prune -f >/dev/null || true
