@@ -2,44 +2,50 @@
   position: fixed;
   inset: 0;
   z-index: 10000;
-}
-
-.bars {
-  position: absolute;
-  inset: 0;
-  display: flex;
-}
-.bar {
-  flex: 1;
-  background: var(--void);
+  background: var(--paper);
+  display: grid;
+  place-items: center;
 }
 
 .inner {
-  position: absolute;
-  inset: 0;
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding: var(--gutter);
-  color: var(--on-void);
-  mix-blend-mode: difference;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+  padding-inline: var(--gutter);
 }
 
-.brand {
+.name {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(1.4rem, 4vw, 2.4rem);
+  font-size: clamp(1.6rem, 4.5vw, 2.6rem);
   letter-spacing: -0.02em;
+  color: var(--ink);
+  display: flex;
+  overflow: hidden;
+}
+.name span {
+  display: inline-block;
+  white-space: pre;
+}
+
+.line {
+  width: clamp(140px, 22vw, 240px);
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: center;
 }
 
 .count {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
 }
 .count i {
-  opacity: 0.5;
   font-style: normal;
+  opacity: 0.55;
 }
 
 @media (prefers-reduced-motion: reduce) {

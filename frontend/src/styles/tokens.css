@@ -8,14 +8,14 @@
 
 :root {
   /* ---- Paper & ink -------------------------------------- */
-  --paper: #f4f1e9;          /* primary background, warm off-white */
-  --paper-raised: #ece7db;   /* cards, alternating bands */
-  --paper-sunken: #e3ddcd;
-  --ink: #17150f;            /* near-black, warm */
-  --ink-soft: #58534a;       /* secondary text */
-  --ink-faint: #8b8579;      /* captions, mono labels */
-  --rule: rgba(23, 21, 15, 0.14); /* hairline separators */
-  --rule-strong: rgba(23, 21, 15, 0.28);
+  --paper: #f7f6f4;          /* primary background — near-white, neutral */
+  --paper-raised: #f1f0ed;   /* cards, alternating bands */
+  --paper-sunken: #e9e8e4;
+  --ink: #1a1a18;            /* near-black, barely-warm */
+  --ink-soft: #565651;       /* secondary text */
+  --ink-faint: #8b8b85;      /* captions, mono labels */
+  --rule: rgba(26, 26, 24, 0.12); /* hairline separators */
+  --rule-strong: rgba(26, 26, 24, 0.26);
 
   /* single confident accent — used sparingly */
   --accent: #b8452b;         /* terracotta / rust */
@@ -27,20 +27,20 @@
 
   /* work-panel field colours */
   --field-1: #b8452b;
-  --field-2: #17150f;
+  --field-2: #1a1a18;
   --field-3: #c9a24b;
   --field-4: #4a5842;
   --field-5: #2f2bff;
 
   /* dark section (footer, contrast bands) */
-  --void: #17150f;
-  --void-raised: #211e16;
-  --void-rule: rgba(244, 241, 233, 0.16);
-  --on-void: #f4f1e9;
-  --on-void-soft: #a9a396;
+  --void: #16161a;
+  --void-raised: #201f24;
+  --void-rule: rgba(247, 246, 244, 0.15);
+  --on-void: #f7f6f4;
+  --on-void-soft: #a8a8a2;
 
-  --selection: rgba(184, 69, 43, 0.22);
-  --grid-line: rgba(23, 21, 15, 0.07);
+  --selection: rgba(184, 69, 43, 0.2);
+  --grid-line: rgba(26, 26, 24, 0.06);
 
   /* ---- Typography -------------------------------------- */
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;
@@ -133,8 +133,8 @@
   --radius-2xl: 30px;
   --radius-full: 9999px;
 
-  --shadow-sm: 0 2px 8px rgba(23, 21, 15, 0.06);
-  --shadow-md: 0 12px 34px rgba(23, 21, 15, 0.1);
+  --shadow-sm: 0 2px 8px rgba(26, 26, 24, 0.06);
+  --shadow-md: 0 12px 34px rgba(26, 26, 24, 0.1);
   --transition-fast: 150ms var(--ease-out);
   --transition-base: 250ms var(--ease-out);
 }

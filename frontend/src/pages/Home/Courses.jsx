@@ -18,7 +18,7 @@ export default function Courses() {
     <section className={styles.section} ref={ref}>
       <FlowCanvas
         palette={VOLT}
-        base="#131118"
+        base="#16161a"
         scrim="15,13,20"
         bloom="120,116,255"
         opacity={0.5}

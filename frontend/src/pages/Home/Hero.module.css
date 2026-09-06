@@ -24,30 +24,31 @@
   display: block;
 }
 
-/* warm gradient + a light band drifting through the letters */
+/* warm gradient; the light band tracks the cursor (--bp) + a faint idle drift (--bpi) */
+.title {
+  --bp: 45%;
+  --bpi: 0%;
+}
 .w {
   display: inline-block;
   will-change: transform, opacity, filter;
   background: linear-gradient(
     100deg,
-    #17150f 0%,
-    #17150f 30%,
+    #1a1a18 0%,
+    #1a1a18 30%,
     #cf6f49 42%,
     #a6421f 50%,
     #cf6f49 58%,
-    #17150f 70%,
-    #17150f 100%
+    #1a1a18 70%,
+    #1a1a18 100%
   );
   background-size: 260% 100%;
+  background-position: calc(var(--bp) + var(--bpi)) 0;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  animation: shimmer 8s linear infinite;
-}
-@keyframes shimmer {
-  from { background-position: 130% 0; }
-  to { background-position: -30% 0; }
+  transition: background-position 0.1s linear;
 }
 
 .ital {

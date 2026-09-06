@@ -1,6 +1,6 @@
 .section {
   position: relative;
-  background: #131118;
+  background: #16161a;
   color: var(--on-void);
   padding-bottom: clamp(4rem, 9vw, 7rem);
   isolation: isolate;

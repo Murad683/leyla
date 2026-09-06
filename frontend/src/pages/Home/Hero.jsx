@@ -21,7 +21,6 @@ export default function Hero() {
     }
 
     const ctx = gsap.context(() => {
-      // reveal: blur -> clear, rising, staggered
       gsap.from(words, {
         opacity: 0,
         y: 26,
@@ -45,24 +44,46 @@ export default function Hero() {
         });
       });
 
-      // soft parallax toward the cursor
+      // headline reacts to the cursor: gradient band + soft parallax
+      const bp = { v: 45 };
+      const setBp = () =>
+        title.current.style.setProperty("--bp", bp.v.toFixed(1) + "%");
+      setBp();
+      const qbp = gsap.quickTo(bp, "v", { duration: 0.8, ease: "power2", onUpdate: setBp });
       const qx = gsap.quickTo(title.current, "x", { duration: 0.9, ease: "power3" });
       const qy = gsap.quickTo(title.current, "y", { duration: 0.9, ease: "power3" });
+
+      // faint idle drift so it breathes when the mouse is still
+      let idle = 0;
+      const idleTick = () => {
+        idle += 0.006;
+        title.current.style.setProperty(
+          "--bpi",
+          (Math.sin(idle) * 8).toFixed(1) + "%"
+        );
+        raf = requestAnimationFrame(idleTick);
+      };
+      let raf = requestAnimationFrame(idleTick);
+
       const onMove = (e) => {
-        const cx = (e.clientX / window.innerWidth - 0.5) * 14;
-        const cy = (e.clientY / window.innerHeight - 0.5) * 12;
-        qx(cx);
-        qy(cy);
+        const nx = e.clientX / window.innerWidth;
+        const ny = e.clientY / window.innerHeight;
+        qbp(nx * 210 - 45); // warm band pooled under the cursor
+        qx((nx - 0.5) * 14);
+        qy((ny - 0.5) * 12);
       };
       window.addEventListener("mousemove", onMove);
-      return () => window.removeEventListener("mousemove", onMove);
+      return () => {
+        window.removeEventListener("mousemove", onMove);
+        cancelAnimationFrame(raf);
+      };
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
     <section className={styles.hero} ref={root}>
-      <FlowField line="23,21,15" fade="244,241,233" />
+      <FlowField />
 
       <h1 className={styles.title} ref={title}>
         <span className={styles.line}>

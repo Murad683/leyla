@@ -4,13 +4,15 @@ import styles from "./FlowField.module.css";
 /**
  * A living "contour drawing": particles ride a slowly evolving flow
  * field and leave fading trails, so the whole surface reads as ink
- * lines drifting like wind currents. The cursor adds a soft vortex.
+ * lines drifting like wind currents. Near the cursor the flow bends
+ * into a visible swirl and the lines pick up the accent colour.
  * Always moving; cheap; pauses offscreen; skipped for reduced motion.
  */
 export default function FlowField({
-  line = "23,21,15",
-  fade = "244,241,233",
-  count = 900,
+  line = "26,26,24",
+  accent = "184,69,43",
+  fade = "247,246,244",
+  count = 1500,
 }) {
   const host = useRef(null);
   const canvas = useRef(null);
@@ -28,9 +30,10 @@ export default function FlowField({
     let raf = 0;
     let running = true;
     let parts = [];
-    const mouse = { x: -9999, y: -9999 };
+    const mouse = { x: -9999, y: -9999, on: false };
+    const R = 240;
 
-    const field = (x, y, t) =>
+    const fieldAngle = (x, y, t) =>
       Math.sin(x * 0.0016 + t * 0.00016) * 1.5 +
       Math.cos(y * 0.0019 - t * 0.00012) * 1.4 +
       Math.sin((x + y) * 0.0011 + t * 0.00026) * 0.9;
@@ -38,7 +41,7 @@ export default function FlowField({
     const spawn = () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      life: 60 + Math.random() * 160,
+      life: 50 + Math.random() * 150,
     });
 
     const build = () => {
@@ -53,7 +56,7 @@ export default function FlowField({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.fillStyle = `rgb(${fade})`;
       ctx.fillRect(0, 0, W, H);
-      const n = Math.round(count * Math.min(1.4, (W * H) / (1440 * 900)));
+      const n = Math.round(count * Math.min(1.5, (W * H) / (1440 * 900)));
       parts = Array.from({ length: n }, spawn);
     };
 
@@ -61,59 +64,70 @@ export default function FlowField({
       raf = requestAnimationFrame(frame);
       if (!running) return;
 
-      // gentle fade of the previous frame -> trails
-      ctx.fillStyle = `rgba(${fade},0.055)`;
+      ctx.fillStyle = `rgba(${fade},0.038)`;
       ctx.fillRect(0, 0, W, H);
+      ctx.lineWidth = 1.1;
 
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = `rgba(${line},0.06)`;
+      // base pass
+      ctx.strokeStyle = `rgba(${line},0.11)`;
       ctx.beginPath();
-
+      const near = [];
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i];
-        const a = field(p.x, p.y, t);
-        let vx = Math.cos(a) * 1.1;
-        let vy = Math.sin(a) * 1.1;
+        const a = fieldAngle(p.x, p.y, t);
+        let vx = Math.cos(a) * 1.15;
+        let vy = Math.sin(a) * 1.15;
 
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
         const d2 = dx * dx + dy * dy;
-        if (d2 < 190 * 190) {
+        let inZone = false;
+        if (mouse.on && d2 < R * R) {
           const d = Math.sqrt(d2) || 1;
-          const k = (1 - d / 190) * 2.4;
-          vx += (-dy / d) * k + (dx / d) * k * 0.35;
-          vy += (dx / d) * k + (dy / d) * k * 0.35;
+          const k = (1 - d / R) ** 1.4 * 5.5;
+          // strong rotation + gentle outward push -> visible vortex
+          vx += (-dy / d) * k + (dx / d) * k * 0.22;
+          vy += (dx / d) * k + (dy / d) * k * 0.22;
+          inZone = d < R * 0.82;
         }
 
         const nx = p.x + vx;
         const ny = p.y + vy;
-        ctx.moveTo(p.x, p.y);
-        ctx.lineTo(nx, ny);
+        if (inZone) {
+          near.push(p.x, p.y, nx, ny);
+        } else {
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(nx, ny);
+        }
         p.x = nx;
         p.y = ny;
         p.life -= 1;
-
-        if (
-          p.life <= 0 ||
-          p.x < -20 ||
-          p.x > W + 20 ||
-          p.y < -20 ||
-          p.y > H + 20
-        ) {
+        if (p.life <= 0 || p.x < -20 || p.x > W + 20 || p.y < -20 || p.y > H + 20) {
           Object.assign(p, spawn());
         }
       }
       ctx.stroke();
+
+      // accent pass for the swirl around the cursor
+      if (near.length) {
+        ctx.strokeStyle = `rgba(${accent},0.4)`;
+        ctx.beginPath();
+        for (let i = 0; i < near.length; i += 4) {
+          ctx.moveTo(near[i], near[i + 1]);
+          ctx.lineTo(near[i + 2], near[i + 3]);
+        }
+        ctx.stroke();
+      }
     };
 
     const onMove = (e) => {
       const r = cv.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
       mouse.y = e.clientY - r.top;
+      mouse.on = true;
     };
     const onLeave = () => {
-      mouse.x = -9999;
-      mouse.y = -9999;
+      mouse.on = false;
     };
     let rt;
     const onResize = () => {
@@ -139,7 +153,7 @@ export default function FlowField({
       window.removeEventListener("mouseout", onLeave);
       window.removeEventListener("resize", onResize);
     };
-  }, [line, fade, count]);
+  }, [line, accent, fade, count]);
 
   return (
     <div className={styles.host} ref={host} aria-hidden="true">

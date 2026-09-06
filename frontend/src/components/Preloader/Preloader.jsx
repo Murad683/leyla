@@ -18,30 +18,42 @@ export default function Preloader({ onDone }) {
       onDone?.();
     };
 
+    const failsafe = setTimeout(finish, 3500);
+
     if (reduce) {
       setN(100);
       const id = setTimeout(finish, 200);
-      return () => clearTimeout(id);
+      return () => {
+        clearTimeout(id);
+        clearTimeout(failsafe);
+      };
     }
-
-    // Failsafe: if rAF is throttled (backgrounded tab) the timeline can stall.
-    // Never trap the user behind the curtain.
-    const failsafe = setTimeout(finish, 3500);
 
     const obj = { v: 0 };
     const tl = gsap.timeline({ onComplete: finish });
-    tl.to(obj, {
-      v: 100,
-      duration: 1.5,
-      ease: "power2.inOut",
-      onUpdate: () => setN(Math.round(obj.v)),
+    tl.from(`.${styles.name} span`, {
+      yPercent: 120,
+      duration: 0.7,
+      ease: "power3.out",
+      stagger: 0.03,
     })
-      .to(`.${styles.count}`, { opacity: 0, duration: 0.3 }, "+=0.15")
       .to(
-        `.${styles.bar}`,
-        { scaleY: 0, transformOrigin: "top", duration: 0.7, stagger: 0.06, ease: "power3.inOut" },
-        "-=0.1"
+        obj,
+        {
+          v: 100,
+          duration: 1.5,
+          ease: "power2.inOut",
+          onUpdate: () => setN(Math.round(obj.v)),
+        },
+        0.1
       )
+      .to(`.${styles.line}`, { scaleX: 1, duration: 1.5, ease: "power2.inOut" }, 0.1)
+      .to(`.${styles.inner}`, { opacity: 0, duration: 0.3 }, "+=0.15")
+      .to(root.current, {
+        yPercent: -100,
+        duration: 0.8,
+        ease: "power4.inOut",
+      })
       .set(root.current, { display: "none" });
 
     return () => {
@@ -50,18 +62,20 @@ export default function Preloader({ onDone }) {
     };
   }, [onDone]);
 
+  const NAME = "Leyla Məmmədli";
+
   return (
     <div className={styles.root} ref={root} aria-hidden="true">
-      <div className={styles.bars}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <span key={i} className={styles.bar} />
-        ))}
-      </div>
       <div className={styles.inner}>
-        <span className={styles.brand}>Leyla Məmmədli</span>
-        <span className={styles.count}>
+        <div className={styles.name}>
+          {NAME.split("").map((ch, i) => (
+            <span key={i}>{ch === " " ? " " : ch}</span>
+          ))}
+        </div>
+        <div className={styles.line} />
+        <div className={styles.count}>
           {String(n).padStart(3, "0")} <i>/ 100</i>
-        </span>
+        </div>
       </div>
     </div>
   );
