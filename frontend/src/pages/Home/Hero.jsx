@@ -45,22 +45,22 @@ export default function Hero() {
       });
 
       // headline reacts to the cursor: gradient band + soft parallax
+      const el = title.current;
       const bp = { v: 45 };
-      const setBp = () =>
-        title.current.style.setProperty("--bp", bp.v.toFixed(1) + "%");
+      const setBp = () => {
+        if (el && el.isConnected) el.style.setProperty("--bp", bp.v.toFixed(1) + "%");
+      };
       setBp();
       const qbp = gsap.quickTo(bp, "v", { duration: 0.8, ease: "power2", onUpdate: setBp });
-      const qx = gsap.quickTo(title.current, "x", { duration: 0.9, ease: "power3" });
-      const qy = gsap.quickTo(title.current, "y", { duration: 0.9, ease: "power3" });
+      const qx = gsap.quickTo(el, "x", { duration: 0.9, ease: "power3" });
+      const qy = gsap.quickTo(el, "y", { duration: 0.9, ease: "power3" });
 
       // faint idle drift so it breathes when the mouse is still
       let idle = 0;
       const idleTick = () => {
+        if (el && el.isConnected)
+          el.style.setProperty("--bpi", (Math.sin(idle) * 8).toFixed(1) + "%");
         idle += 0.006;
-        title.current.style.setProperty(
-          "--bpi",
-          (Math.sin(idle) * 8).toFixed(1) + "%"
-        );
         raf = requestAnimationFrame(idleTick);
       };
       let raf = requestAnimationFrame(idleTick);
