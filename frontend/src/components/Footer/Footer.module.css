@@ -1,0 +1,87 @@
+.foot {
+  background: var(--void);
+  color: var(--on-void);
+  padding-block: clamp(4rem, 9vw, 8rem) 2.5rem;
+}
+
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3rem, 7vw, 6rem);
+}
+
+.cue {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-void-soft);
+  margin-bottom: 1.4rem;
+}
+
+.big {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-4);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  max-width: 16ch;
+}
+.italic {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.mail {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 1.05rem;
+  border-bottom: 1px solid var(--void-rule);
+  padding-bottom: 0.3rem;
+  transition: border-color var(--dur-fast) var(--ease-out),
+    color var(--dur-fast) var(--ease-out);
+}
+.mail:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  border-top: 1px solid var(--void-rule);
+  padding-top: 3rem;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-size: 0.92rem;
+  color: var(--on-void-soft);
+}
+.col a:hover {
+  color: var(--on-void);
+}
+.col :global(.mono) {
+  color: var(--on-void);
+  margin-bottom: 0.5rem;
+}
+
+.base {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--void-rule);
+  padding-top: 2rem;
+  font-size: 0.8rem;
+  color: var(--on-void-soft);
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

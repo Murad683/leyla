@@ -1,0 +1,36 @@
+.wrap {
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--nav-h) + 4rem) 6rem;
+}
+.h {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-4);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 1.6rem 0 1.2rem;
+  max-width: 20ch;
+}
+.ital {
+  font-style: italic;
+  color: var(--accent);
+}
+.p {
+  color: var(--ink-soft);
+  max-width: 46ch;
+  font-size: var(--step-1);
+}
+.back {
+  display: inline-block;
+  margin-top: 2.4rem;
+  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0.3rem;
+  transition: color var(--dur-fast) var(--ease-out),
+    border-color var(--dur-fast) var(--ease-out);
+}
+.back:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}

@@ -1,60 +1,46 @@
-/* Gilroy's capital Ə (U+018F) glyph is malformed/missing across weights.
-   unicode-range excludes it from every face so the browser falls back to
-   the next font in the stack for just that character, matching the
-   surrounding weight far more closely than letting one weight (e.g. Heavy)
-   render it via a mismatched synthetic-bold fallback. */
+/* Gilroy — self-hosted geometric sans (body / UI).
+   Display serif (Fraunces) and mono (JetBrains Mono) load from
+   Google Fonts via index.html.
+   Gilroy's capital Ə (U+018F) glyph is malformed, so unicode-range
+   excludes it and the browser falls back for that one character. */
+
 @font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Light.otf') format('opentype');
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Light.otf") format("opentype");
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
   unicode-range: U+0000-018E, U+0190-10FFFF;
 }
-
 @font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Regular.otf') format('opentype');
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
   unicode-range: U+0000-018E, U+0190-10FFFF;
 }
-
 @font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Medium.otf') format('opentype');
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Medium.otf") format("opentype");
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
   unicode-range: U+0000-018E, U+0190-10FFFF;
 }
-
 @font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Semibold.otf') format('opentype');
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Semibold.otf") format("opentype");
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
   unicode-range: U+0000-018E, U+0190-10FFFF;
 }
-
 @font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Bold.otf') format('opentype');
+  font-family: "Gilroy";
+  src: url("../fonts/Gilroy-Bold.otf") format("opentype");
   font-weight: 700;
   font-style: normal;
-  unicode-range: U+0000-018E, U+0190-10FFFF;
-}
-
-@font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Extrabold.otf') format('opentype');
-  font-weight: 800;
-  font-style: normal;
-  unicode-range: U+0000-018E, U+0190-10FFFF;
-}
-
-@font-face {
-  font-family: 'Gilroy';
-  src: url('../fonts/Gilroy-Heavy.otf') format('opentype');
-  font-weight: 900;
-  font-style: normal;
+  font-display: swap;
   unicode-range: U+0000-018E, U+0190-10FFFF;
 }

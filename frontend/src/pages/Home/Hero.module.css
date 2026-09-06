@@ -1,0 +1,87 @@
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: flex-end;
+  padding-block: calc(var(--nav-h) + 3rem) clamp(3rem, 8vw, 7rem);
+  overflow: hidden;
+}
+
+/* soft warm light pooling toward the upper-left, like paper under a lamp */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 50% at 18% 12%, rgba(255, 252, 244, 0.9), transparent 70%),
+    radial-gradient(80% 60% at 90% 100%, rgba(184, 69, 43, 0.06), transparent 70%);
+  pointer-events: none;
+}
+
+.inner {
+  position: relative;
+  width: 100%;
+}
+
+.meta {
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-6);
+  line-height: 0.98;
+  letter-spacing: -0.025em;
+  margin-bottom: clamp(1.6rem, 4vw, 2.6rem);
+}
+
+.word {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+}
+.word > span {
+  display: inline-block;
+}
+
+.ital {
+  font-style: italic;
+  color: var(--accent);
+}
+
+.lead {
+  font-size: var(--step-1);
+}
+
+.cue {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+.line {
+  width: 46px;
+  height: 1px;
+  background: var(--rule-strong);
+  position: relative;
+  overflow: hidden;
+}
+.line::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  transform: translateX(-100%);
+  animation: sweep 2.4s var(--ease-io) infinite;
+}
+@keyframes sweep {
+  0% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+  100% { transform: translateX(100%); }
+}

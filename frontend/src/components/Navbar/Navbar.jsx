@@ -1,0 +1,95 @@
+import { useEffect, useState } from "react";
+import { NavLink, Link } from "react-router-dom";
+import styles from "./Navbar.module.css";
+
+const LINKS = [
+  { to: "/xidmetler", label: "Xidmətlər" },
+  { to: "/kurslar", label: "Kurslar" },
+  { to: "/portfolio", label: "Portfolio" },
+  { to: "/elaqe", label: "Əlaqə" },
+];
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  return (
+    <header className={`${styles.bar} ${scrolled ? styles.scrolled : ""}`}>
+      <div className={`${styles.inner} shell`}>
+        <Link to="/" className={styles.brand} onClick={() => setOpen(false)}>
+          Leyla Məmmədli
+          <span className={styles.brandMark}>SMM</span>
+        </Link>
+
+        <nav className={styles.nav}>
+          {LINKS.map((l) => (
+            <NavLink
+              key={l.to}
+              to={l.to}
+              className={({ isActive }) =>
+                `${styles.link} ${isActive ? styles.linkActive : ""}`
+              }
+            >
+              {l.label}
+            </NavLink>
+          ))}
+        </nav>
+
+        <a
+          href="https://www.instagram.com/leiylamammadly/"
+          target="_blank"
+          rel="noreferrer"
+          className={styles.cta}
+        >
+          İş birliyi
+        </a>
+
+        <button
+          className={styles.burger}
+          onClick={() => setOpen((v) => !v)}
+          aria-label={open ? "Bağla" : "Menyu"}
+          aria-expanded={open}
+        >
+          <span className={open ? styles.burgerOpen : ""} />
+          <span className={open ? styles.burgerOpen : ""} />
+        </button>
+      </div>
+
+      <div className={`${styles.sheet} ${open ? styles.sheetOpen : ""}`}>
+        {LINKS.map((l) => (
+          <NavLink
+            key={l.to}
+            to={l.to}
+            className={styles.sheetLink}
+            onClick={() => setOpen(false)}
+          >
+            {l.label}
+          </NavLink>
+        ))}
+        <a
+          href="https://www.instagram.com/leiylamammadly/"
+          target="_blank"
+          rel="noreferrer"
+          className={styles.sheetLink}
+          onClick={() => setOpen(false)}
+        >
+          Instagram
+        </a>
+      </div>
+    </header>
+  );
+}

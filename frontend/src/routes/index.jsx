@@ -1,71 +1,92 @@
-import React, { Suspense, lazy } from 'react';
-import { createBrowserRouter, Navigate } from 'react-router-dom';
-import PageLayout from '../components/layout/PageLayout';
-import PageTransition from '../components/layout/PageTransition';
-import Spinner from '../components/ui/Spinner';
-import ProtectedRoute from '../components/admin/ProtectedRoute';
+import { Suspense, lazy } from "react";
+import { createBrowserRouter, Navigate } from "react-router-dom";
+import SiteLayout from "../components/SiteLayout/SiteLayout";
+import Home from "../pages/Home/Home";
+import Placeholder from "../pages/Placeholder/Placeholder";
+import ProtectedRoute from "../components/admin/ProtectedRoute";
 
-const Home = lazy(() => import('../pages/Home/Home'));
-const Services = lazy(() => import('../pages/Services/Services'));
-const Portfolio = lazy(() => import('../pages/Portfolio/Portfolio'));
-const PortfolioDetail = lazy(() => import('../pages/PortfolioDetail/PortfolioDetail'));
-const Blog = lazy(() => import('../pages/Blog/Blog'));
-const BlogDetail = lazy(() => import('../pages/BlogDetail/BlogDetail'));
-const About = lazy(() => import('../pages/About/About'));
-const Contact = lazy(() => import('../pages/Contact/Contact'));
-const NotFound = lazy(() => import('../pages/NotFound/NotFound'));
+/* ---- Admin (unchanged, lazy) ---- */
+const AdminLogin = lazy(() => import("../pages/Admin/Login/Login"));
+const AdminLayout = lazy(() => import("../pages/Admin/AdminLayout/AdminLayout"));
+const AdminDashboard = lazy(() => import("../pages/Admin/Dashboard/Dashboard"));
+const AdminSettings = lazy(() => import("../pages/Admin/Settings/Settings"));
+const AdminHero = lazy(() => import("../pages/Admin/Hero/Hero"));
+const AdminAbout = lazy(() => import("../pages/Admin/About/About"));
+const AdminServices = lazy(() => import("../pages/Admin/Services/Services"));
+const AdminPortfolio = lazy(() => import("../pages/Admin/Portfolio/Portfolio"));
+const AdminBlog = lazy(() => import("../pages/Admin/Blog/Blog"));
 
-// Admin Pages
-const AdminLogin = lazy(() => import('../pages/Admin/Login/Login'));
-const AdminLayout = lazy(() => import('../pages/Admin/AdminLayout/AdminLayout'));
-const AdminDashboard = lazy(() => import('../pages/Admin/Dashboard/Dashboard'));
-const AdminSettings = lazy(() => import('../pages/Admin/Settings/Settings'));
-const AdminHero = lazy(() => import('../pages/Admin/Hero/Hero'));
-const AdminAbout = lazy(() => import('../pages/Admin/About/About'));
-const AdminServices = lazy(() => import('../pages/Admin/Services/Services'));
-const AdminPortfolio = lazy(() => import('../pages/Admin/Portfolio/Portfolio'));
-const AdminBlog = lazy(() => import('../pages/Admin/Blog/Blog'));
-
-const SuspenseWrapper = ({ children }) => (
-  <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}><Spinner /></div>}>
-    {children}
-  </Suspense>
+const Fallback = () => (
+  <div style={{ minHeight: "60vh", display: "grid", placeItems: "center" }}>
+    <span className="mono">Yüklənir…</span>
+  </div>
 );
+
+const S = ({ children }) => <Suspense fallback={<Fallback />}>{children}</Suspense>;
 
 const router = createBrowserRouter([
   {
-    path: '/',
-    element: <PageLayout />,
+    path: "/",
+    element: <SiteLayout />,
     children: [
-      { index: true, element: <SuspenseWrapper><PageTransition><Home /></PageTransition></SuspenseWrapper> },
-      { path: 'services', element: <SuspenseWrapper><PageTransition><Services /></PageTransition></SuspenseWrapper> },
-      { path: 'portfolio', element: <SuspenseWrapper><PageTransition><Portfolio /></PageTransition></SuspenseWrapper> },
-      { path: 'portfolio/:slug', element: <SuspenseWrapper><PageTransition><PortfolioDetail /></PageTransition></SuspenseWrapper> },
-      { path: 'blog', element: <SuspenseWrapper><PageTransition><Blog /></PageTransition></SuspenseWrapper> },
-      { path: 'blog/:slug', element: <SuspenseWrapper><PageTransition><BlogDetail /></PageTransition></SuspenseWrapper> },
-      { path: 'about', element: <SuspenseWrapper><PageTransition><About /></PageTransition></SuspenseWrapper> },
-      { path: 'contact', element: <SuspenseWrapper><PageTransition><Contact /></PageTransition></SuspenseWrapper> },
-      { path: '*', element: <SuspenseWrapper><PageTransition><NotFound /></PageTransition></SuspenseWrapper> },
+      { index: true, element: <Home /> },
+      {
+        path: "xidmetler",
+        element: <Placeholder index="01" title="Xidmətlər" />,
+      },
+      {
+        path: "kurslar",
+        element: <Placeholder index="02" title="Kurslar" />,
+      },
+      {
+        path: "portfolio",
+        element: <Placeholder index="03" title="Portfolio" />,
+      },
+      {
+        path: "elaqe",
+        element: <Placeholder index="04" title="Əlaqə" />,
+      },
+      {
+        path: "*",
+        element: (
+          <Placeholder
+            index="404"
+            title="Tapılmadı"
+            note="Axtardığınız səhifə mövcud deyil."
+          />
+        ),
+      },
     ],
   },
+
   {
-    path: '/admin/login',
-    element: <SuspenseWrapper><AdminLogin /></SuspenseWrapper>
+    path: "/admin/login",
+    element: (
+      <S>
+        <AdminLogin />
+      </S>
+    ),
   },
   {
-    path: '/admin',
-    element: <ProtectedRoute><AdminLayout /></ProtectedRoute>,
+    path: "/admin",
+    element: (
+      <ProtectedRoute>
+        <S>
+          <AdminLayout />
+        </S>
+      </ProtectedRoute>
+    ),
     children: [
       { index: true, element: <Navigate to="/admin/dashboard" replace /> },
-      { path: 'dashboard', element: <SuspenseWrapper><AdminDashboard /></SuspenseWrapper> },
-      { path: 'settings', element: <SuspenseWrapper><AdminSettings /></SuspenseWrapper> },
-      { path: 'hero', element: <SuspenseWrapper><AdminHero /></SuspenseWrapper> },
-      { path: 'about', element: <SuspenseWrapper><AdminAbout /></SuspenseWrapper> },
-      { path: 'services', element: <SuspenseWrapper><AdminServices /></SuspenseWrapper> },
-      { path: 'portfolio', element: <SuspenseWrapper><AdminPortfolio /></SuspenseWrapper> },
-      { path: 'blog', element: <SuspenseWrapper><AdminBlog /></SuspenseWrapper> },
-    ]
-  }
+      { path: "dashboard", element: <S><AdminDashboard /></S> },
+      { path: "settings", element: <S><AdminSettings /></S> },
+      { path: "hero", element: <S><AdminHero /></S> },
+      { path: "about", element: <S><AdminAbout /></S> },
+      { path: "services", element: <S><AdminServices /></S> },
+      { path: "portfolio", element: <S><AdminPortfolio /></S> },
+      { path: "blog", element: <S><AdminBlog /></S> },
+    ],
+  },
 ]);
 
 export default router;
