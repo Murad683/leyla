@@ -2,18 +2,16 @@ const prisma = require('../config/prisma');
 
 const getPortfolioItems = async (req, res, next) => {
   try {
-    const category = req.query.category || undefined;
     const featured = req.query.featured === 'true' ? true : undefined;
 
     const where = {
       isPublished: true,
-      ...(category && { category }),
       ...(featured !== undefined && { featured })
     };
 
     const items = await prisma.portfolioItem.findMany({
       where,
-      orderBy: { createdAt: 'desc' }
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }]
     });
 
     res.json({ success: true, data: { items } });

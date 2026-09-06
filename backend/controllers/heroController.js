@@ -3,6 +3,7 @@ const prisma = require('../config/prisma');
 const mapHero = (hero) => ({
   id: hero.id,
   title: hero.title || '',
+  accentText: hero.accentText || '',
   description: hero.description || '',
 
   // Database fields (used by public homepage Hero.jsx)
@@ -39,11 +40,12 @@ const getHero = async (req, res, next) => {
 
 const updateHero = async (req, res, next) => {
   try {
-    const { title, badge, description, primaryBtnText, primaryBtnUrl, bgImage, videoUrl, secondaryBtnText, secondaryBtnUrl } = req.body;
+    const { title, accentText, badge, description, primaryBtnText, primaryBtnUrl, bgImage, videoUrl, secondaryBtnText, secondaryBtnUrl } = req.body;
 
     // Map incoming frontend fields to the database fields
     const mappedData = {
       title: title || '',
+      accentText: accentText || '',
       subtitle: badge || '',
       description: description || '',
       ctaLabel: primaryBtnText || '',

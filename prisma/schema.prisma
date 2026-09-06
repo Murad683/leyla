@@ -69,6 +69,9 @@ model PortfolioItem {
   tools       String[]
   ctaLabel    String?
   ctaHref     String?
+  tint            String?
+  resultHeadline  String?
+  sortOrder       Int      @default(0)
   isPublished Boolean  @default(true)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -92,6 +95,7 @@ model SiteSettings {
 model HeroSection {
   id                Int      @id @default(1)
   title             String
+  accentText        String?
   subtitle          String?
   description       String?
   backgroundImage   String?
@@ -136,6 +140,8 @@ model ServiceItem {
   title       String
   description String
   features    String[]
+  outcome     String?
+  sortOrder   Int      @default(0)
   ctaLabel    String?
   ctaHref     String?
   createdAt   DateTime @default(now())

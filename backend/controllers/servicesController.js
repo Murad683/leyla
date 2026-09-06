@@ -2,7 +2,9 @@ const prisma = require('../config/prisma');
 
 const getServices = async (req, res, next) => {
   try {
-    const services = await prisma.serviceItem.findMany();
+    const services = await prisma.serviceItem.findMany({
+      orderBy: [{ sortOrder: 'asc' }, { id: 'asc' }],
+    });
     res.json({ success: true, data: services });
   } catch (error) {
     next(error);
