@@ -12,7 +12,7 @@ export default function FlowField({
   line = "26,26,24",
   accent = "184,69,43",
   fade = "247,246,244",
-  count = 1500,
+  count = 1100,
 }) {
   const host = useRef(null);
   const canvas = useRef(null);
@@ -34,14 +34,14 @@ export default function FlowField({
     const R = 240;
 
     const fieldAngle = (x, y, t) =>
-      Math.sin(x * 0.0016 + t * 0.00016) * 1.5 +
-      Math.cos(y * 0.0019 - t * 0.00012) * 1.4 +
-      Math.sin((x + y) * 0.0011 + t * 0.00026) * 0.9;
+      Math.sin(x * 0.0016 + t * 0.00009) * 1.5 +
+      Math.cos(y * 0.0019 - t * 0.00007) * 1.4 +
+      Math.sin((x + y) * 0.0011 + t * 0.00014) * 0.9;
 
     const spawn = () => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      life: 50 + Math.random() * 150,
+      life: 120 + Math.random() * 240,
     });
 
     const build = () => {
@@ -64,19 +64,19 @@ export default function FlowField({
       raf = requestAnimationFrame(frame);
       if (!running) return;
 
-      ctx.fillStyle = `rgba(${fade},0.038)`;
+      ctx.fillStyle = `rgba(${fade},0.045)`;
       ctx.fillRect(0, 0, W, H);
-      ctx.lineWidth = 1.1;
+      ctx.lineWidth = 1;
 
       // base pass
-      ctx.strokeStyle = `rgba(${line},0.11)`;
+      ctx.strokeStyle = `rgba(${line},0.09)`;
       ctx.beginPath();
       const near = [];
       for (let i = 0; i < parts.length; i++) {
         const p = parts[i];
         const a = fieldAngle(p.x, p.y, t);
-        let vx = Math.cos(a) * 1.15;
-        let vy = Math.sin(a) * 1.15;
+        let vx = Math.cos(a) * 0.62;
+        let vy = Math.sin(a) * 0.62;
 
         const dx = p.x - mouse.x;
         const dy = p.y - mouse.y;
@@ -84,7 +84,7 @@ export default function FlowField({
         let inZone = false;
         if (mouse.on && d2 < R * R) {
           const d = Math.sqrt(d2) || 1;
-          const k = (1 - d / R) ** 1.4 * 5.5;
+          const k = (1 - d / R) ** 1.4 * 3;
           // strong rotation + gentle outward push -> visible vortex
           vx += (-dy / d) * k + (dx / d) * k * 0.22;
           vy += (dx / d) * k + (dy / d) * k * 0.22;

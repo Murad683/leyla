@@ -45,7 +45,6 @@ export default function Navbar() {
       <div className={`${styles.inner} shell`}>
         <Link to="/" className={styles.brand} onClick={() => setOpen(false)}>
           Leyla Məmmədli
-          <span className={styles.brandMark}>SMM</span>
         </Link>
 
         <nav className={styles.nav}>

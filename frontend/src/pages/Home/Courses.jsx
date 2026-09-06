@@ -3,7 +3,7 @@ import Marquee from "../../components/Marquee/Marquee";
 import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
 import styles from "./Courses.module.css";
 
-const VOLT = ["47,43,255", "92,84,214", "58,34,120", "150,58,40"];
+const WARM = ["244,201,120", "214,120,58", "205,162,120"];
 
 const COURSES = [
   { t: "SMM Sistemi", d: "Sıfırdan strategiya, kontent və satış qıfı. 6 həftə, canlı." },
@@ -17,26 +17,25 @@ export default function Courses() {
   return (
     <section className={styles.section} ref={ref}>
       <FlowCanvas
-        palette={VOLT}
-        base="#16161a"
-        scrim="15,13,20"
-        bloom="120,116,255"
-        opacity={0.5}
-        scrimStrength={0.66}
-        blend="screen"
+        palette={WARM}
+        base="#f4f2ee"
+        scrim="247,246,244"
+        bloom="255,244,214"
+        opacity={0.4}
+        scrimStrength={0.62}
+        blend="multiply"
       />
 
       <Marquee
         items={["Kurslar", "Canlı dərslər", "Praktiki tapşırıq", "İcma", "Sertifikat"]}
         speed={24}
-        light
       />
 
       <div className={`${styles.inner} shell`}>
         <div className={styles.top}>
           <span className={`mono ${styles.cue} reveal`}>05 — Kurslar</span>
           <h2 className={`${styles.headline} reveal`}>
-            Öyrən, tətbiq et, <span className={styles.volt}>satışa çevir</span>.
+            Öyrən, tətbiq et, <span className={styles.accent}>satışa çevir</span>.
           </h2>
           <p className={`${styles.sub} reveal`}>
             Nəzəriyyə yox — hər dərsdən sonra hesabında tətbiq edəcəyin addım.
@@ -57,9 +56,7 @@ export default function Courses() {
         </ul>
 
         <div className={`${styles.ctaRow} reveal`}>
-          <p className={styles.ctaText}>
-            Növbəti axın üçün qeydiyyat açıqdır.
-          </p>
+          <p className={styles.ctaText}>Növbəti axın üçün qeydiyyat açıqdır.</p>
           <a
             href="https://www.instagram.com/leiylamammadly/"
             target="_blank"
