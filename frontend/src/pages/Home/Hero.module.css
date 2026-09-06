@@ -10,16 +10,19 @@
   left: 0;
   right: 0;
   z-index: 2;
+  display: flex;
+  justify-content: center;
 }
 
 .tag {
   display: inline-block;
 }
 
-/* bare animated hairline, bottom-left — the only scroll affordance */
+/* animated hairline, bottom-centre */
 .cue {
   position: absolute;
-  left: var(--gutter);
+  left: 50%;
+  transform: translateX(-50%);
   bottom: clamp(1.5rem, 5vh, 3rem);
   z-index: 2;
   width: 1px;

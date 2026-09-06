@@ -14,27 +14,6 @@
   pointer-events: auto;
 }
 
-/* invisible in-flow text box the canvas headline aligns to */
-.anchor {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-}
-.anchorInner {
-  display: block;
-  visibility: hidden;
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: clamp(2rem, 9vw, 118px);
-  line-height: 1.04;
-  letter-spacing: -0.03em;
-  max-width: 92%;
-}
-.anchorLine {
-  display: block;
-}
-
 /* real heading for assistive tech + SEO */
 .sr {
   position: absolute;
@@ -53,10 +32,11 @@
     position: relative;
     display: flex;
     align-items: center;
-    min-height: 60vh;
+    justify-content: center;
+    min-height: 62vh;
+    text-align: center;
   }
-  .canvas,
-  .anchor {
+  .canvas {
     display: none;
   }
   .sr {
@@ -67,10 +47,11 @@
     clip: auto;
     overflow: visible;
     white-space: normal;
+    max-width: 18ch;
     font-family: var(--font-display);
     font-weight: 300;
-    font-size: clamp(2rem, 9vw, 118px);
-    line-height: 1.04;
+    font-size: clamp(2rem, 8vw, 112px);
+    line-height: 1.06;
     letter-spacing: -0.03em;
     color: var(--ink);
   }

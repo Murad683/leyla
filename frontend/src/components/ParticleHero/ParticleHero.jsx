@@ -2,21 +2,20 @@ import { useEffect, useRef } from "react";
 import styles from "./ParticleHero.module.css";
 
 /**
- * One full-bleed canvas for the hero:
- *  - a faint ambient dot grid across the whole area that ripples near
- *    the cursor
- *  - the headline, sampled from drawn text into dots that assemble on
- *    load, repel from the cursor, and spring home; click sends a wave
+ * Full-bleed hero canvas:
+ *  - a slow, always-moving warm "aurora" (soft colour fields drifting
+ *    on their own; they also lean toward the cursor)
+ *  - the centred headline, sampled from drawn text into dots that
+ *    assemble on load, repel from the cursor and spring home; click
+ *    sends a shockwave
  *
- * The headline is placed over an invisible in-flow `anchor` element so
- * it lines up with the page's text column. A real <h1> stays in the DOM
- * for assistive tech / SEO and replaces the canvas under reduced motion.
+ * A real <h1> stays in the DOM for assistive tech / SEO and replaces
+ * the canvas under reduced motion.
  *
  * lines: [{ text: string, accent?: boolean }]
  */
 export default function ParticleHero({ lines, ariaLabel }) {
   const host = useRef(null);
-  const anchor = useRef(null);
   const canvas = useRef(null);
 
   useEffect(() => {
@@ -24,31 +23,39 @@ export default function ParticleHero({ lines, ariaLabel }) {
     if (reduce) return;
 
     const el = host.current;
-    const an = anchor.current;
     const cv = canvas.current;
     const ctx = cv.getContext("2d");
 
     const INK = "#17150f";
     const ACCENT = "#b8452b";
-    const REPEL_R = 118;
+    const REPEL_R = 116;
     const REPEL_PUSH = 3.4;
     const SPRING = 0.17;
     const DAMP = 0.72;
     const MAX_PARTICLES = 13000;
-    const GRID_GAP = 44;
-    const GRID_R = 165;
 
     let W = 0;
     let H = 0;
     let dpr = 1;
     let heads = [];
-    let grid = [];
     let raf = 0;
     let running = true;
     let startedAt = 0;
     let lastT = 0;
-    const mouse = { x: -9999, y: -9999 };
+    const mouse = { x: -9999, y: -9999, ex: 0.5, ey: 0.5 };
     let shock = null;
+
+    // offscreen aurora, rendered at low res then scaled up (free blur)
+    const aur = document.createElement("canvas");
+    const actx = aur.getContext("2d");
+    const AUR_W = 220;
+    let AUR_H = 130;
+    const blobs = [
+      { c: "247,213,150", x: 0.32, y: 0.5, r: 0.6, sx: 0.00007, sy: 0.00009, px: 0, py: 0 },
+      { c: "217,140,74", x: 0.62, y: 0.42, r: 0.5, sx: 0.00009, sy: 0.00006, px: 1.7, py: 0.5 },
+      { c: "184,69,43", x: 0.7, y: 0.66, r: 0.42, sx: 0.00006, sy: 0.0001, px: 3.1, py: 2.0 },
+      { c: "205,162,120", x: 0.45, y: 0.72, r: 0.46, sx: 0.0001, sy: 0.00007, px: 4.6, py: 1.1 },
+    ];
 
     const measure = (octx, fs) => {
       octx.font = `300 ${fs}px "Fraunces", Georgia, serif`;
@@ -66,39 +73,32 @@ export default function ParticleHero({ lines, ariaLabel }) {
       cv.style.height = `${H}px`;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      // ---- ambient grid ----
-      grid = [];
-      for (let y = GRID_GAP / 2; y < H; y += GRID_GAP) {
-        for (let x = GRID_GAP / 2; x < W; x += GRID_GAP) {
-          grid.push({ hx: x, hy: y, x, y });
-        }
-      }
+      AUR_H = Math.round((AUR_W * H) / W);
+      aur.width = AUR_W;
+      aur.height = AUR_H;
 
-      // ---- headline, positioned over the anchor box ----
-      const ar = an.getBoundingClientRect();
-      const cr = cv.getBoundingClientRect();
-      const originX = ar.left - cr.left;
-      const originY = ar.top - cr.top;
-      const colW = ar.width;
-
+      // headline text -> dot field, centred
       const off = document.createElement("canvas");
       const octx = off.getContext("2d");
+      const colLimit = Math.min(W * 0.9, 1200);
       const wAt100 = measure(octx, 100);
-      let fs = Math.min(118, (colW * 0.96) / (wAt100 / 100));
-      fs = Math.max(28, fs);
-      const lh = fs * 1.04;
+      let fs = Math.min(112, (colLimit * 0.98) / (wAt100 / 100));
+      fs = Math.max(26, fs);
+      const lh = fs * 1.06;
       const blockH = lh * lines.length;
+      const originY = (H - blockH) / 2;
 
-      off.width = colW * dpr;
+      off.width = W * dpr;
       off.height = blockH * dpr;
       octx.scale(dpr, dpr);
       octx.font = `300 ${fs}px "Fraunces", Georgia, serif`;
+      octx.textAlign = "center";
       octx.textBaseline = "top";
       octx.fillStyle = "#000";
       const accentBands = [];
       lines.forEach((l, i) => {
-        const y = i * lh + fs * 0.1;
-        octx.fillText(l.text, 0, y);
+        const y = i * lh + fs * 0.12;
+        octx.fillText(l.text, W / 2, y);
         if (l.accent) accentBands.push([y, y + lh]);
       });
 
@@ -111,17 +111,17 @@ export default function ParticleHero({ lines, ariaLabel }) {
             if (data[(y * off.width + x) * 4 + 3] > 130) {
               const lx = x / dpr;
               const ly = y / dpr;
-              const hx = originX + lx;
+              const hx = lx;
               const hy = originY + ly;
               out.push({
                 hx,
                 hy,
                 x: hx + (Math.random() - 0.5) * 55,
-                y: hy + 24 + Math.random() * 70,
+                y: hy + 22 + Math.random() * 66,
                 vx: 0,
                 vy: 0,
                 accent: accentBands.some((b) => ly >= b[0] && ly <= b[1]),
-                delay: (lx / colW) * 300 + Math.random() * 150,
+                delay: Math.abs(lx - W / 2) * 0.4 + Math.random() * 150,
               });
             }
           }
@@ -138,6 +138,35 @@ export default function ParticleHero({ lines, ariaLabel }) {
       lastT = 0;
     };
 
+    const drawAurora = (t) => {
+      actx.clearRect(0, 0, AUR_W, AUR_H);
+      actx.fillStyle = "#f4f1e9";
+      actx.fillRect(0, 0, AUR_W, AUR_H);
+      actx.globalCompositeOperation = "multiply";
+      mouse.ex += ((mouse.x < 0 ? 0.5 : mouse.x / W) - mouse.ex) * 0.04;
+      mouse.ey += ((mouse.y < 0 ? 0.5 : mouse.y / H) - mouse.ey) * 0.04;
+
+      for (let i = 0; i < blobs.length; i++) {
+        const b = blobs[i];
+        const dx = Math.sin(t * b.sx + b.px) * 0.13;
+        const dy = Math.cos(t * b.sy + b.py) * 0.13;
+        const tx = b.x + dx + (mouse.ex - 0.5) * 0.14;
+        const ty = b.y + dy + (mouse.ey - 0.5) * 0.14;
+        const cx = tx * AUR_W;
+        const cy = ty * AUR_H;
+        const rad = b.r * AUR_W * (0.92 + Math.sin(t * 0.0002 + b.px) * 0.12);
+        const g = actx.createRadialGradient(cx, cy, 0, cx, cy, rad);
+        g.addColorStop(0, `rgba(${b.c},0.55)`);
+        g.addColorStop(0.6, `rgba(${b.c},0.14)`);
+        g.addColorStop(1, `rgba(${b.c},0)`);
+        actx.fillStyle = g;
+        actx.beginPath();
+        actx.arc(cx, cy, rad, 0, Math.PI * 2);
+        actx.fill();
+      }
+      actx.globalCompositeOperation = "source-over";
+    };
+
     const frame = (t) => {
       raf = requestAnimationFrame(frame);
       if (!running) return;
@@ -152,30 +181,12 @@ export default function ParticleHero({ lines, ariaLabel }) {
 
       ctx.clearRect(0, 0, W, H);
 
-      // ambient grid
-      for (let i = 0; i < grid.length; i++) {
-        const g = grid[i];
-        const gx = g.hx - mouse.x;
-        const gy = g.hy - mouse.y;
-        const gd = Math.hypot(gx, gy);
-        let a = 0.055;
-        let s = 1;
-        if (gd < GRID_R) {
-          const k = 1 - gd / GRID_R;
-          a = 0.055 + k * 0.32;
-          s = 1 + k * 1.8;
-          const ang = Math.atan2(gy, gx);
-          g.x += (g.hx + Math.cos(ang) * k * 16 - g.x) * 0.12;
-          g.y += (g.hy + Math.sin(ang) * k * 16 - g.y) * 0.12;
-        } else {
-          g.x += (g.hx - g.x) * 0.1;
-          g.y += (g.hy - g.y) * 0.1;
-        }
-        ctx.fillStyle = `rgba(23,21,15,${a})`;
-        ctx.fillRect(g.x, g.y, s, s);
-      }
+      drawAurora(t);
+      ctx.globalAlpha = 0.62;
+      ctx.imageSmoothingEnabled = true;
+      ctx.drawImage(aur, 0, 0, AUR_W, AUR_H, 0, 0, W, H);
+      ctx.globalAlpha = 1;
 
-      // headline particles
       for (let i = 0; i < heads.length; i++) {
         const p = heads[i];
         if (elapsed <= p.delay) continue;
@@ -204,7 +215,6 @@ export default function ParticleHero({ lines, ariaLabel }) {
         p.vy *= damp;
         p.x += p.vx * dt;
         p.y += p.vy * dt;
-        // settle: pin when home and nearly still
         if (
           Math.abs(p.x - p.hx) < 0.35 &&
           Math.abs(p.y - p.hy) < 0.35 &&
@@ -217,6 +227,7 @@ export default function ParticleHero({ lines, ariaLabel }) {
           p.vy = 0;
         }
       }
+
       ctx.fillStyle = INK;
       for (let i = 0; i < heads.length; i++) {
         const p = heads[i];
@@ -284,15 +295,6 @@ export default function ParticleHero({ lines, ariaLabel }) {
   return (
     <div className={styles.host} ref={host}>
       <canvas ref={canvas} className={styles.canvas} aria-hidden="true" />
-      <div className={`${styles.anchor} shell`} aria-hidden="true">
-        <span className={styles.anchorInner} ref={anchor}>
-          {lines.map((l, i) => (
-            <span key={i} className={styles.anchorLine}>
-              {l.text}
-            </span>
-          ))}
-        </span>
-      </div>
       <h1 className={styles.sr}>
         {ariaLabel || lines.map((l) => l.text).join(" ")}
       </h1>
