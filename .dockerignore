@@ -1,0 +1,17 @@
+node_modules
+**/node_modules
+.git
+.github
+frontend/dist
+frontend/src
+frontend/public
+frontend/index.html
+frontend/vite.config.js
+**/*.log
+.env
+**/.env
+.env.*
+!.env.example
+docker-compose*.yml
+deploy
+prisma/generated

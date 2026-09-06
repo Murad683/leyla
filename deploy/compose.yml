@@ -1,0 +1,57 @@
+# Leyla production stack — Hetzner server 1, fully isolated from one-agency.
+# API is bound to 127.0.0.1 only; the host nginx reverse-proxies
+# api.digitaleyla.az -> 127.0.0.1:4100.  Postgres lives in its own
+# container + volume on a private bridge network (never touches the
+# host's Postgres 18).
+name: leyla
+
+services:
+  leyla-db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: leyla
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?set DB_PASSWORD in /opt/leyla/.env}
+      POSTGRES_DB: leyladb
+    volumes:
+      - leyla_pgdata:/var/lib/postgresql/data
+    networks: [leyla_net]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U leyla -d leyladb"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+  leyla-api:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile.prod
+    image: leyla-api:latest
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      NODE_ENV: production
+      PORT: "4100"
+    ports:
+      - "127.0.0.1:4100:4100"
+    depends_on:
+      leyla-db:
+        condition: service_healthy
+    networks: [leyla_net]
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+
+networks:
+  leyla_net:
+    driver: bridge
+
+volumes:
+  leyla_pgdata:

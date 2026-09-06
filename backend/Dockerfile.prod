@@ -1,0 +1,31 @@
+# Production image for the Leyla backend (monorepo: root prisma + backend workspace).
+# Build context = repo root.  Runs on Hetzner via deploy/compose.yml.
+FROM node:20-alpine
+
+RUN apk add --no-cache openssl curl
+
+WORKDIR /app
+
+# Manifests first (better layer caching). npm workspaces needs every
+# workspace package.json present for `npm ci`, so copy both.
+COPY package.json package-lock.json ./
+COPY prisma ./prisma
+COPY backend/package.json ./backend/package.json
+COPY frontend/package.json ./frontend/package.json
+
+RUN npm ci --ignore-scripts
+
+# Backend source, then generate the Prisma client into prisma/generated/client
+COPY backend ./backend
+RUN npx prisma generate --schema=prisma/schema.prisma
+
+ENV NODE_ENV=production \
+    PORT=4100
+
+WORKDIR /app/backend
+EXPOSE 4100
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+  CMD curl -fsS http://127.0.0.1:4100/health || exit 1
+
+CMD ["node", "--no-deprecation", "server.js"]
