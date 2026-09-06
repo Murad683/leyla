@@ -85,8 +85,9 @@ const AdminHome = () => {
 
   const submit = (e) => {
     e.preventDefault();
+    const { _introParagraphs, _introTags, ...clean } = f;
     mut.mutate({
-      ...f,
+      ...clean,
       introParagraphs: fromLines(f._introParagraphs ?? toLines(f.introParagraphs)),
       introTags: fromCsv(f._introTags ?? toCsv(f.introTags)),
       stats: (f.stats || []).filter((s) => s.label || s.value),
