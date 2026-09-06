@@ -12,8 +12,8 @@
 }
 
 .cue {
-  position: absolute;
-  transform: translateY(-2.5rem);
+  display: block;
+  margin-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
 .stat {

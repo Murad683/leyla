@@ -1,6 +1,9 @@
 import { useReveal } from "../../lib/useReveal";
 import Marquee from "../../components/Marquee/Marquee";
+import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
 import styles from "./Courses.module.css";
+
+const VOLT = ["47,43,255", "92,84,214", "58,34,120", "150,58,40"];
 
 const COURSES = [
   { t: "SMM Sistemi", d: "Sıfırdan strategiya, kontent və satış qıfı. 6 həftə, canlı." },
@@ -13,6 +16,16 @@ export default function Courses() {
 
   return (
     <section className={styles.section} ref={ref}>
+      <FlowCanvas
+        palette={VOLT}
+        base="#131118"
+        scrim="15,13,20"
+        bloom="120,116,255"
+        opacity={0.5}
+        scrimStrength={0.66}
+        blend="screen"
+      />
+
       <Marquee
         items={["Kurslar", "Canlı dərslər", "Praktiki tapşırıq", "İcma", "Sertifikat"]}
         speed={24}
