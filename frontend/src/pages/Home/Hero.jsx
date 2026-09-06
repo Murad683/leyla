@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
-import ParticleHeadline from "../../components/ParticleHeadline/ParticleHeadline";
+import ParticleHero from "../../components/ParticleHero/ParticleHero";
 import styles from "./Hero.module.css";
 
 const LINES = [
@@ -25,8 +25,8 @@ export default function Hero() {
         opacity: 0,
         duration: 0.9,
         ease: "expo.out",
-        stagger: 0.12,
-        delay: 0.5,
+        stagger: 0.14,
+        delay: 0.45,
       });
     }, root);
     return () => ctx.revert();
@@ -34,15 +34,15 @@ export default function Hero() {
 
   return (
     <section className={styles.hero} ref={root}>
+      <ParticleHero
+        lines={LINES}
+        ariaLabel="Sosial media — marketoloq təfəkkürü ilə."
+      />
+
       <div className={`${styles.inner} shell`}>
         <span className={`mono ${styles.tag}`} data-fade>
           SMM · Strategiya · Bakı
         </span>
-
-        <ParticleHeadline
-          lines={LINES}
-          ariaLabel="Sosial media — marketoloq təfəkkürü ilə."
-        />
       </div>
 
       <span className={styles.cue} data-fade aria-hidden="true" />
