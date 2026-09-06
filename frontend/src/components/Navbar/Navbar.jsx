@@ -11,10 +11,19 @@ const LINKS = [
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    let last = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 24);
+      // hide when scrolling down past the hero-ish zone, show on scroll up
+      if (y > 160 && y > last + 4) setHidden(true);
+      else if (y < last - 4 || y < 160) setHidden(false);
+      last = y;
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -28,7 +37,11 @@ export default function Navbar() {
   }, [open]);
 
   return (
-    <header className={`${styles.bar} ${scrolled ? styles.scrolled : ""}`}>
+    <header
+      className={`${styles.bar} ${scrolled ? styles.scrolled : ""} ${
+        hidden && !open ? styles.hidden : ""
+      }`}
+    >
       <div className={`${styles.inner} shell`}>
         <Link to="/" className={styles.brand} onClick={() => setOpen(false)}>
           Leyla Məmmədli

@@ -8,8 +8,13 @@
   display: flex;
   align-items: center;
   transition: background-color var(--dur) var(--ease-out),
-    border-color var(--dur) var(--ease-out), backdrop-filter var(--dur) var(--ease-out);
+    border-color var(--dur) var(--ease-out), transform 0.45s var(--ease-out);
   border-bottom: 1px solid transparent;
+  will-change: transform;
+}
+
+.hidden {
+  transform: translateY(-100%);
 }
 
 .scrolled {

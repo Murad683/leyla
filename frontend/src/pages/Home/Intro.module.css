@@ -4,7 +4,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 120px;
+  grid-template-columns: 1fr 1fr clamp(150px, 18vw, 300px);
   gap: clamp(2rem, 6vw, 5rem);
   align-items: start;
 }
@@ -61,20 +61,17 @@
 .panelCol {
   position: relative;
   height: 100%;
-  min-height: 420px;
+  min-height: 460px;
+  overflow: hidden;
+  border-radius: 4px;
 }
 .panel {
   position: absolute;
-  inset: 0;
-  border-radius: 4px;
-  background: linear-gradient(
-    180deg,
-    var(--accent) 0%,
-    #d98c4a 42%,
-    var(--field-3) 78%,
-    var(--void) 100%
-  );
-  filter: saturate(1.05);
+  inset: -12% 0;
+  background-image: url("/intro.jpg");
+  background-size: cover;
+  background-position: center;
+  will-change: transform;
 }
 
 @media (max-width: 900px) {

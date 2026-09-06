@@ -52,18 +52,55 @@
 }
 
 .card {
+  position: relative;
   flex: 0 0 auto;
   width: min(76vw, 430px);
   height: min(56vh, 500px);
   border-radius: 6px;
+  overflow: hidden;
   padding: clamp(1.4rem, 2.6vw, 2.1rem);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  color: #f4f1e9;
   transition: transform 0.5s var(--ease-out);
 }
 .card:hover {
   transform: translateY(-8px);
+}
+.card:hover .cardMedia {
+  transform: scale(1.05);
+}
+
+.cardMedia {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.7s var(--ease-out);
+}
+.cardTint {
+  position: absolute;
+  inset: 0;
+  mix-blend-mode: multiply;
+  opacity: 0.62;
+}
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(23, 21, 15, 0.1) 0%,
+    rgba(23, 21, 15, 0) 35%,
+    rgba(23, 21, 15, 0.55) 100%
+  );
+}
+
+.cardTop,
+.cardBody {
+  position: relative;
+  z-index: 1;
 }
 
 .cardTop {
@@ -75,7 +112,7 @@
   font-size: 0.7rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  opacity: 0.85;
+  opacity: 0.92;
 }
 .cardResult {
   text-align: right;
@@ -118,6 +155,9 @@
   justify-content: center;
   gap: 1.6rem;
   width: min(64vw, 340px);
+}
+.cardEnd::after {
+  display: none;
 }
 .endText {
   font-family: var(--font-display);
