@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
+import { useCourses, useHomeContent } from "../../lib/useContent";
 import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Courses.module.css";
 
-const COURSES = [
+const DEFAULT_COURSES = [
   {
     n: "01",
     title: "SMM Sistemi",
@@ -55,14 +56,14 @@ const COURSES = [
   },
 ];
 
-const HOW = [
+const DEFAULT_HOW = [
   { t: "Canlı dərslər", d: "Hər dərs yazılır, platformada qalır." },
   { t: "Praktiki tapşırıq", d: "Hər dərsdən sonra öz hesabında tətbiq." },
   { t: "Fərdi rəy", d: "Tapşırıqlara birbaşa qeyd və düzəliş." },
   { t: "Bağlı icma", d: "İştirakçılarla ünsiyyət və dəstək." },
 ];
 
-const FAQ = [
+const DEFAULT_FAQ = [
   {
     q: "Dərsləri sonra izləyə bilərəm?",
     a: "Bəli. Bütün canlı dərslər yazılır və platformada açıq qalır.",
@@ -185,13 +186,15 @@ function CourseBlock({ c }) {
 
 function How() {
   const ref = useReveal({ stagger: 0.1 });
+  const { courseHow } = useHomeContent({ courseHow: DEFAULT_HOW });
+  const HOW = Array.isArray(courseHow) && courseHow.length ? courseHow : DEFAULT_HOW;
   return (
     <section className={styles.how} ref={ref}>
       <div className="shell">
         <span className="mono reveal">Necə keçir</span>
         <div className={styles.howGrid}>
-          {HOW.map((h) => (
-            <div className={`${styles.howItem} reveal`} key={h.t}>
+          {HOW.map((h, i) => (
+            <div className={`${styles.howItem} reveal`} key={h.t || i}>
               <h3 className={styles.howT}>{h.t}</h3>
               <p className={styles.howD}>{h.d}</p>
             </div>
@@ -205,6 +208,8 @@ function How() {
 function Faq() {
   const ref = useReveal({ stagger: 0.08 });
   const [open, setOpen] = useState(0);
+  const { courseFaq } = useHomeContent({ courseFaq: DEFAULT_FAQ });
+  const FAQ = Array.isArray(courseFaq) && courseFaq.length ? courseFaq : DEFAULT_FAQ;
   return (
     <section className={styles.faq} ref={ref}>
       <div className="shell">
@@ -212,7 +217,7 @@ function Faq() {
         <ul className={styles.faqList}>
           {FAQ.map((f, i) => (
             <li
-              key={f.q}
+              key={f.q || i}
               className={`${styles.faqItem} reveal`}
               data-open={i === open ? "true" : undefined}
             >
@@ -256,11 +261,12 @@ export default function Courses() {
   useEffect(() => {
     document.title = "Kurslar — Leyla Məmmədli";
   }, []);
+  const courses = useCourses(DEFAULT_COURSES);
   return (
     <div className={styles.page}>
       <Hero />
       <div className={styles.blocks}>
-        {COURSES.map((c) => (
+        {courses.map((c) => (
           <CourseBlock key={c.n} c={c} />
         ))}
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getContactsList, markContactRead } from '../../../services/adminService';
-import { getBlogPosts } from '../../../services/blogService';
+import { getCourses } from '../../../services/settingsService';
 import { getPortfolioItems } from '../../../services/portfolioService';
 import styles from './Dashboard.module.css';
 
@@ -13,9 +13,9 @@ const Dashboard = () => {
     queryFn: getContactsList
   });
 
-  const { data: blogData } = useQuery({
-    queryKey: ['blog', 'list'],
-    queryFn: () => getBlogPosts({ limit: 100 })
+  const { data: coursesData } = useQuery({
+    queryKey: ['courses'],
+    queryFn: getCourses
   });
 
   const { data: portfolioData } = useQuery({
@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   const contactsList = contacts || [];
   const unreadCount = contactsList.filter(c => !c.isRead).length;
-  const blogCount = blogData?.posts?.length || 0;
+  const coursesCount = Array.isArray(coursesData) ? coursesData.length : 0;
   const portfolioCount = portfolioData?.items?.length || 0;
 
   return (
@@ -51,10 +51,10 @@ const Dashboard = () => {
         </div>
 
         <div className={styles.card}>
-          <div className={styles.cardIcon}>✍️</div>
+          <div className={styles.cardIcon}>🎓</div>
           <div>
-            <h4 className={styles.cardValue}>{blogCount}</h4>
-            <p className={styles.cardLabel}>Blog Yazıları</p>
+            <h4 className={styles.cardValue}>{coursesCount}</h4>
+            <p className={styles.cardLabel}>Kurslar</p>
           </div>
         </div>
 

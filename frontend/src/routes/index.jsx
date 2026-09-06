@@ -15,10 +15,11 @@ const AdminLayout = lazy(() => import("../pages/Admin/AdminLayout/AdminLayout"))
 const AdminDashboard = lazy(() => import("../pages/Admin/Dashboard/Dashboard"));
 const AdminSettings = lazy(() => import("../pages/Admin/Settings/Settings"));
 const AdminHero = lazy(() => import("../pages/Admin/Hero/Hero"));
-const AdminAbout = lazy(() => import("../pages/Admin/About/About"));
+const AdminHome = lazy(() => import("../pages/Admin/Home/Home"));
 const AdminServices = lazy(() => import("../pages/Admin/Services/Services"));
+const AdminCourses = lazy(() => import("../pages/Admin/Courses/Courses"));
 const AdminPortfolio = lazy(() => import("../pages/Admin/Portfolio/Portfolio"));
-const AdminBlog = lazy(() => import("../pages/Admin/Blog/Blog"));
+const AdminTestimonials = lazy(() => import("../pages/Admin/Testimonials/Testimonials"));
 
 const Fallback = () => (
   <div style={{ minHeight: "60vh", display: "grid", placeItems: "center" }}>
@@ -73,10 +74,11 @@ const router = createBrowserRouter([
       { path: "dashboard", element: <S><AdminDashboard /></S> },
       { path: "settings", element: <S><AdminSettings /></S> },
       { path: "hero", element: <S><AdminHero /></S> },
-      { path: "about", element: <S><AdminAbout /></S> },
+      { path: "home", element: <S><AdminHome /></S> },
       { path: "services", element: <S><AdminServices /></S> },
+      { path: "courses", element: <S><AdminCourses /></S> },
       { path: "portfolio", element: <S><AdminPortfolio /></S> },
-      { path: "blog", element: <S><AdminBlog /></S> },
+      { path: "testimonials", element: <S><AdminTestimonials /></S> },
     ],
   },
 ]);

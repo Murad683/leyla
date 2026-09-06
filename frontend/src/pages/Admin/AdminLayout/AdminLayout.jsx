@@ -7,10 +7,11 @@ const navLinks = [
   { path: '/admin/dashboard', label: 'Məlumat Paneli', icon: '📊' },
   { path: '/admin/settings', label: 'Ümumi Parametrlər', icon: '⚙️' },
   { path: '/admin/hero', label: 'Hero Bölməsi', icon: '✨' },
-  { path: '/admin/about', label: 'Haqqımızda', icon: '👤' },
+  { path: '/admin/home', label: 'Ana səhifə mətnləri', icon: '🏠' },
   { path: '/admin/services', label: 'Xidmətlər', icon: '💼' },
+  { path: '/admin/courses', label: 'Kurslar', icon: '🎓' },
   { path: '/admin/portfolio', label: 'Portfolio', icon: '🎨' },
-  { path: '/admin/blog', label: 'Bloq', icon: '✍️' },
+  { path: '/admin/testimonials', label: 'Rəylər', icon: '💬' },
 ];
 
 const AdminLayout = () => {

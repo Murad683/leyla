@@ -3,34 +3,28 @@ import { Link } from "react-router-dom";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
 import Marquee from "../../components/Marquee/Marquee";
 import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
+import { useCourses, useHomeContent } from "../../lib/useContent";
 import styles from "./Courses.module.css";
 
 const WARM = ["244,201,120", "214,120,58", "205,162,120"];
 
-const COURSES = [
-  {
-    t: "SMM Sistemi",
-    d: "Sıfırdan strategiya, kontent və satış qıfı. Auditoriyanı oxumaq, offer qurmaq və nəticəni rəqəmlə izləmək.",
-    meta: "6 həftə · canlı",
-  },
-  {
-    t: "Reels Laboratoriyası",
-    d: "Ssenari, çəkiliş rejissurası, montaj standartı və trend oxuma. Hər həftə yeni format, hər format üçün şablon.",
-    meta: "3 həftə · praktiki",
-  },
-  {
-    t: "Şəxsi Brend Intensiv",
-    d: "Ekspert obrazı, mövqeləndirmə və daimi mövzu xətti. İki həftəlik sprint — sonunda hazır kontent planı.",
-    meta: "2 həftə · sprint",
-  },
+const DEFAULT_COURSES = [
+  { title: "SMM Sistemi", desc: "Sıfırdan strategiya, kontent və satış qıfı. Auditoriyanı oxumaq, offer qurmaq və nəticəni rəqəmlə izləmək.", meta: "6 həftə · canlı" },
+  { title: "Reels Laboratoriyası", desc: "Ssenari, çəkiliş rejissurası, montaj standartı və trend oxuma. Hər həftə yeni format, hər format üçün şablon.", meta: "3 həftə · praktiki" },
+  { title: "Şəxsi Brend Intensiv", desc: "Ekspert obrazı, mövqeləndirmə və daimi mövzu xətti. İki həftəlik sprint — sonunda hazır kontent planı.", meta: "2 həftə · sprint" },
 ];
-
-const H_WORDS = ["Öyrən,", "tətbiq", "et,", "satışa", "çevir."];
 
 export default function Courses() {
   const root = useRef(null);
   const list = useRef(null);
   const [p, setP] = useState(0);
+
+  const COURSES = useCourses(DEFAULT_COURSES);
+  const { coursesEyebrow, coursesHeadline } = useHomeContent({
+    coursesEyebrow: "05 — Kurslar",
+    coursesHeadline: "Öyrən, tətbiq et, satışa çevir.",
+  });
+  const H_WORDS = coursesHeadline.split(/\s+/).filter(Boolean);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -90,13 +84,13 @@ export default function Courses() {
 
       <div className={`${styles.inner} shell`}>
         <div className={styles.top}>
-          <span className="mono">05 — Kurslar</span>
-          <h2 className={styles.headline} aria-label="Öyrən, tətbiq et, satışa çevir.">
+          <span className="mono">{coursesEyebrow}</span>
+          <h2 className={styles.headline} aria-label={coursesHeadline}>
             {H_WORDS.map((w, i) => (
               <span className={styles.hMask} key={i}>
                 <span
                   className={`${styles.hWord} ${
-                    w === "satışa" || w === "çevir." ? styles.accent : ""
+                    i >= H_WORDS.length - 2 ? styles.accent : ""
                   }`}
                 >
                   {w}&nbsp;
@@ -115,17 +109,17 @@ export default function Courses() {
           <ul className={styles.list} ref={list}>
             {COURSES.map((c, i) => (
               <li
-                key={c.t}
+                key={c.title || i}
                 className={`${styles.item} ${i === active ? styles.open : ""}`}
               >
                 <span className={styles.itemN}>{String(i + 1).padStart(2, "0")}</span>
                 <div className={styles.itemMain}>
                   <div className={styles.itemHead}>
-                    <h3 className={styles.itemT}>{c.t}</h3>
+                    <h3 className={styles.itemT}>{c.title}</h3>
                     <span className="mono">{c.meta}</span>
                   </div>
                   <div className={styles.itemReveal}>
-                    <p className={styles.itemD}>{c.d}</p>
+                    <p className={styles.itemD}>{c.desc}</p>
                   </div>
                 </div>
               </li>

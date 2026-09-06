@@ -1,8 +1,29 @@
 import { useQuery } from "@tanstack/react-query";
-import { getHero, getSettings, getServices } from "../services/settingsService";
+import {
+  getHero,
+  getSettings,
+  getServices,
+  getHome,
+  getCourses,
+  getTestimonials,
+} from "../services/settingsService";
 import { getPortfolioItems } from "../services/portfolioService";
 
 const OPTS = { staleTime: 60_000, retry: 1 };
+
+/** Merge a partial API object over `defaults`, ignoring null/empty fields. */
+function merge(defaults, data) {
+  if (!data) return defaults;
+  const out = { ...defaults };
+  for (const k of Object.keys(defaults)) {
+    const v = data[k];
+    if (v == null) continue;
+    if (Array.isArray(v) && v.length === 0) continue;
+    if (typeof v === "string" && v.trim() === "") continue;
+    out[k] = v;
+  }
+  return out;
+}
 
 /** Raw site settings (or null while loading / on error). */
 export function useSiteSettings() {
@@ -64,5 +85,42 @@ export function usePortfolio(defaults) {
     brief: p.summary || "",
     result: p.resultHeadline || "",
     metrics: normMetrics(p.results),
+  }));
+}
+
+/** Home singleton content, deep-merged over `defaults`. */
+export function useHomeContent(defaults) {
+  const { data } = useQuery({ queryKey: ["home"], queryFn: getHome, ...OPTS });
+  return merge(defaults, data);
+}
+
+/** Courses mapped to the v2 shape, falling back to `defaults`. */
+export function useCourses(defaults) {
+  const { data } = useQuery({ queryKey: ["courses"], queryFn: getCourses, ...OPTS });
+  if (!Array.isArray(data) || data.length === 0) return defaults;
+  return data.map((c, i) => ({
+    n: String(i + 1).padStart(2, "0"),
+    title: c.title || "",
+    meta: c.meta || "",
+    format: c.format || c.meta || "",
+    desc: c.description || "",
+    program: Array.isArray(c.program) ? c.program : [],
+    who: c.audience || "",
+    outcome: c.outcome || "",
+  }));
+}
+
+/** Testimonials -> { q, a, r }, falling back to `defaults`. */
+export function useTestimonials(defaults) {
+  const { data } = useQuery({
+    queryKey: ["testimonials"],
+    queryFn: getTestimonials,
+    ...OPTS,
+  });
+  if (!Array.isArray(data) || data.length === 0) return defaults;
+  return data.map((t) => ({
+    q: t.quote || "",
+    a: t.author || "",
+    r: t.role || "",
   }));
 }

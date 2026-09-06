@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { useSiteSettings } from "../../lib/useContent";
 import styles from "./Navbar.module.css";
 
 const LINKS = [
@@ -12,6 +13,7 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [open, setOpen] = useState(false);
+  const settings = useSiteSettings();
 
   useEffect(() => {
     let last = window.scrollY;
@@ -57,7 +59,15 @@ export default function Navbar() {
     >
       <div className={`${styles.inner} shell`}>
         <Link to="/" className={styles.brand} onClick={() => setOpen(false)}>
-          Leyla Məmmədli
+          {settings?.logoUrl ? (
+            <img
+              src={settings.logoUrl}
+              alt="Leyla Məmmədli"
+              className={styles.brandLogo}
+            />
+          ) : (
+            "Leyla Məmmədli"
+          )}
         </Link>
 
         <nav className={styles.nav}>

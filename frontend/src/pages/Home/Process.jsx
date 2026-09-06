@@ -1,31 +1,50 @@
 import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
+import { useHomeContent } from "../../lib/useContent";
 import styles from "./Process.module.css";
 
-const STEPS = [
-  {
-    n: "01",
-    title: "Kəşf",
-    text: "Biznesin, auditoriyan və rəqiblərin dərin təhlili. Harada olduğunu dəqiq bilmədən hara gedəcəyini planlaya bilmərik.",
-    tags: ["Audit", "Auditoriya", "Rəqib təhlili"],
-  },
-  {
-    n: "02",
-    title: "Sistem",
-    text: "Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı — hamısı sənədləşdirilmiş bir plan halında.",
-    tags: ["Positioning", "Rubrikalar", "Qıf"],
-  },
-  {
-    n: "03",
-    title: "İcra",
-    text: "Həftəlik kontent ritmi, çəkiliş rejissurası, montaj standartı və rəqəmlərə görə davamlı düzəliş.",
-    tags: ["Ritm", "Prodakşn", "Optimizasiya"],
-  },
-];
+const DEFAULTS = {
+  processEyebrow: "04 — Necə işləyirik",
+  processHeadline: "Kaosdan aydınlığa — üç mərhələ.",
+  processSteps: [
+    {
+      title: "Kəşf",
+      text: "Biznesin, auditoriyan və rəqiblərin dərin təhlili. Harada olduğunu dəqiq bilmədən hara gedəcəyini planlaya bilmərik.",
+      tags: ["Audit", "Auditoriya", "Rəqib təhlili"],
+    },
+    {
+      title: "Sistem",
+      text: "Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı — hamısı sənədləşdirilmiş bir plan halında.",
+      tags: ["Positioning", "Rubrikalar", "Qıf"],
+    },
+    {
+      title: "İcra",
+      text: "Həftəlik kontent ritmi, çəkiliş rejissurası, montaj standartı və rəqəmlərə görə davamlı düzəliş.",
+      tags: ["Ritm", "Prodakşn", "Optimizasiya"],
+    },
+  ],
+};
+
+/** Split a headline like "Kaosdan aydınlığa — üç mərhələ." so the part after
+ *  the em-dash renders italic, matching the original design. */
+function Headline({ text }) {
+  const i = text.indexOf("—");
+  if (i === -1) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i + 1)} <span className={styles.ital}>{text.slice(i + 1).trim()}</span>
+    </>
+  );
+}
 
 export default function Process() {
   const root = useRef(null);
   const pin = useRef(null);
+  const { processEyebrow, processHeadline, processSteps } = useHomeContent(DEFAULTS);
+  const STEPS = (Array.isArray(processSteps) && processSteps.length
+    ? processSteps
+    : DEFAULTS.processSteps
+  ).map((s, i) => ({ ...s, n: String(i + 1).padStart(2, "0") }));
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -72,9 +91,9 @@ export default function Process() {
       <div className={styles.pin} ref={pin}>
         <div className={`${styles.inner} shell`}>
           <header className={styles.head}>
-            <span className="mono">04 — Necə işləyirik</span>
+            <span className="mono">{processEyebrow}</span>
             <p className={styles.headline}>
-              Kaosdan aydınlığa — <span className={styles.ital}>üç mərhələ</span>.
+              <Headline text={processHeadline} />
             </p>
           </header>
 

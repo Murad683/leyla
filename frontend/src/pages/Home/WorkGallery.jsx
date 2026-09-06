@@ -1,18 +1,20 @@
 import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
+import { usePortfolio } from "../../lib/useContent";
 import styles from "./WorkGallery.module.css";
 
-const WORK = [
-  { n: "01", name: "Nərgiz Kosmetika", cat: ["Şəxsi brend", "Reels"], img: "/work-1.webp", tint: "var(--field-1)", result: "3 ayda +48K izləyici" },
-  { n: "02", name: "Baku Coffee Lab", cat: ["Strategiya", "Kontent"], img: "/work-2.webp", tint: "var(--field-2)", result: "Sifarişlərdə 2.1× artım" },
-  { n: "03", name: "Studio Mās", cat: ["Vizual dil", "Satış qıfı"], img: "/work-3.webp", tint: "var(--field-3)", result: "Ayda 120+ sorğu" },
-  { n: "04", name: "Terra Wellness", cat: ["Kontent", "Analitika"], img: "/work-4.webp", tint: "var(--field-4)", result: "Kursda 340 qeydiyyat" },
-  { n: "05", name: "Lumen Estetika", cat: ["Şəxsi brend", "Reels"], img: "/work-5.webp", tint: "var(--field-5)", result: "Reels-də 1.4M baxış" },
+const DEFAULT_WORK = [
+  { n: "01", name: "Nərgiz Kosmetika", cats: ["Şəxsi brend", "Reels"], img: "/work-1.webp", tint: "var(--field-1)", result: "3 ayda +48K izləyici" },
+  { n: "02", name: "Baku Coffee Lab", cats: ["Strategiya", "Kontent"], img: "/work-2.webp", tint: "var(--field-2)", result: "Sifarişlərdə 2.1× artım" },
+  { n: "03", name: "Studio Mās", cats: ["Vizual dil", "Satış qıfı"], img: "/work-3.webp", tint: "var(--field-3)", result: "Ayda 120+ sorğu" },
+  { n: "04", name: "Terra Wellness", cats: ["Kontent", "Analitika"], img: "/work-4.webp", tint: "var(--field-4)", result: "Kursda 340 qeydiyyat" },
+  { n: "05", name: "Lumen Estetika", cats: ["Şəxsi brend", "Reels"], img: "/work-5.webp", tint: "var(--field-5)", result: "Reels-də 1.4M baxış" },
 ];
 
 export default function WorkGallery() {
   const root = useRef(null);
+  const WORK = usePortfolio(DEFAULT_WORK);
   const pinWrap = useRef(null);
   const trackRef = useRef(null);
   const viewportRef = useRef(null);
@@ -79,7 +81,7 @@ export default function WorkGallery() {
                 <div className={styles.cardBody}>
                   <h3 className={styles.cardName}>{w.name}</h3>
                   <ul className={styles.cardCats}>
-                    {w.cat.map((c) => (
+                    {(w.cats || []).map((c) => (
                       <li key={c}>{c}</li>
                     ))}
                   </ul>

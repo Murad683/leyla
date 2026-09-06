@@ -53,16 +53,6 @@ export const updateAdminHero = async (heroData) => {
   return data.data;
 };
 
-export const getAdminAbout = async () => {
-  const { data } = await api.get('/admin/about');
-  return data.data;
-};
-
-export const updateAdminAbout = async (aboutData) => {
-  const { data } = await api.put('/admin/about', aboutData);
-  return data.data;
-};
-
 // Services CRUD
 export const createService = async (serviceData) => {
   const { data } = await api.post('/admin/services', serviceData);
@@ -79,19 +69,46 @@ export const deleteService = async (id) => {
   return data.data;
 };
 
-// Blog CRUD
-export const createBlogPost = async (postData) => {
-  const { data } = await api.post('/admin/blog', postData);
+// Home content (singleton)
+export const getAdminHome = async () => {
+  const { data } = await api.get('/admin/home');
   return data.data;
 };
 
-export const updateBlogPost = async (id, postData) => {
-  const { data } = await api.put(`/admin/blog/${id}`, postData);
+export const updateAdminHome = async (payload) => {
+  const { data } = await api.put('/admin/home', payload);
   return data.data;
 };
 
-export const deleteBlogPost = async (id) => {
-  const { data } = await api.delete(`/admin/blog/${id}`);
+// Courses CRUD
+export const createCourse = async (payload) => {
+  const { data } = await api.post('/admin/courses', payload);
+  return data.data;
+};
+
+export const updateCourse = async (id, payload) => {
+  const { data } = await api.put(`/admin/courses/${id}`, payload);
+  return data.data;
+};
+
+export const deleteCourse = async (id) => {
+  const { data } = await api.delete(`/admin/courses/${id}`);
+  return data.data;
+};
+
+// Testimonials CRUD
+export const createTestimonial = async (payload) => {
+  const { data } = await api.post('/admin/testimonials', payload);
+  return data.data;
+};
+
+export const updateTestimonial = async (id, payload) => {
+  const { data } = await api.put(`/admin/testimonials/${id}`, payload);
+  return data.data;
+};
+
+export const deleteTestimonial = async (id) => {
+  const { data } = await api.delete(`/admin/testimonials/${id}`);
   return data.data;
 };
 
