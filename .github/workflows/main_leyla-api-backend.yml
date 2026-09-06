@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'backend/**'
+      - 'prisma/**'
+      - 'deploy/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/main_leyla-api-backend.yml'
   workflow_dispatch:
 
 concurrency:
