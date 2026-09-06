@@ -4,9 +4,10 @@ const { verifyToken } = require('../middleware/authMiddleware');
 
 const settingsController = require('../controllers/settingsController');
 const heroController = require('../controllers/heroController');
-const aboutController = require('../controllers/aboutController');
 const servicesController = require('../controllers/servicesController');
-const blogController = require('../controllers/blogController');
+const homeController = require('../controllers/homeController');
+const coursesController = require('../controllers/coursesController');
+const testimonialsController = require('../controllers/testimonialsController');
 const portfolioController = require('../controllers/portfolioController');
 const contactController = require('../controllers/contactController');
 const { upload, uploadImage } = require('../controllers/uploadController');
@@ -22,19 +23,24 @@ router.put('/settings', settingsController.updateSettings);
 router.get('/hero', heroController.getHero);
 router.put('/hero', heroController.updateHero);
 
-// About
-router.get('/about', aboutController.getAbout);
-router.put('/about', aboutController.updateAbout);
+// Home content (Intro / Numbers / Process / course furniture)
+router.get('/home', homeController.getHome);
+router.put('/home', homeController.updateHome);
 
 // Services
 router.post('/services', servicesController.createService);
 router.put('/services/:id', servicesController.updateService);
 router.delete('/services/:id', servicesController.deleteService);
 
-// Blog
-router.post('/blog', blogController.createBlogPost);
-router.put('/blog/:id', blogController.updateBlogPost);
-router.delete('/blog/:id', blogController.deleteBlogPost);
+// Courses
+router.post('/courses', coursesController.createCourse);
+router.put('/courses/:id', coursesController.updateCourse);
+router.delete('/courses/:id', coursesController.deleteCourse);
+
+// Testimonials
+router.post('/testimonials', testimonialsController.createTestimonial);
+router.put('/testimonials/:id', testimonialsController.updateTestimonial);
+router.delete('/testimonials/:id', testimonialsController.deleteTestimonial);
 
 // Portfolio
 router.post('/portfolio', portfolioController.createPortfolioItem);

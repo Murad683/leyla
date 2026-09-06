@@ -7,6 +7,53 @@ datasource db {
   provider = "postgresql"
 }
 
+model Course {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  meta        String?
+  format      String?
+  description String?
+  program     String[]
+  audience    String?
+  outcome     String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Testimonial {
+  id          Int      @id @default(autoincrement())
+  quote       String
+  author      String
+  role        String?
+  sortOrder   Int      @default(0)
+  isPublished Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HomeContent {
+  id              Int      @id @default(1)
+  introEyebrow    String?
+  introStatement  String?
+  introAccent     String?
+  introParagraphs String[]
+  introTags       String[]
+  numbersEyebrow  String?
+  stats           Json?
+  processEyebrow  String?
+  processHeadline String?
+  processSteps    Json?
+  coursesEyebrow  String?
+  coursesHeadline String?
+  courseHow       Json?
+  courseFaq       Json?
+  quotesEyebrow   String?
+  updatedAt       DateTime @updatedAt
+}
+
 model User {
   id           String   @id @default(cuid())
   email        String   @unique

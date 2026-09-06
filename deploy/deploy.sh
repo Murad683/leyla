@@ -26,7 +26,10 @@ $Cj exec -T leyla-api sh -c 'npx prisma db push --schema=/app/prisma/schema.pris
 echo "== health =="
 curl -sf -m 10 http://127.0.0.1:4100/api/health && echo " <- OK"
 
-echo "== prune old images =="
+echo "== prune old images + stale build cache =="
 docker image prune -f >/dev/null || true
+# keep the last ~3 days of build cache (fast rebuilds) but cap unbounded growth.
+# only touches this box's Docker/buildkit cache — one-agency runs on systemd, no Docker.
+docker builder prune -f --filter 'until=72h' >/dev/null || true
 
 echo "== deploy done =="

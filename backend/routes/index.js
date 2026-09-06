@@ -3,22 +3,24 @@ const router = express.Router();
 
 const authRoutes = require('./authRoutes');
 const adminRoutes = require('./admin');
-const blogRoutes = require('./blog');
 const portfolioRoutes = require('./portfolio');
 const contactRoutes = require('./contact');
 
 const settingsController = require('../controllers/settingsController');
 const heroController = require('../controllers/heroController');
-const aboutController = require('../controllers/aboutController');
 const servicesController = require('../controllers/servicesController');
+const homeController = require('../controllers/homeController');
+const coursesController = require('../controllers/coursesController');
+const testimonialsController = require('../controllers/testimonialsController');
 
 // Public API Routes
 router.get('/settings', settingsController.getSettings);
 router.get('/hero', heroController.getHero);
-router.get('/about', aboutController.getAbout);
+router.get('/home', homeController.getHome);
 router.get('/services', servicesController.getServices);
+router.get('/courses', coursesController.getCourses);
+router.get('/testimonials', testimonialsController.getTestimonials);
 
-router.use('/blog', blogRoutes);
 router.use('/portfolio', portfolioRoutes);
 router.use('/contact', contactRoutes);
 
