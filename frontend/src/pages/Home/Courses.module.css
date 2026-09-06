@@ -16,7 +16,7 @@
       rgba(23, 21, 15, 0.95) 60%,
       var(--void)
     ),
-    url("/courses.jpg") center / cover no-repeat;
+    url("/courses.webp") center / cover no-repeat;
 }
 
 .inner {

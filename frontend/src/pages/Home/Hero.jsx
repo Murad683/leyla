@@ -71,16 +71,23 @@ export default function Hero() {
             Strategiya, kontent və satış — bir sistemdə. Şəxsi brendini qur,
             auditoriyanı müştəriyə çevir.
           </p>
-          <div className={styles.stat} data-fade>
-            <span className={styles.statNum}>16K+</span>
-            <span className="mono">Auditoriya</span>
-          </div>
+          <ul className={styles.proof} data-fade>
+            <li>
+              <b>16K+</b> <span className="mono">auditoriya</span>
+            </li>
+            <li>
+              <b>40+</b> <span className="mono">layihə</span>
+            </li>
+            <li>
+              <b>6 il</b> <span className="mono">təcrübə</span>
+            </li>
+          </ul>
         </div>
+      </div>
 
-        <div className={styles.cue} data-fade>
-          <span className="mono">Aşağı sürüşdür</span>
-          <span className={styles.line2} />
-        </div>
+      <div className={styles.cue} data-fade>
+        <span className="mono">Aşağı</span>
+        <span className={styles.line2} />
       </div>
     </section>
   );

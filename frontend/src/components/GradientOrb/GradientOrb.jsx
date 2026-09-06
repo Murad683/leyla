@@ -2,8 +2,9 @@ import { useEffect, useRef } from "react";
 import styles from "./GradientOrb.module.css";
 
 /**
- * Canvas "orb" — soft drifting colour fields that ease toward the pointer.
- * Stands in for a hero photograph; cheap, GPU-light, pauses when offscreen.
+ * Canvas "light" — a warm luminous glow that drifts slowly and eases
+ * toward the pointer. Stands in for a hero photograph; cheap, GPU-light,
+ * pauses when offscreen.
  */
 export default function GradientOrb() {
   const canvas = useRef(null);
@@ -15,7 +16,7 @@ export default function GradientOrb() {
 
     let w, h, dpr;
     const resize = () => {
-      dpr = Math.min(window.devicePixelRatio || 1, 1.6);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       w = cv.offsetWidth;
       h = cv.offsetHeight;
       cv.width = w * dpr;
@@ -25,11 +26,11 @@ export default function GradientOrb() {
     resize();
     window.addEventListener("resize", resize);
 
+    // warm-only palette, layered light → deep
     const blobs = [
-      { c: "#c0492c", x: 0.36, y: 0.42, r: 0.54, px: 0.36, py: 0.42, s: 0.00022, a: 0 },
-      { c: "#d98c4a", x: 0.62, y: 0.52, r: 0.46, px: 0.62, py: 0.52, s: 0.00016, a: 2 },
-      { c: "#caa24b", x: 0.5, y: 0.68, r: 0.4, px: 0.5, py: 0.68, s: 0.00019, a: 3 },
-      { c: "#5b57c9", x: 0.82, y: 0.24, r: 0.16, px: 0.82, py: 0.24, s: 0.00024, a: 4 },
+      { c: "#f0c98c", x: 0.52, y: 0.62, r: 0.42, px: 0.52, py: 0.62, s: 0.00016, a: 0 },
+      { c: "#d98c4a", x: 0.6, y: 0.5, r: 0.52, px: 0.6, py: 0.5, s: 0.00013, a: 1.6 },
+      { c: "#bd4c2c", x: 0.68, y: 0.66, r: 0.4, px: 0.68, py: 0.66, s: 0.00018, a: 3.1 },
     ];
 
     let mx = 0.5;
@@ -57,18 +58,19 @@ export default function GradientOrb() {
       ctx.globalCompositeOperation = "multiply";
 
       blobs.forEach((b) => {
-        const driftX = b.x + Math.sin(t * b.s + b.a) * 0.06;
-        const driftY = b.y + Math.cos(t * b.s * 1.3 + b.a) * 0.06;
-        const tgtX = driftX + (mx - 0.5) * 0.12;
-        const tgtY = driftY + (my - 0.5) * 0.12;
-        b.px += (tgtX - b.px) * 0.04;
-        b.py += (tgtY - b.py) * 0.04;
+        const driftX = b.x + Math.sin(t * b.s + b.a) * 0.045;
+        const driftY = b.y + Math.cos(t * b.s * 1.25 + b.a) * 0.045;
+        const tgtX = driftX + (mx - 0.5) * 0.08;
+        const tgtY = driftY + (my - 0.5) * 0.08;
+        b.px += (tgtX - b.px) * 0.035;
+        b.py += (tgtY - b.py) * 0.035;
 
         const cx = b.px * w;
         const cy = b.py * h;
         const rad = b.r * Math.min(w, h);
         const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, rad);
-        g.addColorStop(0, b.c + "cc");
+        g.addColorStop(0, b.c + "9a");
+        g.addColorStop(0.5, b.c + "3a");
         g.addColorStop(1, b.c + "00");
         ctx.fillStyle = g;
         ctx.beginPath();
@@ -83,11 +85,8 @@ export default function GradientOrb() {
       raf = requestAnimationFrame(loop);
     };
 
-    if (reduce) {
-      draw(0);
-    } else {
-      loop();
-    }
+    if (reduce) draw(0);
+    else loop();
 
     return () => {
       cancelAnimationFrame(raf);

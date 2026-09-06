@@ -2,5 +2,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  filter: blur(38px) contrast(1.05);
+  filter: blur(30px) saturate(1.02);
+  -webkit-mask-image: radial-gradient(closest-side, #000 30%, transparent 85%);
+  mask-image: radial-gradient(closest-side, #000 30%, transparent 85%);
 }

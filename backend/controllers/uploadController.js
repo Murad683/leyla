@@ -45,7 +45,13 @@ const uploadImage = async (req, res, next) => {
       uploadStream.end(req.file.buffer);
     });
 
-    res.json({ success: true, url: result.secure_url });
+    // Deliver images as WebP/AVIF with auto quality where the browser supports it.
+    let url = result.secure_url;
+    if (resourceType === 'image' && url.includes('/upload/')) {
+      url = url.replace('/upload/', '/upload/f_auto,q_auto/');
+    }
+
+    res.json({ success: true, url });
   } catch (error) {
     next(error);
   }

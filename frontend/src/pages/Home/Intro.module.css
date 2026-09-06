@@ -68,7 +68,7 @@
 .panel {
   position: absolute;
   inset: -12% 0;
-  background-image: url("/intro.jpg");
+  background-image: url("/intro.webp");
   background-size: cover;
   background-position: center;
   will-change: transform;
