@@ -2,6 +2,7 @@ import { Suspense, lazy } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
 import SiteLayout from "../components/SiteLayout/SiteLayout";
 import Home from "../pages/Home/Home";
+import Services from "../pages/Services/Services";
 import Placeholder from "../pages/Placeholder/Placeholder";
 import ProtectedRoute from "../components/admin/ProtectedRoute";
 
@@ -30,10 +31,7 @@ const router = createBrowserRouter([
     element: <SiteLayout />,
     children: [
       { index: true, element: <Home /> },
-      {
-        path: "xidmetler",
-        element: <Placeholder index="01" title="Xidmətlər" />,
-      },
+      { path: "xidmetler", element: <Services /> },
       {
         path: "kurslar",
         element: <Placeholder index="02" title="Kurslar" />,
