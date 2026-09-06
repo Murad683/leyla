@@ -26,8 +26,8 @@ export default function ParticleHero({ lines, ariaLabel }) {
     const cv = canvas.current;
     const ctx = cv.getContext("2d");
 
-    const INK = "#17150f";
-    const ACCENT = "#b8452b";
+    const INK = "#100e08";
+    const ACCENT = "#a63a1f";
     const REPEL_R = 116;
     const REPEL_PUSH = 3.4;
     const SPRING = 0.17;
@@ -48,13 +48,14 @@ export default function ParticleHero({ lines, ariaLabel }) {
     // offscreen aurora, rendered at low res then scaled up (free blur)
     const aur = document.createElement("canvas");
     const actx = aur.getContext("2d");
-    const AUR_W = 220;
-    let AUR_H = 130;
+    const AUR_W = 240;
+    let AUR_H = 140;
     const blobs = [
-      { c: "247,213,150", x: 0.32, y: 0.5, r: 0.6, sx: 0.00007, sy: 0.00009, px: 0, py: 0 },
-      { c: "217,140,74", x: 0.62, y: 0.42, r: 0.5, sx: 0.00009, sy: 0.00006, px: 1.7, py: 0.5 },
-      { c: "184,69,43", x: 0.7, y: 0.66, r: 0.42, sx: 0.00006, sy: 0.0001, px: 3.1, py: 2.0 },
-      { c: "205,162,120", x: 0.45, y: 0.72, r: 0.46, sx: 0.0001, sy: 0.00007, px: 4.6, py: 1.1 },
+      { c: "244,201,120", x: 0.28, y: 0.44, r: 0.66, sx: 0.00019, sy: 0.00024, px: 0, py: 0 },
+      { c: "214,120,58", x: 0.66, y: 0.4, r: 0.56, sx: 0.00024, sy: 0.00016, px: 1.7, py: 0.5 },
+      { c: "176,58,38", x: 0.74, y: 0.68, r: 0.46, sx: 0.00016, sy: 0.00027, px: 3.1, py: 2.0 },
+      { c: "212,150,168", x: 0.4, y: 0.74, r: 0.5, sx: 0.00027, sy: 0.00019, px: 4.6, py: 1.1 },
+      { c: "120,110,168", x: 0.52, y: 0.24, r: 0.4, sx: 0.00021, sy: 0.00029, px: 2.2, py: 3.4 },
     ];
 
     const measure = (octx, fs) => {
@@ -139,31 +140,46 @@ export default function ParticleHero({ lines, ariaLabel }) {
     };
 
     const drawAurora = (t) => {
-      actx.clearRect(0, 0, AUR_W, AUR_H);
-      actx.fillStyle = "#f4f1e9";
+      actx.globalCompositeOperation = "source-over";
+      actx.fillStyle = "#f2eee4";
       actx.fillRect(0, 0, AUR_W, AUR_H);
       actx.globalCompositeOperation = "multiply";
-      mouse.ex += ((mouse.x < 0 ? 0.5 : mouse.x / W) - mouse.ex) * 0.04;
-      mouse.ey += ((mouse.y < 0 ? 0.5 : mouse.y / H) - mouse.ey) * 0.04;
+      mouse.ex += ((mouse.x < 0 ? 0.5 : mouse.x / W) - mouse.ex) * 0.05;
+      mouse.ey += ((mouse.y < 0 ? 0.5 : mouse.y / H) - mouse.ey) * 0.05;
 
       for (let i = 0; i < blobs.length; i++) {
         const b = blobs[i];
-        const dx = Math.sin(t * b.sx + b.px) * 0.13;
-        const dy = Math.cos(t * b.sy + b.py) * 0.13;
-        const tx = b.x + dx + (mouse.ex - 0.5) * 0.14;
-        const ty = b.y + dy + (mouse.ey - 0.5) * 0.14;
+        const dx = Math.sin(t * b.sx + b.px) * 0.26;
+        const dy = Math.cos(t * b.sy + b.py) * 0.24;
+        const lean = i % 2 ? 0.2 : -0.14;
+        const tx = b.x + dx + (mouse.ex - 0.5) * lean;
+        const ty = b.y + dy + (mouse.ey - 0.5) * lean;
         const cx = tx * AUR_W;
         const cy = ty * AUR_H;
-        const rad = b.r * AUR_W * (0.92 + Math.sin(t * 0.0002 + b.px) * 0.12);
+        const rad = b.r * AUR_W * (0.85 + Math.sin(t * 0.0004 + b.px) * 0.22);
         const g = actx.createRadialGradient(cx, cy, 0, cx, cy, rad);
-        g.addColorStop(0, `rgba(${b.c},0.55)`);
-        g.addColorStop(0.6, `rgba(${b.c},0.14)`);
+        g.addColorStop(0, `rgba(${b.c},0.9)`);
+        g.addColorStop(0.5, `rgba(${b.c},0.34)`);
         g.addColorStop(1, `rgba(${b.c},0)`);
         actx.fillStyle = g;
         actx.beginPath();
         actx.arc(cx, cy, rad, 0, Math.PI * 2);
         actx.fill();
       }
+
+      // bright bloom that trails the cursor
+      const bx = mouse.ex * AUR_W;
+      const by = mouse.ey * AUR_H;
+      const br = AUR_W * 0.34;
+      const bg = actx.createRadialGradient(bx, by, 0, bx, by, br);
+      bg.addColorStop(0, "rgba(255,244,214,0.5)");
+      bg.addColorStop(1, "rgba(255,244,214,0)");
+      actx.globalCompositeOperation = "screen";
+      actx.fillStyle = bg;
+      actx.beginPath();
+      actx.arc(bx, by, br, 0, Math.PI * 2);
+      actx.fill();
+
       actx.globalCompositeOperation = "source-over";
     };
 
@@ -182,10 +198,25 @@ export default function ParticleHero({ lines, ariaLabel }) {
       ctx.clearRect(0, 0, W, H);
 
       drawAurora(t);
-      ctx.globalAlpha = 0.62;
+      ctx.globalAlpha = 0.82;
       ctx.imageSmoothingEnabled = true;
       ctx.drawImage(aur, 0, 0, AUR_W, AUR_H, 0, 0, W, H);
       ctx.globalAlpha = 1;
+
+      // soft light scrim behind the headline so the dots stay legible
+      const sc = ctx.createRadialGradient(
+        W / 2,
+        H / 2,
+        0,
+        W / 2,
+        H / 2,
+        Math.min(W, H) * 0.62
+      );
+      sc.addColorStop(0, "rgba(244,241,233,0.62)");
+      sc.addColorStop(0.55, "rgba(244,241,233,0.32)");
+      sc.addColorStop(1, "rgba(244,241,233,0)");
+      ctx.fillStyle = sc;
+      ctx.fillRect(0, 0, W, H);
 
       for (let i = 0; i < heads.length; i++) {
         const p = heads[i];
