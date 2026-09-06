@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { gsap, ScrollTrigger } from "../../lib/gsap";
 import styles from "./ServicesPinned.module.css";
 
 const ITEMS = [
@@ -29,85 +30,89 @@ const ITEMS = [
 ];
 
 export default function ServicesPinned() {
-  const markers = useRef([]);
+  const root = useRef(null);
+  const stage = useRef(null);
   const [active, setActive] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const i = Number(e.target.dataset.i);
-            setActive(i);
-          }
-        });
-      },
-      { rootMargin: "-50% 0px -50% 0px" }
-    );
-    markers.current.forEach((m) => m && io.observe(m));
-    return () => io.disconnect();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) {
+      setProgress(1);
+      return;
+    }
+
+    const ctx = gsap.context(() => {
+      ScrollTrigger.create({
+        trigger: root.current,
+        start: "top top",
+        end: () => "+=" + window.innerHeight * (ITEMS.length - 0.5),
+        pin: stage.current,
+        anticipatePin: 1,
+        scrub: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          const p = self.progress;
+          setProgress(p);
+          const i = Math.min(ITEMS.length - 1, Math.floor(p * ITEMS.length));
+          setActive(i);
+        },
+      });
+    }, root);
+
+    const id = setTimeout(() => ScrollTrigger.refresh(), 300);
+    return () => {
+      clearTimeout(id);
+      ctx.revert();
+    };
   }, []);
 
   return (
-    <section className={styles.section}>
-      <div className={styles.track}>
-        {ITEMS.map((_, i) => (
-          <div
-            key={i}
-            className={styles.marker}
-            data-i={i}
-            ref={(el) => (markers.current[i] = el)}
-          />
-        ))}
+    <section className={styles.section} ref={root}>
+      <div className={styles.stage} ref={stage}>
+        <div className={`${styles.inner} shell`}>
+          <header className={styles.head}>
+            <span className="mono">02 — Xidmətlər</span>
+            <p className={styles.headline}>
+              Dörd addım, <span className={styles.ital}>bir sistem</span>.
+            </p>
+          </header>
 
-        <div className={styles.stage}>
-          <div className={`${styles.inner} shell`}>
-            <header className={styles.head}>
-              <span className="mono">02 — Xidmətlər</span>
-              <p className={styles.headline}>
-                Dörd addım, <span className={styles.ital}>bir sistem</span>.
-              </p>
-            </header>
-
-            <div className={styles.body}>
-              <div className={styles.numbers} aria-hidden="true">
-                {ITEMS.map((it, i) => (
-                  <span
-                    key={it.n}
-                    className={`${styles.num} ${i === active ? styles.numOn : ""}`}
-                    style={{ transform: `translateY(${(i - active) * 0.5}em)` }}
-                  >
-                    {it.n}
-                  </span>
-                ))}
-              </div>
-
-              <div className={styles.panels}>
-                {ITEMS.map((it, i) => (
-                  <article
-                    key={it.n}
-                    className={`${styles.panel} ${
-                      i === active ? styles.panelOn : ""
-                    }`}
-                  >
-                    <h3 className={styles.title}>{it.title}</h3>
-                    <p className={styles.text}>{it.text}</p>
-                    <ul className={styles.tags}>
-                      {it.tags.map((t) => (
-                        <li key={t}>{t}</li>
-                      ))}
-                    </ul>
-                  </article>
-                ))}
-              </div>
+          <div className={styles.body}>
+            <div className={styles.numbers} aria-hidden="true">
+              {ITEMS.map((it, i) => (
+                <span
+                  key={it.n}
+                  className={`${styles.num} ${i === active ? styles.numOn : ""}`}
+                >
+                  {it.n}
+                </span>
+              ))}
             </div>
 
-            <div className={styles.progress} aria-hidden="true">
-              <span
-                className={styles.progressFill}
-                style={{ transform: `scaleX(${(active + 1) / ITEMS.length})` }}
-              />
+            <div className={styles.panels}>
+              {ITEMS.map((it, i) => (
+                <article
+                  key={it.n}
+                  className={`${styles.panel} ${i === active ? styles.panelOn : ""}`}
+                >
+                  <h3 className={styles.title}>{it.title}</h3>
+                  <p className={styles.text}>{it.text}</p>
+                  <ul className={styles.tags}>
+                    {it.tags.map((t) => (
+                      <li key={t}>{t}</li>
+                    ))}
+                  </ul>
+                </article>
+              ))}
             </div>
+          </div>
+
+          <div className={styles.progress} aria-hidden="true">
+            <span
+              className={styles.progressFill}
+              style={{ transform: `scaleX(${Math.max(0.02, progress)})` }}
+            />
           </div>
         </div>
       </div>

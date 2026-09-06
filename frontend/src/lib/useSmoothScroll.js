@@ -5,30 +5,54 @@ import { gsap, ScrollTrigger } from "./gsap";
 /**
  * Boots Lenis smooth scrolling and keeps GSAP ScrollTrigger in sync.
  * Mount once, near the root. Respects prefers-reduced-motion.
+ * Also schedules ScrollTrigger.refresh() once late-loading things
+ * (web fonts, images, a hidden→visible viewport) settle, so pinned
+ * sections measure against the final layout.
  */
 export function useSmoothScroll() {
   useEffect(() => {
     const reduce =
       window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
       new URLSearchParams(location.search).has("nosmooth");
-    if (reduce) return;
 
-    const lenis = new Lenis({
-      duration: 1.1,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      touchMultiplier: 1.6,
-    });
+    let lenis;
+    let onRaf;
+    if (!reduce) {
+      lenis = new Lenis({
+        duration: 1.1,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        touchMultiplier: 1.6,
+      });
+      lenis.on("scroll", ScrollTrigger.update);
+      onRaf = (time) => lenis.raf(time * 1000);
+      gsap.ticker.add(onRaf);
+      gsap.ticker.lagSmoothing(0);
+    }
 
-    lenis.on("scroll", ScrollTrigger.update);
-
-    const onRaf = (time) => lenis.raf(time * 1000);
-    gsap.ticker.add(onRaf);
-    gsap.ticker.lagSmoothing(0);
+    const refresh = () => ScrollTrigger.refresh();
+    const timers = [300, 900, 1800, 3600].map((ms) => setTimeout(refresh, ms));
+    window.addEventListener("load", refresh);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(refresh);
+    }
+    // Guards the dev/preview case where the pane starts at 0×0 and only
+    // gains real dimensions once shown.
+    let lastW = window.innerWidth;
+    const onResize = () => {
+      if (window.innerWidth !== lastW) {
+        lastW = window.innerWidth;
+        refresh();
+      }
+    };
+    window.addEventListener("resize", onResize);
 
     return () => {
-      gsap.ticker.remove(onRaf);
-      lenis.destroy();
+      timers.forEach(clearTimeout);
+      window.removeEventListener("load", refresh);
+      window.removeEventListener("resize", onResize);
+      if (onRaf) gsap.ticker.remove(onRaf);
+      if (lenis) lenis.destroy();
     };
   }, []);
 }

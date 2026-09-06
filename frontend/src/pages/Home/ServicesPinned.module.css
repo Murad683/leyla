@@ -3,33 +3,12 @@
   border-block: 1px solid var(--rule);
 }
 
-/* scroll distance that drives the sticky stage */
-.track {
-  position: relative;
-}
-
-.marker {
-  position: absolute;
-  left: 0;
-  width: 1px;
-  height: 1px;
-}
-.marker[data-i="0"] { top: 5%; }
-.marker[data-i="1"] { top: 33%; }
-.marker[data-i="2"] { top: 61%; }
-.marker[data-i="3"] { top: 89%; }
-
-.track {
-  min-height: 360vh;
-}
-
 .stage {
-  position: sticky;
-  top: 0;
   min-height: 100svh;
   display: flex;
   align-items: center;
   padding-block: clamp(3rem, 8vw, 6rem);
+  overflow: hidden;
 }
 
 .inner {
@@ -40,7 +19,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.1rem;
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: clamp(1.5rem, 4vw, 3rem);
   border-bottom: 1px solid var(--rule);
 }
 .headline {
@@ -58,9 +37,9 @@
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   gap: clamp(2rem, 6vw, 5rem);
-  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  padding-block: clamp(2rem, 5vw, 4rem);
   align-items: center;
-  min-height: 46vh;
+  min-height: 44vh;
 }
 
 .numbers {
@@ -78,18 +57,20 @@
   color: transparent;
   -webkit-text-stroke: 1px var(--rule-strong);
   opacity: 0;
-  transition: opacity 0.5s var(--ease-out), transform 0.6s var(--ease-out),
-    color 0.5s var(--ease-out), -webkit-text-stroke-color 0.5s var(--ease-out);
+  transform: translateY(0.14em);
+  transition: opacity 0.45s var(--ease-out), transform 0.5s var(--ease-out),
+    color 0.45s var(--ease-out), -webkit-text-stroke-color 0.45s var(--ease-out);
 }
 .numOn {
   opacity: 1;
+  transform: translateY(0);
   color: var(--ink);
   -webkit-text-stroke-color: transparent;
 }
 
 .panels {
   position: relative;
-  min-height: 280px;
+  min-height: 300px;
 }
 .panel {
   position: absolute;
@@ -98,8 +79,8 @@
   flex-direction: column;
   gap: 1.1rem;
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+  transform: translateY(18px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out);
   pointer-events: none;
 }
 .panelOn {
@@ -148,49 +129,46 @@
   height: 100%;
   background: var(--ink);
   transform-origin: left;
-  transition: transform 0.5s var(--ease-out);
 }
 
 @media (max-width: 820px) {
   .body {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
   .numbers {
     font-size: clamp(3.5rem, 22vw, 7rem);
   }
   .panels {
-    min-height: 320px;
-  }
-  .track {
-    min-height: 300vh;
+    min-height: 340px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .track {
-    min-height: 0;
-  }
   .stage {
-    position: static;
     min-height: 0;
+    display: block;
+  }
+  .numbers {
+    height: auto;
+    display: flex;
+    gap: 0.3em;
   }
   .num {
     position: static;
     opacity: 1;
     color: var(--ink);
     -webkit-text-stroke-color: transparent;
-    display: inline-block;
-    margin-right: 0.3em;
+    transform: none;
   }
-  .numbers {
-    height: auto;
+  .panels {
+    min-height: 0;
   }
   .panel {
     position: static;
     opacity: 1;
     transform: none;
     pointer-events: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
   }
 }

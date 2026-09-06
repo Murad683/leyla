@@ -40,17 +40,37 @@
   border-top: 1px solid var(--void-rule);
 }
 .item {
+  position: relative;
   display: grid;
   grid-template-columns: 60px 1fr 40px;
   align-items: center;
   gap: 1.5rem;
-  padding-block: clamp(1.4rem, 3.5vw, 2.2rem);
+  padding: clamp(1.4rem, 3.5vw, 2.2rem) 0 clamp(1.4rem, 3.5vw, 2.2rem) 0;
   border-bottom: 1px solid var(--void-rule);
-  transition: padding-left 0.4s var(--ease-out), background-color 0.4s var(--ease-out);
 }
-.item:hover {
-  padding-left: 1rem;
-  background: var(--void-raised);
+/* slow growing accent line on the left */
+.item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--volt-soft);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s var(--ease-out);
+}
+.item:hover::before {
+  transform: scaleY(1);
+  transform-origin: top;
+}
+.itemInner,
+.item > * {
+  transition: transform 0.6s var(--ease-out), color 0.5s var(--ease-out);
+}
+.item:hover > * {
+  transform: translateX(14px);
 }
 .itemN {
   font-family: var(--font-mono);
@@ -62,6 +82,10 @@
   font-weight: 300;
   font-size: var(--step-2);
   margin-bottom: 0.3rem;
+  transition: color 0.5s var(--ease-out);
+}
+.item:hover .itemT {
+  color: #fff;
 }
 .itemD {
   color: var(--on-void-soft);
@@ -70,10 +94,9 @@
 .itemArrow {
   text-align: right;
   color: var(--volt-soft);
-  transition: transform 0.4s var(--ease-out);
 }
 .item:hover .itemArrow {
-  transform: translateX(6px);
+  transform: translateX(22px);
 }
 
 .ctaRow {
