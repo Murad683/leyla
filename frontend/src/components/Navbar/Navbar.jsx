@@ -36,6 +36,19 @@ export default function Navbar() {
     };
   }, [open]);
 
+  // let sticky sub-headers (e.g. the Services dial) close the nav gap:
+  // --nav-offset is 0 while the nav is auto-hidden, else the nav height
+  useEffect(() => {
+    const el = document.documentElement;
+    el.classList.toggle("nav-hidden", hidden && !open);
+    if (hidden && !open) el.style.setProperty("--nav-offset", "0px");
+    else el.style.removeProperty("--nav-offset");
+    return () => {
+      el.classList.remove("nav-hidden");
+      el.style.removeProperty("--nav-offset");
+    };
+  }, [hidden, open]);
+
   return (
     <>
     <header

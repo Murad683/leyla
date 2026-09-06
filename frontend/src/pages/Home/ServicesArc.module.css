@@ -125,7 +125,10 @@
 
   .rail {
     position: sticky;
-    top: var(--nav-h);
+    /* --nav-offset is set to 0 by the navbar while it's auto-hidden,
+       so the dial rides to the very top; on scroll-up it tucks back
+       under the returning navbar */
+    top: var(--nav-offset, var(--nav-h));
     height: auto;
     flex-direction: column;
     justify-content: flex-start;
@@ -137,6 +140,7 @@
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--rule);
     z-index: 5;
+    transition: top 0.4s var(--ease-out);
   }
   .railHead {
     align-items: center;
