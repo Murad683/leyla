@@ -1,0 +1,116 @@
+.section {
+  background: var(--void);
+  color: var(--on-void);
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+}
+
+.inner {
+  padding-top: clamp(3.5rem, 8vw, 6rem);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  padding-bottom: clamp(2.5rem, 6vw, 4rem);
+}
+.cue {
+  color: var(--on-void-soft);
+}
+.headline {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-4);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  max-width: 18ch;
+}
+.volt {
+  font-style: italic;
+  color: var(--volt-soft);
+}
+.sub {
+  color: var(--on-void-soft);
+  font-size: var(--step-1);
+  max-width: 44ch;
+}
+
+.list {
+  list-style: none;
+  border-top: 1px solid var(--void-rule);
+}
+.item {
+  display: grid;
+  grid-template-columns: 60px 1fr 40px;
+  align-items: center;
+  gap: 1.5rem;
+  padding-block: clamp(1.4rem, 3.5vw, 2.2rem);
+  border-bottom: 1px solid var(--void-rule);
+  transition: padding-left 0.4s var(--ease-out), background-color 0.4s var(--ease-out);
+}
+.item:hover {
+  padding-left: 1rem;
+  background: var(--void-raised);
+}
+.itemN {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--volt-soft);
+}
+.itemT {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-2);
+  margin-bottom: 0.3rem;
+}
+.itemD {
+  color: var(--on-void-soft);
+  font-size: 0.95rem;
+}
+.itemArrow {
+  text-align: right;
+  color: var(--volt-soft);
+  transition: transform 0.4s var(--ease-out);
+}
+.item:hover .itemArrow {
+  transform: translateX(6px);
+}
+
+.ctaRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
+.ctaText {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: var(--step-2);
+  max-width: 20ch;
+}
+.cta {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1rem 1.8rem;
+  border-radius: 999px;
+  background: var(--volt);
+  color: #fff;
+  transition: transform 0.3s var(--ease-out), background-color 0.3s var(--ease-out);
+}
+.cta:hover {
+  transform: translateY(-3px);
+  background: var(--volt-soft);
+}
+
+@media (max-width: 620px) {
+  .item {
+    grid-template-columns: 40px 1fr;
+  }
+  .itemArrow {
+    display: none;
+  }
+}

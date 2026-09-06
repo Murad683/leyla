@@ -1,28 +1,3 @@
 .page {
   position: relative;
 }
-
-.close {
-  background: var(--paper);
-  text-align: left;
-}
-.cue {
-  margin-bottom: 1.6rem;
-}
-.big {
-  font-family: var(--font-display);
-  font-weight: 300;
-  font-size: var(--step-3);
-  line-height: 1.16;
-  letter-spacing: -0.02em;
-  max-width: 24ch;
-}
-.ital {
-  font-style: italic;
-  color: var(--accent);
-}
-.note {
-  margin-top: 1.6rem;
-  color: var(--ink-soft);
-  max-width: 44ch;
-}

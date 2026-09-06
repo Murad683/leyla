@@ -21,6 +21,17 @@
   --accent: #b8452b;         /* terracotta / rust */
   --accent-deep: #8f3420;
 
+  /* electric — the bold contrast moment (dark bands only) */
+  --volt: #2f2bff;
+  --volt-soft: #7d7bff;
+
+  /* work-panel field colours */
+  --field-1: #b8452b;
+  --field-2: #17150f;
+  --field-3: #c9a24b;
+  --field-4: #4a5842;
+  --field-5: #2f2bff;
+
   /* dark section (footer, contrast bands) */
   --void: #17150f;
   --void-raised: #211e16;
@@ -29,6 +40,7 @@
   --on-void-soft: #a9a396;
 
   --selection: rgba(184, 69, 43, 0.22);
+  --grid-line: rgba(23, 21, 15, 0.07);
 
   /* ---- Typography -------------------------------------- */
   --font-display: "Fraunces", Georgia, "Times New Roman", serif;

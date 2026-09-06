@@ -4,6 +4,15 @@
   border-block: 1px solid var(--rule);
   padding-block: 1.4rem;
 }
+.light {
+  border-color: var(--void-rule);
+}
+.light .item {
+  color: var(--on-void);
+}
+.light .sep {
+  color: var(--volt-soft);
+}
 
 .track {
   display: flex;

@@ -1,26 +1,30 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap } from "../../lib/gsap";
+import GradientOrb from "../../components/GradientOrb/GradientOrb";
 import styles from "./Hero.module.css";
 
 function useClock() {
-  const [t, setT] = useState("--:--");
+  const [t, setT] = useState("--:--:--");
   useEffect(() => {
-    const tick = () => {
-      const d = new Date();
+    const tick = () =>
       setT(
-        d.toLocaleTimeString("az-AZ", {
+        new Date().toLocaleTimeString("az-AZ", {
           hour: "2-digit",
           minute: "2-digit",
+          second: "2-digit",
           hour12: false,
         })
       );
-    };
     tick();
-    const id = setInterval(tick, 1000 * 30);
+    const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, []);
   return t;
 }
+
+const LINE1 = ["Sosial", "media —"];
+const LINE2 = ["marketoloq"];
+const LINE3 = ["təfəkkürü", "ilə."];
 
 export default function Hero() {
   const root = useRef(null);
@@ -28,77 +32,76 @@ export default function Hero() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const words = root.current.querySelectorAll(`.${styles.w} > span`);
+    const rest = root.current.querySelectorAll(`[data-fade]`);
+
+    if (reduce) {
+      gsap.set(words, { yPercent: 0 });
+      gsap.set(rest, { opacity: 1, y: 0 });
+      return;
+    }
+
     const ctx = gsap.context(() => {
-      if (reduce) {
-        gsap.set(`.${styles.word} > span`, { y: 0, opacity: 1 });
-        gsap.set([`.${styles.meta}`, `.${styles.lead}`, `.${styles.cue}`], {
-          opacity: 1,
-          y: 0,
-        });
-        return;
-      }
-      const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
-      tl.from(`.${styles.meta} > *`, {
-        y: 14,
-        opacity: 0,
-        duration: 0.7,
-        stagger: 0.06,
-      })
-        .from(
-          `.${styles.word} > span`,
-          { yPercent: 115, duration: 1.05, stagger: 0.09 },
-          "-=0.35"
-        )
-        .from(
-          `.${styles.lead}`,
-          { y: 20, opacity: 0, duration: 0.8 },
-          "-=0.6"
-        )
-        .from(
-          `.${styles.cue}`,
-          { opacity: 0, duration: 0.6 },
-          "-=0.4"
-        );
+      const tl = gsap.timeline({ delay: 0.15, defaults: { ease: "expo.out" } });
+      tl.from(`[data-hud] > *`, { y: 12, opacity: 0, duration: 0.7, stagger: 0.05 })
+        .from(words, { yPercent: 118, duration: 1.1, stagger: 0.08 }, "-=0.3")
+        .from(`.${styles.orbWrap}`, { opacity: 0, scale: 1.08, duration: 1.4 }, "-=1")
+        .from(rest, { y: 22, opacity: 0, duration: 0.9, stagger: 0.1 }, "-=0.7");
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
     <section className={styles.hero} ref={root}>
+      <div className={styles.orbWrap}>
+        <GradientOrb />
+      </div>
+
       <div className={`${styles.inner} shell`}>
-        <div className={styles.meta}>
-          <span className="mono">Bakı 40.4°N</span>
-          <span className="mono">Yerli vaxt {clock}</span>
-          <span className="mono">SMM / Strategiya</span>
+        <div className={styles.hud} data-hud>
+          <span className="mono">Bakı 40.4°N / 49.8°E</span>
+          <span className="mono">{clock}</span>
+          <span className="mono">Fəaliyyət — 2019</span>
         </div>
 
         <h1 className={styles.title}>
-          <span className={styles.word}>
-            <span>Sosial</span>
-          </span>{" "}
-          <span className={styles.word}>
-            <span>media —</span>
+          <span className={styles.line}>
+            {LINE1.map((w) => (
+              <span className={`${styles.w} mask`} key={w}>
+                <span>{w}</span>
+              </span>
+            ))}
           </span>
-          <br />
-          <span className={styles.word}>
-            <span className={styles.ital}>marketoloq</span>
-          </span>{" "}
-          <span className={styles.word}>
-            <span>təfəkkürü</span>
-          </span>{" "}
-          <span className={styles.word}>
-            <span>ilə.</span>
+          <span className={styles.line}>
+            {LINE2.map((w) => (
+              <span className={`${styles.w} ${styles.ital} mask`} key={w}>
+                <span>{w}</span>
+              </span>
+            ))}
+          </span>
+          <span className={styles.line}>
+            {LINE3.map((w) => (
+              <span className={`${styles.w} mask`} key={w}>
+                <span>{w}</span>
+              </span>
+            ))}
           </span>
         </h1>
 
-        <p className={`${styles.lead} lead`}>
-          Strategiya, kontent və satış bir sistemdə. Şəxsi brendini qur, auditoriyanı
-          müştəriyə çevir.
-        </p>
+        <div className={styles.foot}>
+          <p className={`${styles.lead} lead`} data-fade>
+            Strategiya, kontent və satış — bir sistemdə. Şəxsi brendini qur,
+            auditoriyanı müştəriyə çevir.
+          </p>
+          <div className={styles.stat} data-fade>
+            <span className={styles.statNum}>16K+</span>
+            <span className="mono">Auditoriya</span>
+          </div>
+        </div>
 
-        <div className={styles.cue}>
-          <span className="mono">Aşağı</span>
-          <span className={styles.line} />
+        <div className={styles.cue} data-fade>
+          <span className="mono">Aşağı sürüşdür</span>
+          <span className={styles.line2} />
         </div>
       </div>
     </section>

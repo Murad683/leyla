@@ -3,8 +3,9 @@ import styles from "./Marquee.module.css";
 /**
  * Seamless CSS marquee. `items` repeated twice for the loop.
  * `reverse` flips direction; `speed` is seconds per cycle.
+ * `light` renders for dark backgrounds.
  */
-export default function Marquee({ items = [], speed = 26, reverse = false }) {
+export default function Marquee({ items = [], speed = 26, reverse = false, light = false }) {
   const row = (key) => (
     <div className={styles.row} key={key} aria-hidden={key === "b"}>
       {items.map((it, i) => (
@@ -17,7 +18,7 @@ export default function Marquee({ items = [], speed = 26, reverse = false }) {
   );
 
   return (
-    <div className={styles.wrap}>
+    <div className={`${styles.wrap} ${light ? styles.light : ""}`}>
       <div
         className={`${styles.track} ${reverse ? styles.reverse : ""}`}
         style={{ "--speed": `${speed}s` }}

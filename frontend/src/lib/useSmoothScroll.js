@@ -8,7 +8,9 @@ import { gsap, ScrollTrigger } from "./gsap";
  */
 export function useSmoothScroll() {
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const reduce =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches ||
+      new URLSearchParams(location.search).has("nosmooth");
     if (reduce) return;
 
     const lenis = new Lenis({

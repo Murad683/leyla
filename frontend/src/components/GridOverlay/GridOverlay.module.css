@@ -1,0 +1,35 @@
+.marks {
+  position: fixed;
+  inset: 14px;
+  z-index: 150;
+  pointer-events: none;
+}
+.marks i {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+}
+.marks i::before,
+.marks i::after {
+  content: "";
+  position: absolute;
+  background: var(--rule-strong);
+}
+.marks i::before {
+  left: 50%;
+  top: 0;
+  width: 1px;
+  height: 100%;
+  transform: translateX(-0.5px);
+}
+.marks i::after {
+  top: 50%;
+  left: 0;
+  height: 1px;
+  width: 100%;
+  transform: translateY(-0.5px);
+}
+.tl { top: 0; left: 0; }
+.tr { top: 0; right: 0; }
+.bl { bottom: 0; left: 0; }
+.br { bottom: 0; right: 0; }
