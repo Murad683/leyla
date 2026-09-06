@@ -1,6 +1,6 @@
 import Hero from "./Hero";
 import Intro from "./Intro";
-import ServicesPinned from "./ServicesPinned";
+import ServicesArc from "./ServicesArc";
 import WorkGallery from "./WorkGallery";
 import Numbers from "./Numbers";
 import Process from "./Process";
@@ -18,7 +18,7 @@ export default function Home() {
         speed={32}
       />
       <Intro />
-      <ServicesPinned />
+      <ServicesArc />
       <WorkGallery />
       <Numbers />
       <Process />

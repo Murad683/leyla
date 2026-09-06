@@ -1,9 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
-import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
+import FlowField from "../../components/FlowField/FlowField";
 import styles from "./Hero.module.css";
-
-const WARM = ["244,201,120", "214,120,58", "176,58,38", "212,150,168", "120,110,168"];
 
 const LINE1 = ["Sosial", "media —"];
 const LINE2 = ["marketoloq"];
@@ -11,69 +9,86 @@ const LINE3 = ["təfəkkürü", "ilə."];
 
 export default function Hero() {
   const root = useRef(null);
+  const title = useRef(null);
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const words = root.current.querySelectorAll(`.${styles.w} > span`);
-    const rest = root.current.querySelectorAll("[data-fade]");
+    const words = root.current.querySelectorAll(`.${styles.w}`);
 
     if (reduce) {
-      gsap.set(words, { yPercent: 0 });
-      gsap.set(rest, { opacity: 1, y: 0 });
+      gsap.set(words, { opacity: 1, y: 0, filter: "blur(0)" });
       return;
     }
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.35, defaults: { ease: "expo.out" } });
-      tl.from(`[data-fade="tag"]`, { y: 12, opacity: 0, duration: 0.7 })
-        .from(words, { yPercent: 120, duration: 1.05, stagger: 0.07 }, "-=0.2")
-        .from(`[data-fade="cue"]`, { opacity: 0, duration: 0.6 }, "-=0.5");
+      // reveal: blur -> clear, rising, staggered
+      gsap.from(words, {
+        opacity: 0,
+        y: 26,
+        filter: "blur(14px)",
+        duration: 1.1,
+        ease: "power3.out",
+        stagger: 0.08,
+        delay: 0.3,
+      });
+      gsap.from(`.${styles.cue}`, { opacity: 0, duration: 0.8, delay: 1.1 });
+
+      // continuous breathing float, per word
+      words.forEach((w, i) => {
+        gsap.to(w, {
+          y: "+=6",
+          duration: 3.4 + (i % 3) * 0.6,
+          ease: "sine.inOut",
+          repeat: -1,
+          yoyo: true,
+          delay: 1.2 + i * 0.15,
+        });
+      });
+
+      // soft parallax toward the cursor
+      const qx = gsap.quickTo(title.current, "x", { duration: 0.9, ease: "power3" });
+      const qy = gsap.quickTo(title.current, "y", { duration: 0.9, ease: "power3" });
+      const onMove = (e) => {
+        const cx = (e.clientX / window.innerWidth - 0.5) * 14;
+        const cy = (e.clientY / window.innerHeight - 0.5) * 12;
+        qx(cx);
+        qy(cy);
+      };
+      window.addEventListener("mousemove", onMove);
+      return () => window.removeEventListener("mousemove", onMove);
     }, root);
     return () => ctx.revert();
   }, []);
 
   return (
     <section className={styles.hero} ref={root}>
-      <FlowCanvas
-        palette={WARM}
-        base="#f2eee4"
-        scrim="244,241,233"
-        bloom="255,244,214"
-        opacity={0.82}
-        scrimStrength={0.6}
-      />
+      <FlowField line="23,21,15" fade="244,241,233" />
 
-      <div className={`${styles.inner} shell`}>
-        <span className={`mono ${styles.tag}`} data-fade="tag">
-          SMM · Strategiya · Bakı
+      <h1 className={styles.title} ref={title}>
+        <span className={styles.line}>
+          {LINE1.map((w) => (
+            <span className={styles.w} key={w}>
+              {w}&nbsp;
+            </span>
+          ))}
         </span>
+        <span className={styles.line}>
+          {LINE2.map((w) => (
+            <span className={`${styles.w} ${styles.ital}`} key={w}>
+              {w}
+            </span>
+          ))}
+        </span>
+        <span className={styles.line}>
+          {LINE3.map((w) => (
+            <span className={styles.w} key={w}>
+              {w}&nbsp;
+            </span>
+          ))}
+        </span>
+      </h1>
 
-        <h1 className={styles.title}>
-          <span className={styles.line}>
-            {LINE1.map((w) => (
-              <span className={`${styles.w} mask`} key={w}>
-                <span>{w}</span>
-              </span>
-            ))}
-          </span>
-          <span className={styles.line}>
-            {LINE2.map((w) => (
-              <span className={`${styles.w} ${styles.ital} mask`} key={w}>
-                <span>{w}</span>
-              </span>
-            ))}
-          </span>
-          <span className={styles.line}>
-            {LINE3.map((w) => (
-              <span className={`${styles.w} mask`} key={w}>
-                <span>{w}</span>
-              </span>
-            ))}
-          </span>
-        </h1>
-      </div>
-
-      <span className={styles.cue} data-fade="cue" aria-hidden="true" />
+      <span className={styles.cue} aria-hidden="true" />
     </section>
   );
 }

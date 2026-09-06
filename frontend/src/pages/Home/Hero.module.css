@@ -3,57 +3,61 @@
   min-height: 100svh;
   display: flex;
   align-items: center;
+  justify-content: center;
   overflow: hidden;
   padding-block: calc(var(--nav-h) + 6vh) 12vh;
 }
 
-.inner {
+.title {
   position: relative;
   z-index: 2;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(1.75rem, 5vw, 3rem);
   text-align: center;
-}
-
-.tag {
-  color: var(--ink);
-  opacity: 0.72;
-  background: color-mix(in srgb, var(--paper) 55%, transparent);
-  padding: 0.4em 0.95em;
-  border-radius: 999px;
-  backdrop-filter: blur(2px);
-}
-
-.title {
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(2.7rem, 8.4vw, 7.6rem);
-  line-height: 1.02;
-  letter-spacing: -0.032em;
-  color: var(--ink);
+  font-size: clamp(2.7rem, 8.6vw, 7.8rem);
+  line-height: 1.04;
+  letter-spacing: -0.028em;
+  will-change: transform;
 }
+
 .line {
   display: block;
 }
+
+/* warm gradient + a light band drifting through the letters */
 .w {
   display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-  margin-inline: 0.12em;
+  will-change: transform, opacity, filter;
+  background: linear-gradient(
+    100deg,
+    #17150f 0%,
+    #17150f 30%,
+    #cf6f49 42%,
+    #a6421f 50%,
+    #cf6f49 58%,
+    #17150f 70%,
+    #17150f 100%
+  );
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 8s linear infinite;
 }
-.w > span {
-  display: inline-block;
-  will-change: transform;
-}
-.ital > span {
-  font-style: italic;
-  color: var(--accent);
+@keyframes shimmer {
+  from { background-position: 130% 0; }
+  to { background-position: -30% 0; }
 }
 
-/* animated hairline, bottom-centre */
+.ital {
+  font-style: italic;
+  background: none;
+  color: var(--accent);
+  -webkit-text-fill-color: var(--accent);
+  animation: none;
+}
+
 .cue {
   position: absolute;
   left: 50%;
@@ -77,6 +81,16 @@
   0% { transform: translateY(-100%); }
   55% { transform: translateY(100%); }
   100% { transform: translateY(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .w {
+    animation: none;
+    background-position: 20% 0;
+  }
+  .cue {
+    display: none;
+  }
 }
 
 @media (max-width: 680px) {
