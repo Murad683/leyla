@@ -14,10 +14,11 @@
   text-align: center;
   font-family: var(--font-display);
   font-weight: 300;
-  font-size: clamp(2.7rem, 8.6vw, 7.8rem);
-  line-height: 1.04;
+  font-size: clamp(2.3rem, 8.6vw, 7.8rem);
+  line-height: 1.06;
   letter-spacing: -0.028em;
   will-change: transform;
+  padding-inline: var(--gutter);
 }
 
 .line {
@@ -95,6 +96,10 @@
 }
 
 @media (max-width: 680px) {
+  .hero {
+    min-height: 92svh;
+    padding-block: calc(var(--nav-h) + 2vh) 10vh;
+  }
   .cue {
     display: none;
   }

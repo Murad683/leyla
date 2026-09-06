@@ -41,5 +41,10 @@
 @media (max-width: 780px) {
   .grid {
     grid-template-columns: 1fr 1fr;
+    align-items: start;
+    gap: 2.25rem 1.25rem;
+  }
+  .num {
+    font-size: clamp(2.2rem, 12vw, 3rem);
   }
 }

@@ -10,7 +10,7 @@ const QUOTES = [
   {
     q: "Kontent çəkməyi dayandırıb sistem qurduq. İndi komanda mənsiz də ritmi saxlayır.",
     a: "Elvin M.",
-    r: "Kofe brendi, kurus iştirakçısı",
+    r: "Kofe brendi, kurs iştirakçısı",
   },
 ];
 

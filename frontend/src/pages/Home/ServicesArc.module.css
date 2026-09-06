@@ -127,18 +127,37 @@
     top: var(--nav-h);
     height: auto;
     flex-direction: column;
-    gap: 1.25rem;
-    padding-block: 1.5rem 0;
-    background: var(--paper-raised);
+    justify-content: flex-start;
+    gap: 1rem;
+    padding: 1.25rem 0 1rem;
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    background: color-mix(in srgb, var(--paper-raised) 92%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
     z-index: 5;
   }
+  .railHead {
+    gap: 0.6rem;
+  }
+  .railTitle {
+    font-size: var(--step-2);
+  }
   .dialWrap {
+    flex: none;
     min-height: 0;
-    height: 92px;
+    height: 88px;
     max-height: none;
   }
+  .num {
+    font-size: 30px;
+  }
   .card {
-    min-height: 74vh;
+    min-height: 72vh;
+    padding-block: 3rem;
+  }
+  .card:first-child {
+    padding-top: 2rem;
   }
 }
 

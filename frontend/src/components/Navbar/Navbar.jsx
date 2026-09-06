@@ -37,6 +37,7 @@ export default function Navbar() {
   }, [open]);
 
   return (
+    <>
     <header
       className={`${styles.bar} ${scrolled ? styles.scrolled : ""} ${
         hidden && !open ? styles.hidden : ""
@@ -80,28 +81,29 @@ export default function Navbar() {
           <span className={open ? styles.burgerOpen : ""} />
         </button>
       </div>
+    </header>
 
-      <div className={`${styles.sheet} ${open ? styles.sheetOpen : ""}`}>
-        {LINKS.map((l) => (
-          <NavLink
-            key={l.to}
-            to={l.to}
-            className={styles.sheetLink}
-            onClick={() => setOpen(false)}
-          >
-            {l.label}
-          </NavLink>
-        ))}
-        <a
-          href="https://www.instagram.com/leiylamammadly/"
-          target="_blank"
-          rel="noreferrer"
+    <div className={`${styles.sheet} ${open ? styles.sheetOpen : ""}`}>
+      {LINKS.map((l) => (
+        <NavLink
+          key={l.to}
+          to={l.to}
           className={styles.sheetLink}
           onClick={() => setOpen(false)}
         >
-          Instagram
-        </a>
-      </div>
-    </header>
+          {l.label}
+        </NavLink>
+      ))}
+      <a
+        href="https://www.instagram.com/leiylamammadly/"
+        target="_blank"
+        rel="noreferrer"
+        className={styles.sheetLink}
+        onClick={() => setOpen(false)}
+      >
+        Instagram
+      </a>
+    </div>
+    </>
   );
 }

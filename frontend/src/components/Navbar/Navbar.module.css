@@ -137,24 +137,31 @@
 
 .sheet {
   position: fixed;
-  inset: 0 0 auto 0;
+  inset: 0;
+  z-index: 390;
   background: var(--paper);
-  border-bottom: 1px solid var(--rule);
   display: none;
   flex-direction: column;
-  padding: calc(var(--nav-h) + 1rem) var(--gutter) 2rem;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: var(--nav-h) var(--gutter) 2.5rem;
+  overflow-y: auto;
   transform: translateY(-100%);
   transition: transform var(--dur) var(--ease-out);
 }
-.sheetOpen {
+.sheet.sheetOpen {
   transform: translateY(0);
 }
 .sheetLink {
   font-family: var(--font-display);
-  font-size: 1.6rem;
+  font-size: clamp(1.8rem, 8vw, 2.6rem);
   font-weight: 300;
-  padding: 0.9rem 0;
+  letter-spacing: -0.02em;
+  padding: 0.7rem 0;
   border-bottom: 1px solid var(--rule);
+}
+.sheetLink:last-child {
+  border-bottom: none;
 }
 
 @media (max-width: 860px) {
