@@ -1,5 +1,6 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
+import { useReveal } from "../../lib/useReveal";
 import styles from "./Process.module.css";
 
 const STEPS = [
@@ -23,13 +24,48 @@ const STEPS = [
   },
 ];
 
-export default function Process() {
+const MQ = "(max-width: 860px)";
+
+function ProcessMobile() {
+  const ref = useReveal({ stagger: 0.1 });
+  return (
+    <section className={styles.section}>
+      <div className={`${styles.mShell} shell`} ref={ref}>
+        <header className={styles.mHead}>
+          <span className="mono reveal">04 — Necə işləyirik</span>
+          <p className={`${styles.mHeadline} reveal`}>
+            Kaosdan aydınlığa — <span className={styles.ital}>üç mərhələ</span>.
+          </p>
+        </header>
+
+        <ol className={styles.mList}>
+          {STEPS.map((s, i) => (
+            <li className={`${styles.mCard} reveal`} key={s.n}>
+              <span className={styles.mN}>{s.n}</span>
+              <span className={`mono ${styles.mStage}`}>
+                Mərhələ {i + 1} / {STEPS.length}
+              </span>
+              <h3 className={styles.mTitle}>{s.title}</h3>
+              <p className={styles.mText}>{s.text}</p>
+              <ul className={styles.mTags}>
+                {s.tags.map((t) => (
+                  <li key={t}>{t}</li>
+                ))}
+              </ul>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function ProcessDesktop() {
   const root = useRef(null);
   const pin = useRef(null);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const ctx = gsap.context(() => {
       const cards = gsap.utils.toArray(`.${styles.card}`);
@@ -81,14 +117,12 @@ export default function Process() {
 
           <div className={styles.stack}>
             {STEPS.map((s, i) => (
-              <article
-                className={styles.card}
-                key={s.n}
-                style={{ zIndex: i + 1 }}
-              >
+              <article className={styles.card} key={s.n} style={{ zIndex: i + 1 }}>
                 <div className={styles.cardTop}>
                   <span className={styles.cardN}>{s.n}</span>
-                  <span className="mono">Mərhələ {i + 1} / {STEPS.length}</span>
+                  <span className="mono">
+                    Mərhələ {i + 1} / {STEPS.length}
+                  </span>
                 </div>
                 <h3 className={styles.cardTitle}>{s.title}</h3>
                 <p className={styles.cardText}>{s.text}</p>
@@ -104,4 +138,18 @@ export default function Process() {
       </div>
     </section>
   );
+}
+
+export default function Process() {
+  const [mobile, setMobile] = useState(
+    typeof window !== "undefined" && window.matchMedia(MQ).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(MQ);
+    const on = () => setMobile(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  return mobile ? <ProcessMobile /> : <ProcessDesktop />;
 }

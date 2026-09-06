@@ -113,6 +113,22 @@ ol[role="list"] {
   padding-block: clamp(4.5rem, 10vw, 9rem);
 }
 
+/* mobile: looser rhythm, headings breathe */
+@media (max-width: 760px) {
+  :root {
+    --gutter: clamp(1.5rem, 7vw, 2rem);
+  }
+  .section {
+    padding-block: clamp(4.5rem, 17vw, 6.5rem);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    line-height: 1.16;
+  }
+}
+
 /* ---------- grain overlay ---------- */
 .grain {
   position: fixed;

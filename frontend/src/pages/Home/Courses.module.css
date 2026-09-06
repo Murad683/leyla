@@ -179,19 +179,72 @@
   background: var(--accent);
 }
 
-@media (max-width: 620px) {
+@media (max-width: 760px) {
+  .top {
+    align-items: center;
+    text-align: center;
+    padding-bottom: clamp(3rem, 12vw, 4.5rem);
+  }
+  .headline {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+    line-height: 1.24;
+    max-width: 18ch;
+  }
+
+  /* mobile: no accordion — every course open, centred, breathing */
   .body {
     grid-template-columns: 1fr;
+    gap: 0;
   }
   .rail {
     display: none;
   }
-  .item {
-    grid-template-columns: 44px 1fr;
-    gap: 1rem;
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(3rem, 12vw, 4.5rem);
+    border-top: none;
   }
+  .item,
+  .item.open {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+    gap: 0.7rem;
+    padding-block: 0;
+    border-bottom: none;
+    opacity: 1;
+  }
+  .itemN,
   .item.open .itemN {
-    transform: scale(1.25);
+    font-size: clamp(2.4rem, 12vw, 3.2rem);
+    color: var(--accent);
+    transform: none;
+  }
+  .itemHead {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .itemReveal,
+  .item.open .itemReveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .itemD {
+    margin-top: 0.6rem;
+    max-width: 34ch;
+    line-height: 1.7;
+  }
+
+  .ctaRow {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+  }
+  .ctaText {
+    max-width: 24ch;
   }
 }
 

@@ -42,9 +42,31 @@
   .grid {
     grid-template-columns: 1fr 1fr;
     align-items: start;
-    gap: 2.25rem 1.25rem;
+    gap: 2.5rem 1.25rem;
   }
   .num {
     font-size: clamp(2.2rem, 12vw, 3rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .section {
+    text-align: center;
+  }
+  .cue {
+    margin-bottom: clamp(2.5rem, 12vw, 3.5rem);
+  }
+}
+
+@media (max-width: 460px) {
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 2.75rem;
+    justify-items: center;
+  }
+  .stat {
+    align-items: center;
+    text-align: center;
+    max-width: 22ch;
   }
 }

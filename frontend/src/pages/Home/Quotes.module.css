@@ -38,5 +38,30 @@
 @media (max-width: 780px) {
   .grid {
     grid-template-columns: 1fr;
+    gap: clamp(3rem, 12vw, 4rem);
+  }
+}
+
+@media (max-width: 760px) {
+  .section {
+    text-align: center;
+  }
+  .cue {
+    margin-bottom: clamp(2.5rem, 12vw, 3.5rem);
+  }
+  .card {
+    align-items: center;
+    gap: 1.4rem;
+    border-top: none;
+    padding-top: 0;
+  }
+  .q {
+    font-size: clamp(1.35rem, 6vw, 1.7rem);
+    line-height: 1.45;
+    max-width: 30ch;
+  }
+  .cap {
+    align-items: center;
+    gap: 0.4rem;
   }
 }
