@@ -53,6 +53,7 @@
 }
 
 .ital {
+  font-family: var(--font-accent);
   font-style: italic;
   background: none;
   color: var(--accent);

@@ -25,6 +25,7 @@
   max-width: 15ch;
 }
 .ital {
+  font-family: var(--font-accent);
   font-style: italic;
   color: var(--accent);
 }

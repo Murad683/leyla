@@ -37,6 +37,7 @@
   will-change: transform, opacity, filter;
 }
 .accent {
+  font-family: var(--font-accent);
   font-style: italic;
   color: var(--accent);
 }

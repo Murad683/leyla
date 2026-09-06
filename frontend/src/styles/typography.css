@@ -54,6 +54,7 @@
 }
 
 .italic-accent {
+  font-family: var(--font-accent);
   font-style: italic;
   font-weight: 300;
 }

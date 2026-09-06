@@ -1,6 +1,9 @@
-/* Gilroy - self-hosted geometric sans (body / UI).
-   Display serif (Fraunces) and mono (JetBrains Mono) load from
-   Google Fonts via index.html.
+/* Font roles:
+   - Display / headings -> Gilroy (self-hosted below)  (var(--font-display))
+   - Accent word        -> Gilroy, italic + terracotta   (var(--font-accent))
+   - Body / UI          -> Gilroy                         (var(--font-sans))
+   - Eyebrows / labels  -> JetBrains Mono                 (var(--font-mono))
+   Only JetBrains Mono loads from Google Fonts via index.html.
    Gilroy's capital Ə (U+018F) glyph is malformed, so unicode-range
    excludes it and the browser falls back for that one character. */
 

@@ -43,8 +43,9 @@
   --grid-line: rgba(26, 26, 24, 0.06);
 
   /* ---- Typography -------------------------------------- */
-  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --font-display: "Gilroy", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
   --font-sans: "Gilroy", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-accent: var(--font-display); /* same family as headings; used italic + terracotta */
   --font-mono: "JetBrains Mono", "SFMono-Regular", "Courier New", monospace;
 
   /* fluid display scale */
