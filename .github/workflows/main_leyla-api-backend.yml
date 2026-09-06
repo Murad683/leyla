@@ -8,21 +8,18 @@ on:
 
 concurrency:
   group: leyla-deploy
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - name: Deploy over SSH
-        env:
-          HETZNER_HOST: ${{ secrets.HETZNER_HOST }}
-          HETZNER_USER: ${{ secrets.HETZNER_USER }}
-          HETZNER_SSH_KEY: ${{ secrets.HETZNER_SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh && chmod 700 ~/.ssh
-          printf '%s\n' "$HETZNER_SSH_KEY" | tr -d '\r' > ~/.ssh/deploy_key
-          chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -H "$HETZNER_HOST" >> ~/.ssh/known_hosts 2>/dev/null
-          ssh -i ~/.ssh/deploy_key -o BatchMode=yes -o StrictHostKeyChecking=yes \
-            "$HETZNER_USER@$HETZNER_HOST" 'bash /opt/leyla/deploy/deploy.sh'
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HETZNER_HOST }}
+          username: ${{ secrets.HETZNER_USER }}
+          key: ${{ secrets.HETZNER_SSH_KEY }}
+          command_timeout: 12m
+          script: bash /opt/leyla/deploy/deploy.sh
