@@ -140,16 +140,27 @@ ol[role="list"] {
   background-repeat: repeat;
 }
 
-/* ---------- reveal (GSAP toggles .is-in) ---------- */
+/* ---------- reveal-on-scroll (JS toggles .is-in) ---------- */
 .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
-  will-change: opacity, transform;
+  transform: translateY(30px);
+  filter: blur(6px);
+  transition: opacity 0.8s var(--ease-out), transform 0.9s var(--ease-out),
+    filter 0.8s var(--ease-out);
+  will-change: opacity, transform, filter;
 }
 .reveal.is-in {
   opacity: 1;
   transform: none;
+  filter: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 
 /* ---------- mono label ---------- */

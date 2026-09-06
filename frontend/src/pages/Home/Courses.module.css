@@ -179,72 +179,86 @@
   background: var(--accent);
 }
 
+/* ============ mobile: centred reveal stack ============ */
+.mList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(3.25rem, 13vw, 4.5rem);
+}
+.mItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.55rem;
+}
+.mN {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(2.4rem, 12vw, 3.2rem);
+  line-height: 1;
+  color: var(--accent);
+}
+.mT {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.7rem, 7vw, 2.1rem);
+  letter-spacing: -0.02em;
+  margin-top: 0.2rem;
+}
+.mMeta {
+  color: var(--ink-faint);
+}
+.mD {
+  margin-top: 0.6rem;
+  font-size: 1.02rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 34ch;
+}
+
 @media (max-width: 760px) {
+  .inner {
+    padding-top: clamp(3.5rem, 12vw, 5rem);
+  }
   .top {
     align-items: center;
     text-align: center;
-    padding-bottom: clamp(3rem, 12vw, 4.5rem);
+    padding-bottom: clamp(3.25rem, 13vw, 4.5rem);
   }
   .headline {
     font-size: clamp(2rem, 8vw, 2.6rem);
-    line-height: 1.24;
+    line-height: 1.26;
     max-width: 18ch;
   }
-
-  /* mobile: no accordion — every course open, centred, breathing */
-  .body {
-    grid-template-columns: 1fr;
-    gap: 0;
-  }
-  .rail {
-    display: none;
-  }
-  .list {
-    display: flex;
-    flex-direction: column;
-    gap: clamp(3rem, 12vw, 4.5rem);
-    border-top: none;
-  }
-  .item,
-  .item.open {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    text-align: center;
-    gap: 0.7rem;
-    padding-block: 0;
-    border-bottom: none;
-    opacity: 1;
-  }
-  .itemN,
-  .item.open .itemN {
-    font-size: clamp(2.4rem, 12vw, 3.2rem);
-    color: var(--accent);
-    transform: none;
-  }
-  .itemHead {
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .itemReveal,
-  .item.open .itemReveal {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-  .itemD {
-    margin-top: 0.6rem;
-    max-width: 34ch;
-    line-height: 1.7;
-  }
-
   .ctaRow {
     flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 1.5rem;
+    margin-top: clamp(3rem, 12vw, 4rem);
   }
   .ctaText {
     max-width: 24ch;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hWord {
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  .item {
+    opacity: 1;
+  }
+  .itemReveal {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
+  .item .itemN {
+    transform: none;
   }
 }
 

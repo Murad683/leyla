@@ -1,10 +1,11 @@
 import { useCounter } from "../../lib/useCounter";
+import { useReveal } from "../../lib/useReveal";
 import styles from "./Numbers.module.css";
 
 function Stat({ end, suffix, label }) {
   const [ref, val] = useCounter(end);
   return (
-    <div className={styles.stat} ref={ref}>
+    <div className={`${styles.stat} reveal`} ref={ref}>
       <span className={styles.num}>
         {val}
         <i>{suffix}</i>
@@ -15,10 +16,11 @@ function Stat({ end, suffix, label }) {
 }
 
 export default function Numbers() {
+  const ref = useReveal({ stagger: 0.09 });
   return (
     <section className={styles.section}>
-      <div className="shell">
-        <span className={`mono ${styles.cue}`}>03 — Rəqəmlər</span>
+      <div className="shell" ref={ref}>
+        <span className={`mono ${styles.cue} reveal`}>03 — Rəqəmlər</span>
         <div className={styles.grid}>
           <Stat end={16} suffix="K+" label="İzləyici auditoriya" />
           <Stat end={40} suffix="+" label="Tamamlanmış layihə" />

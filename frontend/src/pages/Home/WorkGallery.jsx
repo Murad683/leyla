@@ -18,7 +18,9 @@ export default function WorkGallery() {
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduce) return;
+    // mobile scrolls the strip natively (scroll-snap), no pin/scroll-jack
+    const mobile = window.matchMedia("(max-width: 860px)").matches;
+    if (reduce || mobile) return;
 
     const ctx = gsap.context(() => {
       const distance = () => {

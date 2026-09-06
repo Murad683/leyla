@@ -178,14 +178,56 @@
   border-color: var(--accent);
 }
 
+/* mobile + reduced motion: native swipe strip, no scroll-jack */
+@media (max-width: 860px) {
+  .pinWrap {
+    min-height: 0;
+    gap: clamp(1.75rem, 6vw, 2.5rem);
+    padding-block: 0;
+  }
+  .head {
+    align-items: center;
+    text-align: center;
+    gap: 0.7rem;
+  }
+  .headline {
+    font-size: clamp(1.8rem, 8vw, 2.4rem);
+    line-height: 1.24;
+  }
+  .viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .viewport::-webkit-scrollbar {
+    display: none;
+  }
+  .track {
+    transform: none !important;
+    will-change: auto;
+    padding-inline: max(var(--gutter), calc((100vw - min(82vw, 420px)) / 2));
+    gap: 1rem;
+  }
+  .card {
+    width: min(82vw, 420px);
+    height: min(64vh, 500px);
+    scroll-snap-align: center;
+  }
+  .cardEnd {
+    width: min(72vw, 340px);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .pinWrap {
     min-height: 0;
+    padding-block: 0;
   }
   .viewport {
     overflow-x: auto;
   }
-  .card {
-    height: min(70vh, 460px);
+  .track {
+    transform: none !important;
   }
 }

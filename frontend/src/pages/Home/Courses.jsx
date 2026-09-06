@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
+import { useReveal } from "../../lib/useReveal";
 import Marquee from "../../components/Marquee/Marquee";
 import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
 import styles from "./Courses.module.css";
 
 const WARM = ["244,201,120", "214,120,58", "205,162,120"];
+const MQ = "(max-width: 760px)";
 
 const COURSES = [
   {
@@ -24,43 +26,108 @@ const COURSES = [
   },
 ];
 
-export default function Courses() {
+const H_WORDS = ["Öyrən,", "tətbiq", "et,", "satışa", "çevir."];
+
+function Frame({ children }) {
+  return (
+    <section className={styles.section}>
+      <FlowCanvas
+        palette={WARM}
+        base="#f4f2ee"
+        scrim="247,246,244"
+        bloom="255,244,214"
+        opacity={0.4}
+        scrimStrength={0.62}
+        blend="multiply"
+      />
+      <Marquee
+        items={["Kurslar", "Canlı dərslər", "Praktiki tapşırıq", "İcma", "Sertifikat"]}
+        speed={24}
+      />
+      {children}
+    </section>
+  );
+}
+
+function Cta() {
+  return (
+    <div className={`${styles.ctaRow} reveal`}>
+      <p className={styles.ctaText}>Növbəti axın üçün qeydiyyat açıqdır.</p>
+      <a
+        href="https://www.instagram.com/leiylamammadly/"
+        target="_blank"
+        rel="noreferrer"
+        className={styles.cta}
+      >
+        Qeydiyyatdan keç
+      </a>
+    </div>
+  );
+}
+
+/* ---------- mobile: centred reveal stack ---------- */
+function CoursesMobile() {
+  const ref = useReveal({ stagger: 0.12 });
+  return (
+    <Frame>
+      <div className={`${styles.inner} shell`} ref={ref}>
+        <div className={styles.top}>
+          <span className="mono reveal">05 — Kurslar</span>
+          <h2 className={`${styles.headline} reveal`}>
+            Öyrən, tətbiq et, <span className={styles.accent}>satışa çevir</span>.
+          </h2>
+        </div>
+
+        <ul className={styles.mList}>
+          {COURSES.map((c, i) => (
+            <li className={`${styles.mItem} reveal`} key={c.t}>
+              <span className={styles.mN}>{String(i + 1).padStart(2, "0")}</span>
+              <h3 className={styles.mT}>{c.t}</h3>
+              <span className={`mono ${styles.mMeta}`}>{c.meta}</span>
+              <p className={styles.mD}>{c.d}</p>
+            </li>
+          ))}
+        </ul>
+
+        <Cta />
+      </div>
+    </Frame>
+  );
+}
+
+/* ---------- desktop: scroll accordion ---------- */
+function CoursesDesktop() {
   const root = useRef(null);
   const list = useRef(null);
   const [p, setP] = useState(0);
 
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setP(0.001);
+      return;
+    }
     const ctx = gsap.context(() => {
-      // headline words: unblur + rise on scrub as the section enters
-      if (!reduce) {
-        gsap.from(`.${styles.hWord}`, {
-          yPercent: 110,
-          opacity: 0,
-          filter: "blur(10px)",
-          stagger: 0.12,
-          ease: "none",
-          scrollTrigger: {
-            trigger: root.current,
-            start: "top 78%",
-            end: "top 34%",
-            scrub: true,
-          },
-        });
-      }
-
-      // scroll progress drives which course is open + the rail dot
-      const st = ScrollTrigger.create({
+      gsap.from(`.${styles.hWord}`, {
+        yPercent: 110,
+        opacity: 0,
+        filter: "blur(10px)",
+        stagger: 0.12,
+        ease: "none",
+        scrollTrigger: {
+          trigger: root.current,
+          start: "top 78%",
+          end: "top 34%",
+          scrub: true,
+        },
+      });
+      ScrollTrigger.create({
         trigger: list.current,
         start: "top 62%",
         end: "bottom 62%",
         scrub: true,
         onUpdate: (self) => setP(self.progress),
       });
-      return () => st.kill();
     }, root);
-
     const id = setTimeout(() => ScrollTrigger.refresh(), 300);
     return () => {
       clearTimeout(id);
@@ -69,7 +136,6 @@ export default function Courses() {
   }, []);
 
   const active = Math.min(COURSES.length - 1, Math.floor(p * COURSES.length));
-  const H_WORDS = ["Öyrən,", "tətbiq", "et,", "satışa", "çevir."];
 
   return (
     <section className={styles.section} ref={root}>
@@ -82,7 +148,6 @@ export default function Courses() {
         scrimStrength={0.62}
         blend="multiply"
       />
-
       <Marquee
         items={["Kurslar", "Canlı dərslər", "Praktiki tapşırıq", "İcma", "Sertifikat"]}
         speed={24}
@@ -133,18 +198,22 @@ export default function Courses() {
           </ul>
         </div>
 
-        <div className={styles.ctaRow}>
-          <p className={styles.ctaText}>Növbəti axın üçün qeydiyyat açıqdır.</p>
-          <a
-            href="https://www.instagram.com/leiylamammadly/"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.cta}
-          >
-            Qeydiyyatdan keç
-          </a>
-        </div>
+        <Cta />
       </div>
     </section>
   );
+}
+
+export default function Courses() {
+  const [mobile, setMobile] = useState(
+    typeof window !== "undefined" && window.matchMedia(MQ).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(MQ);
+    const on = () => setMobile(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  return mobile ? <CoursesMobile /> : <CoursesDesktop />;
 }
