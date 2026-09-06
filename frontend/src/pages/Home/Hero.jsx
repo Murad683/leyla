@@ -1,26 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import GradientOrb from "../../components/GradientOrb/GradientOrb";
 import styles from "./Hero.module.css";
-
-function useClock() {
-  const [t, setT] = useState("--:--:--");
-  useEffect(() => {
-    const tick = () =>
-      setT(
-        new Date().toLocaleTimeString("az-AZ", {
-          hour: "2-digit",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: false,
-        })
-      );
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return t;
-}
 
 const LINE1 = ["Sosial", "media —"];
 const LINE2 = ["marketoloq"];
@@ -28,7 +9,6 @@ const LINE3 = ["təfəkkürü", "ilə."];
 
 export default function Hero() {
   const root = useRef(null);
-  const clock = useClock();
 
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -59,9 +39,7 @@ export default function Hero() {
 
       <div className={`${styles.inner} shell`}>
         <div className={styles.hud} data-hud>
-          <span className="mono">Bakı 40.4°N / 49.8°E</span>
-          <span className="mono">{clock}</span>
-          <span className="mono">Fəaliyyət — 2019</span>
+          <span className="mono">SMM · Strategiya · Bakı</span>
         </div>
 
         <h1 className={styles.title}>
