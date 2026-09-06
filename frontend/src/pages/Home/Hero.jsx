@@ -1,27 +1,43 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { gsap } from "../../lib/gsap";
+import { useHero } from "../../lib/useContent";
 import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Hero.module.css";
 
-const LINE1 = ["Sosial", "media —"];
-const LINE2 = ["marketoloq"];
-const LINE3 = ["təfəkkürü", "ilə."];
+const DEFAULTS = {
+  title: "Sosial media — marketoloq təfəkkürü ilə.",
+  accentText: "marketoloq",
+};
+
+const norm = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
 
 export default function Hero() {
   const root = useRef(null);
   const title = useRef(null);
 
+  const hero = useHero(DEFAULTS);
+  const headline = hero.title;
+  const accent = hero.accentText || DEFAULTS.accentText;
+
+  const words = useMemo(() => {
+    const accentSet = new Set(accent.split(/\s+/).filter(Boolean).map(norm));
+    return headline
+      .split(/\s+/)
+      .filter(Boolean)
+      .map((w) => ({ w, accent: accentSet.has(norm(w)) }));
+  }, [headline, accent]);
+
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const words = root.current.querySelectorAll(`.${styles.w}`);
+    const wEls = root.current.querySelectorAll(`.${styles.w}`);
 
     if (reduce) {
-      gsap.set(words, { opacity: 1, y: 0, filter: "blur(0)" });
+      gsap.set(wEls, { opacity: 1, y: 0, filter: "blur(0)" });
       return;
     }
 
     const ctx = gsap.context(() => {
-      gsap.from(words, {
+      gsap.from(wEls, {
         opacity: 0,
         y: 26,
         filter: "blur(14px)",
@@ -33,7 +49,7 @@ export default function Hero() {
       gsap.from(`.${styles.cue}`, { opacity: 0, duration: 0.8, delay: 1.1 });
 
       // continuous breathing float, per word
-      words.forEach((w, i) => {
+      wEls.forEach((w, i) => {
         gsap.to(w, {
           y: "+=6",
           duration: 3.4 + (i % 3) * 0.6,
@@ -55,7 +71,6 @@ export default function Hero() {
       const qx = gsap.quickTo(el, "x", { duration: 0.9, ease: "power3" });
       const qy = gsap.quickTo(el, "y", { duration: 0.9, ease: "power3" });
 
-      // faint idle drift so it breathes when the mouse is still
       let idle = 0;
       const idleTick = () => {
         if (el && el.isConnected)
@@ -68,7 +83,7 @@ export default function Hero() {
       const onMove = (e) => {
         const nx = e.clientX / window.innerWidth;
         const ny = e.clientY / window.innerHeight;
-        qbp(nx * 210 - 45); // warm band pooled under the cursor
+        qbp(nx * 210 - 45);
         qx((nx - 0.5) * 14);
         qy((ny - 0.5) * 12);
       };
@@ -79,7 +94,7 @@ export default function Hero() {
       };
     }, root);
     return () => ctx.revert();
-  }, []);
+  }, [words]);
 
   return (
     <section className={styles.hero} ref={root}>
@@ -87,22 +102,11 @@ export default function Hero() {
 
       <h1 className={styles.title} ref={title}>
         <span className={styles.line}>
-          {LINE1.map((w) => (
-            <span className={styles.w} key={w}>
-              {w}&nbsp;
-            </span>
-          ))}
-        </span>
-        <span className={styles.line}>
-          {LINE2.map((w) => (
-            <span className={`${styles.w} ${styles.ital}`} key={w}>
-              {w}
-            </span>
-          ))}
-        </span>
-        <span className={styles.line}>
-          {LINE3.map((w) => (
-            <span className={styles.w} key={w}>
+          {words.map(({ w, accent: isAccent }, i) => (
+            <span
+              className={`${styles.w} ${isAccent ? styles.ital : ""}`}
+              key={`${w}-${i}`}
+            >
               {w}&nbsp;
             </span>
           ))}

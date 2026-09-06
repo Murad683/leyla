@@ -124,14 +124,25 @@ const Hero = () => {
             </div>
 
             <div className={styles.inputGroup}>
-              <label className={styles.label}>Açıqlama Mətni</label>
+              <label className={styles.label}>Vurğu sözü (kursiv + terakota)</label>
+              <input
+                type="text"
+                name="accentText"
+                value={hero.accentText || ''}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="Başlıqdakı sözlərdən biri, məs. marketoloq"
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>Açıqlama Mətni <span style={{opacity:.5}}>(v2 ana səhifə hero-da göstərilmir)</span></label>
               <textarea
                 name="description"
                 value={hero.description || ''}
                 onChange={handleChange}
                 className={styles.textarea}
                 rows={4}
-                required
               />
             </div>
           </div>

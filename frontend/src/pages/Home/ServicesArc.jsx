@@ -1,41 +1,43 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
+import { useServices } from "../../lib/useContent";
 import styles from "./ServicesArc.module.css";
 
-const ITEMS = [
+const DEFAULT_ITEMS = [
   {
     n: "01",
     title: "Strategiya",
-    text: "Auditoriya, mövqeləndirmə və məzmun istiqaməti — hər qərarın arxasında ölçülə bilən məqsəd.",
-    tags: ["Auditoriya", "Positioning", "Funnel"],
+    desc: "Auditoriya, mövqeləndirmə və məzmun istiqaməti — hər qərarın arxasında ölçülə bilən məqsəd.",
+    tags: ["Auditoriya", "Mövqeləndirmə", "Satış qıfı"],
   },
   {
     n: "02",
     title: "Kontent",
-    text: "Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj rəhbərliyi.",
+    desc: "Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj rəhbərliyi.",
     tags: ["Ssenari", "Prodakşn", "Montaj"],
   },
   {
     n: "03",
     title: "Şəxsi brend",
-    text: "Ekspert obrazının qurulması: ton, vizual dil və daimi mövzu xətti.",
+    desc: "Ekspert obrazının qurulması: ton, vizual dil və daimi mövzu xətti.",
     tags: ["Ton", "Vizual", "Rubrika"],
   },
   {
     n: "04",
     title: "Satış",
-    text: "Məzmunu gəlirə bağlayan sistem — lead axını, offer strukturu və konversiya təhlili.",
+    desc: "Məzmunu gəlirə bağlayan sistem — lead axını, offer strukturu və konversiya təhlili.",
     tags: ["Lead", "Offer", "Analitika"],
   },
 ];
 
-const N = ITEMS.length;
 const MQ = "(max-width: 900px)";
 const D2R = Math.PI / 180;
 
 export default function ServicesArc() {
   const root = useRef(null);
   const gref = useRef(null);
+  const items = useServices(DEFAULT_ITEMS);
+  const N = items.length;
   const [mobile, setMobile] = useState(
     typeof window !== "undefined" && window.matchMedia(MQ).matches
   );
@@ -56,7 +58,7 @@ export default function ServicesArc() {
       const cy = 760;
       const r = 700;
       const step = 9; // deg between numbers
-      const nums = ITEMS.map((_, i) => {
+      const nums = items.map((_, i) => {
         const a = (-90 + i * step) * D2R;
         return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a), rot: i * step };
       });
@@ -76,7 +78,7 @@ export default function ServicesArc() {
     const cy = 340;
     const r = 512;
     const step = 13;
-    const nums = ITEMS.map((_, i) => {
+    const nums = items.map((_, i) => {
       const a = i * step * D2R;
       return {
         x: cx + (r - 44) * Math.cos(a),
@@ -94,7 +96,7 @@ export default function ServicesArc() {
       dot: { x: cx + r, y: cy },
       nums,
     };
-  }, [mobile]);
+  }, [mobile, N]);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -176,7 +178,7 @@ export default function ServicesArc() {
                         opacity: Math.max(0.12, 1 - Math.abs(i - af) * 0.55),
                       }}
                     >
-                      {ITEMS[i].n}
+                      {items[i]?.n}
                     </text>
                   </g>
                 ))}
@@ -187,14 +189,14 @@ export default function ServicesArc() {
         </div>
 
         <div className={styles.content}>
-          {ITEMS.map((it, i) => (
+          {items.map((it, i) => (
             <article
               key={it.n}
               className={`${styles.card} ${i === active ? styles.on : ""}`}
             >
               <span className={styles.cardN}>{it.n}</span>
               <h3 className={styles.cardTitle}>{it.title}</h3>
-              <p className={styles.cardText}>{it.text}</p>
+              <p className={styles.cardText}>{it.desc}</p>
               <ul className={styles.tags}>
                 {it.tags.map((t) => (
                   <li key={t}>{t}</li>

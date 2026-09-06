@@ -2,10 +2,11 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
+import { usePortfolio } from "../../lib/useContent";
 import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Portfolio.module.css";
 
-const PROJECTS = [
+const DEFAULT_PROJECTS = [
   {
     n: "01",
     name: "Nərgiz Kosmetika",
@@ -88,7 +89,7 @@ const PROJECTS = [
   },
 ];
 
-const FILTERS = ["Hamısı", "Şəxsi brend", "Strategiya", "Kontent", "Reels", "Satış qıfı"];
+const ALL = "Hamısı";
 
 function Hero() {
   const root = useRef(null);
@@ -175,12 +176,16 @@ function ProjectRow({ p }) {
         <p className={`${styles.brief} reveal`}>{p.brief}</p>
 
         <dl className={`${styles.metrics} reveal`}>
-          {p.metrics.map(([k, v]) => (
-            <div className={styles.metric} key={k}>
-              <dt>{k}</dt>
-              <dd>{v}</dd>
-            </div>
-          ))}
+          {p.metrics.map((m, i) => {
+            const label = Array.isArray(m) ? m[0] : m.label;
+            const value = Array.isArray(m) ? m[1] : m.value;
+            return (
+              <div className={styles.metric} key={label || i}>
+                <dt>{label}</dt>
+                <dd>{value}</dd>
+              </div>
+            );
+          })}
         </dl>
       </div>
     </article>
@@ -188,11 +193,23 @@ function ProjectRow({ p }) {
 }
 
 function Work() {
-  const [filter, setFilter] = useState("Hamısı");
+  const projects = usePortfolio(DEFAULT_PROJECTS);
+  const [filter, setFilter] = useState(ALL);
+
+  const filters = useMemo(() => {
+    const seen = [];
+    projects.forEach((p) =>
+      (p.cats || []).forEach((c) => {
+        if (c && !seen.includes(c)) seen.push(c);
+      })
+    );
+    return [ALL, ...seen];
+  }, [projects]);
+
   const list = useMemo(() => {
-    if (filter === "Hamısı") return PROJECTS;
-    return PROJECTS.filter((p) => p.cats.includes(filter));
-  }, [filter]);
+    if (filter === ALL) return projects;
+    return projects.filter((p) => (p.cats || []).includes(filter));
+  }, [filter, projects]);
 
   return (
     <section className={styles.work}>
@@ -200,7 +217,7 @@ function Work() {
         <div className="shell">
           <span className="mono">Seçilmiş işlər</span>
           <div className={styles.filters} role="group" aria-label="Filtr">
-            {FILTERS.map((f) => (
+            {filters.map((f) => (
               <button
                 key={f}
                 className={styles.filterBtn}

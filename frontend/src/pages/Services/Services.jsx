@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
+import { useServices } from "../../lib/useContent";
 import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Services.module.css";
 
-const SERVICES = [
+const DEFAULT_SERVICES = [
   {
     n: "01",
     title: "Strategiya",
@@ -166,11 +167,13 @@ export default function Services() {
     document.title = "Xidmətlər — Leyla Məmmədli";
   }, []);
 
+  const services = useServices(DEFAULT_SERVICES);
+
   return (
     <div className={styles.page}>
       <Hero />
       <div className={styles.blocks}>
-        {SERVICES.map((s) => (
+        {services.map((s) => (
           <ServiceBlock key={s.n} s={s} />
         ))}
       </div>

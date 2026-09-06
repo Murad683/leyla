@@ -14,6 +14,8 @@ const Services = () => {
     description: '',
     icon: 'QualityIcon',
     features: '',
+    outcome: '',
+    sortOrder: 0,
     ctaLabel: '',
     ctaHref: ''
   });
@@ -53,6 +55,8 @@ const Services = () => {
       description: '',
       icon: 'QualityIcon',
       features: '',
+      outcome: '',
+      sortOrder: (services?.length || 0),
       ctaLabel: 'Qeydiyyatdan keç',
       ctaHref: '/contact'
     });
@@ -66,6 +70,8 @@ const Services = () => {
       description: service.description,
       icon: service.icon || 'QualityIcon',
       features: Array.isArray(service.features) ? service.features.join(', ') : service.features || '',
+      outcome: service.outcome || '',
+      sortOrder: service.sortOrder ?? 0,
       ctaLabel: service.ctaLabel || 'Qeydiyyatdan keç',
       ctaHref: service.ctaHref || '/contact'
     });
@@ -96,6 +102,7 @@ const Services = () => {
     e.preventDefault();
     const payload = {
       ...formData,
+      sortOrder: Number(formData.sortOrder) || 0,
       features: formData.features.split(',').map(f => f.trim()).filter(Boolean)
     };
 
@@ -185,15 +192,38 @@ const Services = () => {
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Üstünlüklər / Göstəricilər (vergüllə ayırın)</label>
+                <label className={styles.label}>Nə daxildir (vergüllə ayırın)</label>
                 <input
                   type="text"
                   name="features"
                   value={formData.features}
                   onChange={handleChange}
                   className={styles.input}
-                  placeholder="Xidmət 1, Xidmət 2, Xidmət 3"
+                  placeholder="Auditoriya auditi, Mövqeləndirmə sənədi, ..."
                   required
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Nəticə</label>
+                <textarea
+                  name="outcome"
+                  value={formData.outcome}
+                  onChange={handleChange}
+                  className={styles.textarea}
+                  rows={2}
+                  placeholder="Komandanın icra edə biləcəyi yazılı strateji sənəd."
+                />
+              </div>
+
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Sıra (kiçik → əvvəl)</label>
+                <input
+                  type="number"
+                  name="sortOrder"
+                  value={formData.sortOrder}
+                  onChange={handleChange}
+                  className={styles.input}
                 />
               </div>
 

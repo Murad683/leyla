@@ -19,10 +19,14 @@ const Portfolio = () => {
     role: 'Strategiya & İcra',
     duration: '3 ay',
     thumbnail: '',
+    tint: 'var(--field-1)',
+    tags: '',
     summary: '',
+    resultHeadline: '',
+    sortOrder: 0,
     challenge: '',
     solution: '',
-    results: [{ metric: '', value: '' }],
+    results: [{ label: '', value: '' }],
     sections: [{ heading: '', body: '' }],
     isPublished: true,
     featured: false
@@ -67,10 +71,14 @@ const Portfolio = () => {
       role: 'Strategiya & İcra',
       duration: '3 ay',
       thumbnail: '',
+      tint: 'var(--field-1)',
+      tags: '',
       summary: '',
+      resultHeadline: '',
+      sortOrder: (items?.length || 0),
       challenge: '',
       solution: '',
-      results: [{ metric: '', value: '' }],
+      results: [{ label: '', value: '' }],
       sections: [{ heading: '', body: '' }],
       isPublished: true,
       featured: false
@@ -89,10 +97,14 @@ const Portfolio = () => {
       role: item.role,
       duration: item.duration,
       thumbnail: item.thumbnail,
+      tint: item.tint || 'var(--field-1)',
+      tags: Array.isArray(item.tags) ? item.tags.join(', ') : (item.tags || ''),
       summary: item.summary,
+      resultHeadline: item.resultHeadline || '',
+      sortOrder: item.sortOrder ?? 0,
       challenge: item.challenge,
       solution: item.solution,
-      results: Array.isArray(item.results) ? item.results : [{ metric: '', value: '' }],
+      results: Array.isArray(item.results) ? item.results : [{ label: '', value: '' }],
       sections: Array.isArray(item.sections) ? item.sections : [{ heading: '', body: '' }],
       isPublished: item.isPublished,
       featured: item.featured
@@ -162,7 +174,7 @@ const Portfolio = () => {
   const addResult = () => {
     setFormData(prev => ({
       ...prev,
-      results: [...prev.results, { metric: '', value: '' }]
+      results: [...prev.results, { label: '', value: '' }]
     }));
   };
 
@@ -192,10 +204,19 @@ const Portfolio = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const payload = {
+      ...formData,
+      sortOrder: Number(formData.sortOrder) || 0,
+      tags: String(formData.tags || '')
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean),
+      results: (formData.results || []).filter((r) => r.label || r.value),
+    };
     if (editingItem) {
-      updateMutation.mutate({ id: editingItem.id, data: formData });
+      updateMutation.mutate({ id: editingItem.id, data: payload });
     } else {
-      createMutation.mutate(formData);
+      createMutation.mutate(payload);
     }
   };
 
@@ -343,7 +364,6 @@ const Portfolio = () => {
                     value={formData.client}
                     onChange={handleChange}
                     className={styles.input}
-                    required
                   />
                 </div>
 
@@ -369,7 +389,6 @@ const Portfolio = () => {
                     value={formData.role}
                     onChange={handleChange}
                     className={styles.input}
-                    required
                   />
                 </div>
 
@@ -381,13 +400,12 @@ const Portfolio = () => {
                     value={formData.duration}
                     onChange={handleChange}
                     className={styles.input}
-                    required
                   />
                 </div>
               </div>
 
               <div className={styles.inputGroup}>
-                <label className={styles.label}>Qısa Xülasə (Summary)</label>
+                <label className={styles.label}>Qısa mətn (kartda görünür)</label>
                 <textarea
                   name="summary"
                   value={formData.summary}
@@ -398,29 +416,83 @@ const Portfolio = () => {
                 />
               </div>
 
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>Problem (Challenge)</label>
-                <textarea
-                  name="challenge"
-                  value={formData.challenge}
-                  onChange={handleChange}
-                  className={styles.textarea}
-                  rows={2}
-                  required
-                />
+              <div className={styles.inputGroup2}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Teqlər (vergüllə — filtr üçün)</label>
+                  <input
+                    type="text"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleChange}
+                    className={styles.input}
+                    placeholder="Şəxsi brend, Reels"
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Kart rəngi (tint)</label>
+                  <select
+                    name="tint"
+                    value={formData.tint}
+                    onChange={handleChange}
+                    className={styles.select}
+                  >
+                    <option value="var(--field-1)">Terakota</option>
+                    <option value="var(--field-2)">Mürəkkəb</option>
+                    <option value="var(--field-3)">Oxra</option>
+                    <option value="var(--field-4)">Yaşıl</option>
+                    <option value="var(--field-5)">Mavi</option>
+                  </select>
+                </div>
               </div>
 
-              <div className={styles.inputGroup}>
-                <label className={styles.label}>Həll Yolu (Solution)</label>
-                <textarea
-                  name="solution"
-                  value={formData.solution}
-                  onChange={handleChange}
-                  className={styles.textarea}
-                  rows={2}
-                  required
-                />
+              <div className={styles.inputGroup2}>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Nəticə başlığı (məs. "3 ayda +48K izləyici")</label>
+                  <input
+                    type="text"
+                    name="resultHeadline"
+                    value={formData.resultHeadline}
+                    onChange={handleChange}
+                    className={styles.input}
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Sıra (kiçik → əvvəl)</label>
+                  <input
+                    type="number"
+                    name="sortOrder"
+                    value={formData.sortOrder}
+                    onChange={handleChange}
+                    className={styles.input}
+                  />
+                </div>
               </div>
+
+              <details className={styles.inputGroup}>
+                <summary className={styles.label} style={{ cursor: 'pointer' }}>
+                  Keys-stadi mətnləri (v2 kartlarda göstərilmir) ▾
+                </summary>
+                <div className={styles.inputGroup} style={{ marginTop: 12 }}>
+                  <label className={styles.label}>Problem (Challenge)</label>
+                  <textarea
+                    name="challenge"
+                    value={formData.challenge}
+                    onChange={handleChange}
+                    className={styles.textarea}
+                    rows={2}
+                  />
+                </div>
+                <div className={styles.inputGroup}>
+                  <label className={styles.label}>Həll Yolu (Solution)</label>
+                  <textarea
+                    name="solution"
+                    value={formData.solution}
+                    onChange={handleChange}
+                    className={styles.textarea}
+                    rows={2}
+                  />
+                </div>
+              </details>
 
               {/* Dynamic Results */}
               <div className={styles.arraySection}>
@@ -435,10 +507,9 @@ const Portfolio = () => {
                     <input
                       type="text"
                       placeholder="Məs: Satış Artımı"
-                      value={res.metric}
-                      onChange={(e) => handleResultChange(index, 'metric', e.target.value)}
+                      value={res.label}
+                      onChange={(e) => handleResultChange(index, 'label', e.target.value)}
                       className={styles.input}
-                      required
                     />
                     <input
                       type="text"
@@ -446,7 +517,6 @@ const Portfolio = () => {
                       value={res.value}
                       onChange={(e) => handleResultChange(index, 'value', e.target.value)}
                       className={styles.input}
-                      required
                     />
                     {formData.results.length > 1 && (
                       <button type="button" onClick={() => removeResult(index)} className={styles.arrayRemoveBtn}>
@@ -481,7 +551,6 @@ const Portfolio = () => {
                       value={sec.heading}
                       onChange={(e) => handleSectionChange(index, 'heading', e.target.value)}
                       className={styles.input}
-                      required
                     />
                     <textarea
                       placeholder="Məzmun"
@@ -489,7 +558,6 @@ const Portfolio = () => {
                       onChange={(e) => handleSectionChange(index, 'body', e.target.value)}
                       className={styles.textarea}
                       rows={3}
-                      required
                     />
                   </div>
                 ))}
