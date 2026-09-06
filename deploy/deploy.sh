@@ -21,7 +21,7 @@ for i in $(seq 1 30); do
 done
 
 echo "== db schema sync (prisma db push) =="
-$Cj exec -T leyla-api npx prisma db push --schema=/app/prisma/schema.prisma --skip-generate
+$Cj exec -T leyla-api sh -c 'npx prisma db push --schema=/app/prisma/schema.prisma --url "$DATABASE_URL"'
 
 echo "== health =="
 curl -sf -m 10 http://127.0.0.1:4100/api/health && echo " <- OK"
