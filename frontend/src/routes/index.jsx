@@ -3,6 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import SiteLayout from "../components/SiteLayout/SiteLayout";
 import Home from "../pages/Home/Home";
 import Services from "../pages/Services/Services";
+import CoursesPage from "../pages/Courses/Courses";
 import Placeholder from "../pages/Placeholder/Placeholder";
 import ProtectedRoute from "../components/admin/ProtectedRoute";
 
@@ -32,10 +33,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Home /> },
       { path: "xidmetler", element: <Services /> },
-      {
-        path: "kurslar",
-        element: <Placeholder index="02" title="Kurslar" />,
-      },
+      { path: "kurslar", element: <CoursesPage /> },
       {
         path: "portfolio",
         element: <Placeholder index="03" title="Portfolio" />,
