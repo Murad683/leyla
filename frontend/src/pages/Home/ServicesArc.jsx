@@ -7,7 +7,7 @@ const DEFAULT_ITEMS = [
   {
     n: "01",
     title: "Strategiya",
-    desc: "Auditoriya, mövqeləndirmə və məzmun istiqaməti — hər qərarın arxasında ölçülə bilən məqsəd.",
+    desc: "Auditoriya, mövqeləndirmə və məzmun istiqaməti - hər qərarın arxasında ölçülə bilən məqsəd.",
     tags: ["Auditoriya", "Mövqeləndirmə", "Satış qıfı"],
   },
   {
@@ -25,7 +25,7 @@ const DEFAULT_ITEMS = [
   {
     n: "04",
     title: "Satış",
-    desc: "Məzmunu gəlirə bağlayan sistem — lead axını, offer strukturu və konversiya təhlili.",
+    desc: "Məzmunu gəlirə bağlayan sistem - lead axını, offer strukturu və konversiya təhlili.",
     tags: ["Lead", "Offer", "Analitika"],
   },
 ];
@@ -134,7 +134,7 @@ export default function ServicesArc() {
       <div className={`${styles.grid} shell`}>
         <div className={styles.rail}>
           <div className={styles.railHead}>
-            <span className="mono">02 — Xidmətlər</span>
+            <span className="mono">02 - Xidmətlər</span>
             <p className={styles.railTitle}>
               Dörd addım, <span className={styles.ital}>bir sistem</span>.
             </p>

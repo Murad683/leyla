@@ -55,7 +55,7 @@ export default function WorkGallery() {
     <section className={styles.section} ref={root}>
       <div className={styles.pinWrap} ref={pinWrap}>
         <div className={styles.head}>
-          <span className="mono">02 — Seçilmiş işlər</span>
+          <span className="mono">02 - Seçilmiş işlər</span>
           <p className={styles.headline}>
             Nəticə ilə <span className={styles.ital}>ölçülən</span> layihələr.
           </p>

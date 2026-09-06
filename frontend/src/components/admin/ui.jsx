@@ -93,7 +93,7 @@ export const useToast = () => useContext(ToastCtx);
 export const useConfirm = () => useContext(ConfirmCtx);
 
 /* ------------------------------------------------------------------ *
- *  useDragReorder — native HTML5 drag-and-drop list reordering.
+ *  useDragReorder - native HTML5 drag-and-drop list reordering.
  *
  *  const dnd = useDragReorder(items, (reordered) => persist(reordered));
  *  <li {...dnd.row(i)} className={dnd.dragging === i ? "isDragging" : ""}>

@@ -22,19 +22,19 @@ const DEFAULT_SERVICES = [
   {
     n: "02",
     title: "Kontent",
-    desc: "Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj standartı. Həftəlik ritm — trend deyil, sistem.",
+    desc: "Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj standartı. Həftəlik ritm - trend deyil, sistem.",
     includes: [
       "Aylıq kontent planı",
       "Ssenari və storyboard",
       "Çəkiliş rejissurası",
       "Montaj və dizayn şablonları",
     ],
-    outcome: "Ayda 12–20 hazır post, sabit vizual dil.",
+    outcome: "Ayda 12-20 hazır post, sabit vizual dil.",
   },
   {
     n: "03",
     title: "Şəxsi brend",
-    desc: "Ekspert obrazının qurulması: ton, vizual kimlik və daimi mövzu xətti. İzləyici deyil — etibar qazanırıq.",
+    desc: "Ekspert obrazının qurulması: ton, vizual kimlik və daimi mövzu xətti. İzləyici deyil - etibar qazanırıq.",
     includes: [
       "Ton və dəyər xəritəsi",
       "Vizual kimlik",
@@ -46,7 +46,7 @@ const DEFAULT_SERVICES = [
   {
     n: "04",
     title: "Satış",
-    desc: "Məzmunu gəlirə bağlayan sistem: lead axını, offer strukturu və konversiya təhlili. Baxış deyil — sorğu və satış.",
+    desc: "Məzmunu gəlirə bağlayan sistem: lead axını, offer strukturu və konversiya təhlili. Baxış deyil - sorğu və satış.",
     includes: [
       "Lead-magnit və offer",
       "DM və qıf skriptləri",
@@ -87,7 +87,7 @@ function Hero() {
     return () => ctx.revert();
   }, []);
 
-  const words = "Hər xidmət — ölçülə bilən nəticə.".split(" ");
+  const words = "Hər xidmət - ölçülə bilən nəticə.".split(" ");
 
   return (
     <header className={styles.hero} ref={root}>
@@ -102,7 +102,7 @@ function Hero() {
           ))}
         </h1>
         <p className={`${styles.heroSub} lead`}>
-          Strategiyadan satışa qədər — dörd modul, bir sistem. Ayrı-ayrı və ya
+          Strategiyadan satışa qədər - dörd modul, bir sistem. Ayrı-ayrı və ya
           tam paket.
         </p>
       </div>
@@ -164,7 +164,7 @@ function Cta() {
 
 export default function Services() {
   useEffect(() => {
-    document.title = "Xidmətlər — Leyla Məmmədli";
+    document.title = "Xidmətlər - Leyla Məmmədli";
   }, []);
 
   const services = useServices(DEFAULT_SERVICES);

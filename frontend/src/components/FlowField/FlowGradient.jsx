@@ -5,7 +5,7 @@ import styles from "./FlowField.module.css";
  * Hero background: a single full-screen WebGL fragment shader that
  * renders a slowly drifting field of warm paper tones with a terracotta
  * whisper (the site palette: #f4f2ee / #c9a24b / #b8452b). The flow
- * bends gently toward the cursor with an eased delay — no swirl, no
+ * bends gently toward the cursor with an eased delay - no swirl, no
  * doodles. One draw call, ~0.7x resolution, DPR capped. Pauses when
  * off-screen or the tab is hidden; static single frame for reduced
  * motion; a soft 2D gradient when WebGL is unavailable.
@@ -60,7 +60,7 @@ void main(){
 `;
 const VERT = "attribute vec2 p;void main(){gl_Position=vec4(p,0.0,1.0);}";
 
-/* The public site is light-only — one fixed warm-neutral palette,
+/* The public site is light-only - one fixed warm-neutral palette,
    drawn from the site tokens: #f4f2ee (paper) / #c9a24b (ochre) /
    #b8452b (terracotta accent). Kept deliberately pale so the type
    always leads. */

@@ -4,7 +4,7 @@ import { useHomeContent } from "../../lib/useContent";
 import styles from "./Numbers.module.css";
 
 const DEFAULTS = {
-  numbersEyebrow: "03 — Rəqəmlər",
+  numbersEyebrow: "03 - Rəqəmlər",
   stats: [
     { value: 16, suffix: "K+", label: "İzləyici auditoriya" },
     { value: 40, suffix: "+", label: "Tamamlanmış layihə" },

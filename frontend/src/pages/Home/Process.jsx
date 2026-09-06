@@ -4,8 +4,8 @@ import { useHomeContent } from "../../lib/useContent";
 import styles from "./Process.module.css";
 
 const DEFAULTS = {
-  processEyebrow: "04 — Necə işləyirik",
-  processHeadline: "Kaosdan aydınlığa — üç mərhələ.",
+  processEyebrow: "04 - Necə işləyirik",
+  processHeadline: "Kaosdan aydınlığa - üç mərhələ.",
   processSteps: [
     {
       title: "Kəşf",
@@ -14,7 +14,7 @@ const DEFAULTS = {
     },
     {
       title: "Sistem",
-      text: "Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı — hamısı sənədləşdirilmiş bir plan halında.",
+      text: "Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı - hamısı sənədləşdirilmiş bir plan halında.",
       tags: ["Positioning", "Rubrikalar", "Qıf"],
     },
     {
@@ -25,14 +25,14 @@ const DEFAULTS = {
   ],
 };
 
-/** Split a headline like "Kaosdan aydınlığa — üç mərhələ." so the part after
- *  the em-dash renders italic, matching the original design. */
+/** Split a headline like "Kaosdan aydınlığa - üç mərhələ." on the dash so the
+ *  part after it renders italic, matching the original design. */
 function Headline({ text }) {
-  const i = text.indexOf("—");
+  const i = text.indexOf(" - ");
   if (i === -1) return <>{text}</>;
   return (
     <>
-      {text.slice(0, i + 1)} <span className={styles.ital}>{text.slice(i + 1).trim()}</span>
+      {text.slice(0, i + 2)} <span className={styles.ital}>{text.slice(i + 3).trim()}</span>
     </>
   );
 }

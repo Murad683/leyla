@@ -4,12 +4,12 @@ import { useHomeContent } from "../../lib/useContent";
 import styles from "./Intro.module.css";
 
 const DEFAULTS = {
-  introEyebrow: "01 — Yanaşma",
+  introEyebrow: "01 - Yanaşma",
   introStatement:
-    "Kontent gözəl görünə bilər — amma satmırsa, işini görmür.",
+    "Kontent gözəl görünə bilər - amma satmırsa, işini görmür.",
   introAccent: "satmırsa",
   introParagraphs: [
-    "Mən sosial media hesablarını marketinq sistemi kimi qururam: auditoriya araşdırması, mövqeləndirmə, məzmun xətti və satış qıfı — hamısı bir-birinə bağlı.",
+    "Mən sosial media hesablarını marketinq sistemi kimi qururam: auditoriya araşdırması, mövqeləndirmə, məzmun xətti və satış qıfı - hamısı bir-birinə bağlı.",
     "Nəticə görünüş deyil, rəqəmdir: daha keyfiyyətli izləyici, daha çox sorğu, daha çox bağlanan satış.",
   ],
   introTags: ["Strategiya", "Kontent", "Şəxsi brend", "Satış qıfı", "Analitika"],

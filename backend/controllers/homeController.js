@@ -1,6 +1,6 @@
 const prisma = require('../config/prisma');
 
-// Only columns that exist on HomeContent — anything else in the body is ignored
+// Only columns that exist on HomeContent - anything else in the body is ignored
 // (the admin form carries transient helpers like `_introParagraphs`).
 const FIELDS = [
   'introEyebrow', 'introStatement', 'introAccent', 'introParagraphs', 'introTags',

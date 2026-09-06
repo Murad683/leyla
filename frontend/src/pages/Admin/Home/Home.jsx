@@ -116,7 +116,7 @@ const AdminHome = () => {
             <div className={styles.inputGroup}><label className={styles.label}>Vurğu sözü</label><input className={styles.input} value={f.introAccent || ''} onChange={ch('introAccent')} /></div>
           </div>
           <div className={styles.inputGroup}><label className={styles.label}>Bəyanat (böyük cümlə)</label><textarea className={styles.textarea} rows={2} value={f.introStatement || ''} onChange={ch('introStatement')} /></div>
-          <div className={styles.inputGroup}><label className={styles.label}>Paraqraflar (hər sətir — ayrı paraqraf)</label><textarea className={styles.textarea} rows={4} value={f._introParagraphs ?? toLines(f.introParagraphs)} onChange={ch('_introParagraphs')} /></div>
+          <div className={styles.inputGroup}><label className={styles.label}>Paraqraflar (hər sətir - ayrı paraqraf)</label><textarea className={styles.textarea} rows={4} value={f._introParagraphs ?? toLines(f.introParagraphs)} onChange={ch('_introParagraphs')} /></div>
           <div className={styles.inputGroup}><label className={styles.label}>Teqlər (vergüllə)</label><input className={styles.input} value={f._introTags ?? toCsv(f.introTags)} onChange={ch('_introTags')} /></div>
         </Section>
 
@@ -140,9 +140,9 @@ const AdminHome = () => {
             <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.coursesEyebrow || ''} onChange={ch('coursesEyebrow')} /></div>
             <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.coursesHeadline || ''} onChange={ch('coursesHeadline')} /></div>
           </div>
-          <Repeater label="Kurs — «Necə keçir»" rows={f.courseHow || []} onChange={(v) => setF((p) => ({ ...p, courseHow: v }))}
+          <Repeater label="Kurs - «Necə keçir»" rows={f.courseHow || []} onChange={(v) => setF((p) => ({ ...p, courseHow: v }))}
             cols={[{ key: 't', label: 'Başlıq' }, { key: 'd', label: 'Mətn', textarea: true }]} />
-          <Repeater label="Kurs — Suallar (FAQ)" rows={f.courseFaq || []} onChange={(v) => setF((p) => ({ ...p, courseFaq: v }))}
+          <Repeater label="Kurs - Suallar (FAQ)" rows={f.courseFaq || []} onChange={(v) => setF((p) => ({ ...p, courseFaq: v }))}
             cols={[{ key: 'q', label: 'Sual' }, { key: 'a', label: 'Cavab', textarea: true }]} />
         </Section>
 

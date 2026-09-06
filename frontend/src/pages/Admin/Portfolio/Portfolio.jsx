@@ -446,7 +446,7 @@ const Portfolio = () => {
 
               <div className={styles.inputGroup2}>
                 <div className={styles.inputGroup}>
-                  <label className={styles.label}>Teqlər (vergüllə — filtr üçün)</label>
+                  <label className={styles.label}>Teqlər (vergüllə - filtr üçün)</label>
                   <input
                     type="text"
                     name="tags"

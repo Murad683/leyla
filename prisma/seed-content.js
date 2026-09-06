@@ -27,13 +27,13 @@ const SETTINGS = {
   instagramUrl: 'https://www.instagram.com/leiylamammadly/',
   linkedinUrl: null,
   twitterUrl: null,
-  metaTitle: 'Leyla Məmmədli — SMM & Rəqəmsal Marketinq',
+  metaTitle: 'Leyla Məmmədli - SMM & Rəqəmsal Marketinq',
   metaDescription:
-    'Sosial media marketoloq təfəkkürü ilə: strategiya, kontent, şəxsi brend və satış. Baxış deyil — sorğu və satış.',
+    'Sosial media marketoloq təfəkkürü ilə: strategiya, kontent, şəxsi brend və satış. Baxış deyil - sorğu və satış.',
 };
 
 const HERO = {
-  title: 'Sosial media — marketoloq təfəkkürü ilə.',
+  title: 'Sosial media - marketoloq təfəkkürü ilə.',
   accentText: 'marketoloq',
   subtitle: '',
   description: '',
@@ -61,19 +61,19 @@ const SERVICES = [
   {
     title: 'Kontent',
     description:
-      'Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj standartı. Həftəlik ritm — trend deyil, sistem.',
+      'Reels, karusel və hekayə formatları üçün ssenari, çəkiliş rejissurası və montaj standartı. Həftəlik ritm - trend deyil, sistem.',
     features: [
       'Aylıq kontent planı',
       'Ssenari və storyboard',
       'Çəkiliş rejissurası',
       'Montaj və dizayn şablonları',
     ],
-    outcome: 'Ayda 12–20 hazır post, sabit vizual dil.',
+    outcome: 'Ayda 12-20 hazır post, sabit vizual dil.',
   },
   {
     title: 'Şəxsi brend',
     description:
-      'Ekspert obrazının qurulması: ton, vizual kimlik və daimi mövzu xətti. İzləyici deyil — etibar qazanırıq.',
+      'Ekspert obrazının qurulması: ton, vizual kimlik və daimi mövzu xətti. İzləyici deyil - etibar qazanırıq.',
     features: [
       'Ton və dəyər xəritəsi',
       'Vizual kimlik',
@@ -85,7 +85,7 @@ const SERVICES = [
   {
     title: 'Satış',
     description:
-      'Məzmunu gəlirə bağlayan sistem: lead axını, offer strukturu və konversiya təhlili. Baxış deyil — sorğu və satış.',
+      'Məzmunu gəlirə bağlayan sistem: lead axını, offer strukturu və konversiya təhlili. Baxış deyil - sorğu və satış.',
     features: [
       'Lead-magnit və offer',
       'DM və qıf skriptləri',
@@ -180,24 +180,24 @@ const PORTFOLIO = [
 ];
 
 const HOME = {
-  introEyebrow: '01 — Yanaşma',
+  introEyebrow: '01 - Yanaşma',
   introStatement:
-    'Kontent gözəl görünə bilər — amma satmırsa, işini görmür.',
+    'Kontent gözəl görünə bilər - amma satmırsa, işini görmür.',
   introAccent: 'satmırsa',
   introParagraphs: [
-    'Mən sosial media hesablarını marketinq sistemi kimi qururam: auditoriya araşdırması, mövqeləndirmə, məzmun xətti və satış qıfı — hamısı bir-birinə bağlı.',
+    'Mən sosial media hesablarını marketinq sistemi kimi qururam: auditoriya araşdırması, mövqeləndirmə, məzmun xətti və satış qıfı - hamısı bir-birinə bağlı.',
     'Nəticə görünüş deyil, rəqəmdir: daha keyfiyyətli izləyici, daha çox sorğu, daha çox bağlanan satış.',
   ],
   introTags: ['Strategiya', 'Kontent', 'Şəxsi brend', 'Satış qıfı', 'Analitika'],
-  numbersEyebrow: '03 — Rəqəmlər',
+  numbersEyebrow: '03 - Rəqəmlər',
   stats: [
     { value: 16, suffix: 'K+', label: 'İzləyici auditoriya' },
     { value: 40, suffix: '+', label: 'Tamamlanmış layihə' },
     { value: 6, suffix: ' il', label: 'Sahədə təcrübə' },
     { value: 95, suffix: '%', label: 'Təkrar müraciət' },
   ],
-  processEyebrow: '04 — Necə işləyirik',
-  processHeadline: 'Kaosdan aydınlığa — üç mərhələ.',
+  processEyebrow: '04 - Necə işləyirik',
+  processHeadline: 'Kaosdan aydınlığa - üç mərhələ.',
   processSteps: [
     {
       title: 'Kəşf',
@@ -206,7 +206,7 @@ const HOME = {
     },
     {
       title: 'Sistem',
-      text: 'Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı — hamısı sənədləşdirilmiş bir plan halında.',
+      text: 'Mövqeləndirmə, məzmun sütunları, vizual dil və satış qıfı - hamısı sənədləşdirilmiş bir plan halında.',
       tags: ['Positioning', 'Rubrikalar', 'Qıf'],
     },
     {
@@ -215,7 +215,7 @@ const HOME = {
       tags: ['Ritm', 'Prodakşn', 'Optimizasiya'],
     },
   ],
-  coursesEyebrow: '05 — Kurslar',
+  coursesEyebrow: '05 - Kurslar',
   coursesHeadline: 'Öyrən, tətbiq et, satışa çevir.',
   courseHow: [
     { t: 'Canlı dərslər', d: 'Hər dərs yazılır, platformada qalır.' },
@@ -229,7 +229,7 @@ const HOME = {
     { q: 'Ödəniş necə olur?', a: 'Qeydiyyatdan sonra sizinlə əlaqə saxlanılır, format və şərtlər razılaşdırılır.' },
     { q: 'Qrup nə qədərdir?', a: 'Fərdi diqqət üçün hər axın məhdud sayda iştirakçı ilə keçir.' },
   ],
-  quotesEyebrow: '06 — Rəylər',
+  quotesEyebrow: '06 - Rəylər',
 };
 
 const COURSES = [
@@ -239,7 +239,7 @@ const COURSES = [
     meta: '6 həftə · canlı',
     format: '6 həftə · həftədə 2 canlı dərs · online',
     description:
-      'Sıfırdan bir SMM sistemi qurursan: auditoriya, mövqeləndirmə, məzmun ritmi və satış qıfı. Nəzəriyyə yox — hər dərsdən sonra öz hesabında tətbiq edirsən.',
+      'Sıfırdan bir SMM sistemi qurursan: auditoriya, mövqeləndirmə, məzmun ritmi və satış qıfı. Nəzəriyyə yox - hər dərsdən sonra öz hesabında tətbiq edirsən.',
     program: [
       'Auditoriya və rəqib təhlili',
       'Mövqeləndirmə və offer',
@@ -267,7 +267,7 @@ const COURSES = [
       'Yayım və analitika',
     ],
     audience: 'Kontent çəkən, amma nəticə görməyənlər.',
-    outcome: 'Həftədə 3–5 hazır Reels, sabit baxış artımı.',
+    outcome: 'Həftədə 3-5 hazır Reels, sabit baxış artımı.',
   },
   {
     slug: 'sexsi-brend-intensiv',
@@ -275,7 +275,7 @@ const COURSES = [
     meta: '2 həftə · sprint',
     format: '2 həftə · sprint · fərdi rəy',
     description:
-      'İki həftədə ekspert obrazını qurursan: ton, vizual dil və daimi mövzu xətti. İzləyici deyil — etibar qazanırsan.',
+      'İki həftədə ekspert obrazını qurursan: ton, vizual dil və daimi mövzu xətti. İzləyici deyil - etibar qazanırsan.',
     program: [
       'Dəyər və ton xəritəsi',
       'Vizual kimlik',
@@ -304,7 +304,7 @@ const TESTIMONIALS = [
 ];
 
 async function main() {
-  console.log('Seeding CMS content (settings / hero / home / services / portfolio / courses / testimonials)…');
+  console.log('Seeding CMS content (settings / hero / home / services / portfolio / courses / testimonials)...');
 
   await prisma.siteSettings.upsert({
     where: { id: 1 },

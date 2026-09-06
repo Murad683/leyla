@@ -141,7 +141,7 @@ function Hero() {
           ))}
         </h1>
         <p className={`${styles.heroSub} lead`}>
-          Seçilmiş layihələr — hər biri ölçülə bilən dəyişikliklə. Baxış deyil,
+          Seçilmiş layihələr - hər biri ölçülə bilən dəyişikliklə. Baxış deyil,
           sorğu və satış.
         </p>
       </div>
@@ -265,7 +265,7 @@ function Cta() {
 
 export default function Portfolio() {
   useEffect(() => {
-    document.title = "Portfolio — Leyla Məmmədli";
+    document.title = "Portfolio - Leyla Məmmədli";
   }, []);
   return (
     <div className={styles.page}>

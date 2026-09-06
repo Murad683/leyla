@@ -5,7 +5,7 @@ export default function Placeholder({ index = "00", title = "Səhifə", note }) 
   return (
     <section className={styles.wrap}>
       <div className="shell">
-        <span className="mono">{index} — {title}</span>
+        <span className="mono">{index} - {title}</span>
         <h1 className={styles.h}>
           Bu səhifə <span className={styles.ital}>növbəti addımda</span> qurulacaq.
         </h1>

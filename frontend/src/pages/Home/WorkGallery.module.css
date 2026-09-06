@@ -3,7 +3,7 @@
   border-top: 1px solid var(--rule);
 }
 
-/* the element GSAP pins — one full viewport, contents vertically centred */
+/* the element GSAP pins - one full viewport, contents vertically centred */
 .pinWrap {
   min-height: 100svh;
   display: flex;

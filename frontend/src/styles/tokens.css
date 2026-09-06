@@ -1,5 +1,5 @@
 /* ============================================================
-   LEYLA — Design tokens
+   LEYLA - Design tokens
    Editorial / warm-paper direction (Orionix line)
    NOTE: legacy --color-* / --space-* / --radius-* / --text-*
    names are kept intact because the Admin panel CSS depends
@@ -8,7 +8,7 @@
 
 :root {
   /* ---- Paper & ink -------------------------------------- */
-  --paper: #f7f6f4;          /* primary background — near-white, neutral */
+  --paper: #f7f6f4;          /* primary background - near-white, neutral */
   --paper-raised: #f1f0ed;   /* cards, alternating bands */
   --paper-sunken: #e9e8e4;
   --ink: #1a1a18;            /* near-black, barely-warm */
@@ -17,11 +17,11 @@
   --rule: rgba(26, 26, 24, 0.12); /* hairline separators */
   --rule-strong: rgba(26, 26, 24, 0.26);
 
-  /* single confident accent — used sparingly */
+  /* single confident accent - used sparingly */
   --accent: #b8452b;         /* terracotta / rust */
   --accent-deep: #8f3420;
 
-  /* electric — the bold contrast moment (dark bands only) */
+  /* electric - the bold contrast moment (dark bands only) */
   --volt: #2f2bff;
   --volt-soft: #7d7bff;
 
@@ -78,7 +78,7 @@
   --dur-slow: 0.9s;
 
   /* ============================================================
-     LEGACY NAMES — required by src/pages/Admin/**  (do not remove)
+     LEGACY NAMES - required by src/pages/Admin/**  (do not remove)
      ============================================================ */
   --color-bg-primary: var(--paper);
   --color-bg-secondary: var(--paper-raised);

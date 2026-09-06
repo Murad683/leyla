@@ -11,7 +11,7 @@ const WARM = ["244,201,120", "214,120,58", "205,162,120"];
 const DEFAULT_COURSES = [
   { title: "SMM Sistemi", desc: "Sıfırdan strategiya, kontent və satış qıfı. Auditoriyanı oxumaq, offer qurmaq və nəticəni rəqəmlə izləmək.", meta: "6 həftə · canlı" },
   { title: "Reels Laboratoriyası", desc: "Ssenari, çəkiliş rejissurası, montaj standartı və trend oxuma. Hər həftə yeni format, hər format üçün şablon.", meta: "3 həftə · praktiki" },
-  { title: "Şəxsi Brend Intensiv", desc: "Ekspert obrazı, mövqeləndirmə və daimi mövzu xətti. İki həftəlik sprint — sonunda hazır kontent planı.", meta: "2 həftə · sprint" },
+  { title: "Şəxsi Brend Intensiv", desc: "Ekspert obrazı, mövqeləndirmə və daimi mövzu xətti. İki həftəlik sprint - sonunda hazır kontent planı.", meta: "2 həftə · sprint" },
 ];
 
 export default function Courses() {
@@ -21,7 +21,7 @@ export default function Courses() {
 
   const COURSES = useCourses(DEFAULT_COURSES);
   const { coursesEyebrow, coursesHeadline } = useHomeContent({
-    coursesEyebrow: "05 — Kurslar",
+    coursesEyebrow: "05 - Kurslar",
     coursesHeadline: "Öyrən, tətbiq et, satışa çevir.",
   });
   const H_WORDS = coursesHeadline.split(/\s+/).filter(Boolean);

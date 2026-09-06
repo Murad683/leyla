@@ -5,7 +5,7 @@ import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Hero.module.css";
 
 const DEFAULTS = {
-  title: "Sosial media — marketoloq təfəkkürü ilə.",
+  title: "Sosial media - marketoloq təfəkkürü ilə.",
   accentText: "marketoloq",
 };
 

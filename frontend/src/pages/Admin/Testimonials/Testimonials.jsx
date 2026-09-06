@@ -89,7 +89,7 @@ const AdminTestimonials = () => {
                 <button onClick={async () => { if (await confirm({ body: 'Bu rəy silinsin?' })) deleteM.mutate(t.id); }} className={styles.deleteBtn}>🗑️ Sil</button>
               </div>
             </div>
-            <p className={styles.serviceDesc}>“{t.quote}”</p>
+            <p className={styles.serviceDesc}>"{t.quote}"</p>
             <h3 className={styles.serviceTitle}>{t.author}</h3>
             <p className={styles.serviceDesc}>{t.role}</p>
           </div>

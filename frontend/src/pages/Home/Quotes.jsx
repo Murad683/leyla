@@ -18,7 +18,7 @@ const DEFAULT_QUOTES = [
 export default function Quotes() {
   const ref = useReveal({ stagger: 0.15 });
   const quotes = useTestimonials(DEFAULT_QUOTES);
-  const { quotesEyebrow } = useHomeContent({ quotesEyebrow: "06 — Rəylər" });
+  const { quotesEyebrow } = useHomeContent({ quotesEyebrow: "06 - Rəylər" });
   if (!quotes.length) return null;
   return (
     <section className={`${styles.section} section`} ref={ref}>
@@ -27,7 +27,7 @@ export default function Quotes() {
         <div className={styles.grid}>
           {quotes.map((item) => (
             <figure className={`${styles.card} reveal`} key={item.a}>
-              <blockquote className={styles.q}>“{item.q}”</blockquote>
+              <blockquote className={styles.q}>"{item.q}"</blockquote>
               <figcaption className={styles.cap}>
                 <span className={styles.a}>{item.a}</span>
                 <span className="mono">{item.r}</span>

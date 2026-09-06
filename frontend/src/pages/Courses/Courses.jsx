@@ -11,7 +11,7 @@ const DEFAULT_COURSES = [
     n: "01",
     title: "SMM Sistemi",
     format: "6 həftə · həftədə 2 canlı dərs · online",
-    desc: "Sıfırdan bir SMM sistemi qurursan: auditoriya, mövqeləndirmə, məzmun ritmi və satış qıfı. Nəzəriyyə yox — hər dərsdən sonra öz hesabında tətbiq edirsən.",
+    desc: "Sıfırdan bir SMM sistemi qurursan: auditoriya, mövqeləndirmə, məzmun ritmi və satış qıfı. Nəzəriyyə yox - hər dərsdən sonra öz hesabında tətbiq edirsən.",
     program: [
       "Auditoriya və rəqib təhlili",
       "Mövqeləndirmə və offer",
@@ -37,13 +37,13 @@ const DEFAULT_COURSES = [
       "Yayım və analitika",
     ],
     who: "Kontent çəkən, amma nəticə görməyənlər.",
-    outcome: "Həftədə 3–5 hazır Reels, sabit baxış artımı.",
+    outcome: "Həftədə 3-5 hazır Reels, sabit baxış artımı.",
   },
   {
     n: "03",
     title: "Şəxsi Brend Intensiv",
     format: "2 həftə · sprint · fərdi rəy",
-    desc: "İki həftədə ekspert obrazını qurursan: ton, vizual dil və daimi mövzu xətti. İzləyici deyil — etibar qazanırsan.",
+    desc: "İki həftədə ekspert obrazını qurursan: ton, vizual dil və daimi mövzu xətti. İzləyici deyil - etibar qazanırsan.",
     program: [
       "Dəyər və ton xəritəsi",
       "Vizual kimlik",
@@ -227,7 +227,7 @@ function Faq() {
                 aria-expanded={i === open}
               >
                 <span>{f.q}</span>
-                <span className={styles.faqSign}>{i === open ? "–" : "+"}</span>
+                <span className={styles.faqSign}>{i === open ? "-" : "+"}</span>
               </button>
               <div className={styles.faqA}>
                 <p>{f.a}</p>
@@ -259,7 +259,7 @@ function Cta() {
 
 export default function Courses() {
   useEffect(() => {
-    document.title = "Kurslar — Leyla Məmmədli";
+    document.title = "Kurslar - Leyla Məmmədli";
   }, []);
   const courses = useCourses(DEFAULT_COURSES);
   return (

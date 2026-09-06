@@ -49,7 +49,7 @@ function Hero() {
     return () => ctx.revert();
   }, []);
 
-  const words = "Bir mesaj — sistemli başlanğıc.".split(" ");
+  const words = "Bir mesaj - sistemli başlanğıc.".split(" ");
   return (
     <header className={styles.hero} ref={root}>
       <FlowGradient />
@@ -69,7 +69,7 @@ function Hero() {
           ))}
         </h1>
         <p className={`${styles.heroSub} lead`}>
-          Layihə, iş birliyi və ya kurs — qısa formu doldur, 1–2 iş günü ərzində
+          Layihə, iş birliyi və ya kurs - qısa formu doldur, 1-2 iş günü ərzində
           cavab verək.
         </p>
       </div>
@@ -88,7 +88,7 @@ function Form() {
   const [serverMsg, setServerMsg] = useState("");
   const honeypot = useRef(null);
 
-  // Prefill from ?kurs=… or ?xidmet=…
+  // Prefill from ?kurs=... or ?xidmet=...
   useEffect(() => {
     const kurs = params.get("kurs");
     const xidmet = params.get("xidmet");
@@ -145,7 +145,7 @@ function Form() {
         email: form.email.trim(),
         phone: form.phone.trim() || undefined,
         service: form.service || undefined,
-        subject: form.service ? `${form.service} — sayt formu` : "Sayt formu",
+        subject: form.service ? `${form.service} - sayt formu` : "Sayt formu",
         message: form.message.trim(),
       });
       setStatus("ok");
@@ -176,7 +176,7 @@ function Form() {
             <span className="mono">Göndərildi</span>
             <h2 className={styles.doneTitle}>Mesaj bizə çatdı.</h2>
             <p className={styles.doneText}>
-              1–2 iş günü ərzində e-poçt və ya telefonla əlaqə saxlayacağıq.
+              1-2 iş günü ərzində e-poçt və ya telefonla əlaqə saxlayacağıq.
               Təcili haldırsa, birbaşa Instagram-dan yaza bilərsən.
             </p>
             <div className={styles.doneRow}>
@@ -232,7 +232,7 @@ function Form() {
               </div>
               <div className={styles.field}>
                 <label htmlFor="c-phone">
-                  Telefon <span className={styles.opt}>— istəyə bağlı</span>
+                  Telefon <span className={styles.opt}>- istəyə bağlı</span>
                 </label>
                 <input
                   id="c-phone"
@@ -251,7 +251,7 @@ function Form() {
                 value={form.service}
                 onChange={setField("service")}
               >
-                <option value="">Seçin…</option>
+                <option value="">Seçin...</option>
                 {SERVICES.map((s) => (
                   <option key={s} value={s}>
                     {s}
@@ -274,7 +274,7 @@ function Form() {
               )}
             </div>
 
-            {/* honeypot — hidden from users, catches bots */}
+            {/* honeypot - hidden from users, catches bots */}
             <input
               ref={honeypot}
               type="text"
@@ -291,7 +291,7 @@ function Form() {
                 className={styles.submit}
                 disabled={status === "sending"}
               >
-                {status === "sending" ? "Göndərilir…" : "Göndər"}
+                {status === "sending" ? "Göndərilir..." : "Göndər"}
               </button>
               {status === "error" && (
                 <p className={styles.formErr} role="alert">
@@ -318,7 +318,7 @@ function Form() {
             </div>
             <div className={`${styles.sideBlock} reveal`}>
               <span className="mono">Cavab vaxtı</span>
-              <p>1–2 iş günü</p>
+              <p>1-2 iş günü</p>
             </div>
           </aside>
         </div>
@@ -329,7 +329,7 @@ function Form() {
 
 export default function Contact() {
   useEffect(() => {
-    document.title = "Əlaqə — Leyla Məmmədli";
+    document.title = "Əlaqə - Leyla Məmmədli";
   }, []);
   return (
     <div className={styles.page}>

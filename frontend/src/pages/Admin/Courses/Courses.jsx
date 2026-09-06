@@ -119,10 +119,10 @@ const AdminCourses = () => {
             <h3 className={styles.modalTitle}>{editing ? 'Kursu Redaktə Et' : 'Yeni Kurs'}</h3>
             <form onSubmit={submit} className={styles.form}>
               <div className={styles.inputGroup}><label className={styles.label}>Ad</label><input name="title" value={f.title} onChange={ch} className={styles.input} required /></div>
-              <div className={styles.inputGroup}><label className={styles.label}>Qısa format (ana səhifə — məs. «6 həftə · canlı»)</label><input name="meta" value={f.meta} onChange={ch} className={styles.input} /></div>
+              <div className={styles.inputGroup}><label className={styles.label}>Qısa format (ana səhifə - məs. «6 həftə · canlı»)</label><input name="meta" value={f.meta} onChange={ch} className={styles.input} /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Tam format («Kurslar» səhifəsi)</label><input name="format" value={f.format} onChange={ch} className={styles.input} /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Açıqlama</label><textarea name="description" value={f.description} onChange={ch} className={styles.textarea} rows={3} /></div>
-              <div className={styles.inputGroup}><label className={styles.label}>Proqram (hər sətir — ayrı bənd)</label><textarea name="program" value={f.program} onChange={ch} className={styles.textarea} rows={5} /></div>
+              <div className={styles.inputGroup}><label className={styles.label}>Proqram (hər sətir - ayrı bənd)</label><textarea name="program" value={f.program} onChange={ch} className={styles.textarea} rows={5} /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Kimə uyğundur</label><input name="audience" value={f.audience} onChange={ch} className={styles.input} /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Nəticə</label><input name="outcome" value={f.outcome} onChange={ch} className={styles.input} /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Sıra</label><input type="number" name="sortOrder" value={f.sortOrder} onChange={ch} className={styles.input} /></div>

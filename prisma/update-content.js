@@ -1,5 +1,5 @@
 // One-off content update: refreshes Hero/About/Services/Portfolio copy to match
-// the new "sell trainings" site direction. Run manually — NOT wired into any
+// the new "sell trainings" site direction. Run manually - NOT wired into any
 // deploy/CI step, so it will not re-run on push and will not touch
 // Contact, User, BlogPost, or SiteSettings rows.
 //
@@ -56,7 +56,7 @@ async function main() {
     data: [
       { icon: 'QualityIcon', title: 'Praktik Yanaşma', description: 'Hər dərs real tapşırıq və nümunələrlə dəstəklənir, sadəcə nəzəriyyə ilə kifayətlənmirik.' },
       { icon: 'InnovationIcon', title: 'Fərdi Diqqət', description: 'Qrup ölçüləri kiçik saxlanılır ki, hər iştirakçıya fərdi rəy vermək mümkün olsun.' },
-      { icon: 'CollaborationIcon', title: 'Davamlı Dəstək', description: 'Təlim bitdikdən sonra da suallarınızla yanınızdayıq — məzunlarımızla əlaqə kəsilmir.' },
+      { icon: 'CollaborationIcon', title: 'Davamlı Dəstək', description: 'Təlim bitdikdən sonra da suallarınızla yanınızdayıq - məzunlarımızla əlaqə kəsilmir.' },
     ],
   });
 

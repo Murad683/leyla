@@ -6,7 +6,7 @@ import { gsap, ScrollTrigger } from "./gsap";
 let lenisInstance = null;
 export const getLenis = () => lenisInstance;
 
-/** Jump to the top instantly — used on route changes. */
+/** Jump to the top instantly - used on route changes. */
 export function scrollToTop() {
   if (lenisInstance) lenisInstance.scrollTo(0, { immediate: true, force: true });
   window.scrollTo(0, 0);

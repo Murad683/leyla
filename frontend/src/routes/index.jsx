@@ -24,7 +24,7 @@ const AdminGuide = lazy(() => import("../pages/Admin/Guide/Guide"));
 
 const Fallback = () => (
   <div style={{ minHeight: "60vh", display: "grid", placeItems: "center" }}>
-    <span className="mono">Yüklənir…</span>
+    <span className="mono">Yüklənir...</span>
   </div>
 );
 

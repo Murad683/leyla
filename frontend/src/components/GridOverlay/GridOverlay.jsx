@@ -1,6 +1,6 @@
 import styles from "./GridOverlay.module.css";
 
-/** Fixed 12-col hairline grid + corner crosshairs — the "blueprint" layer. */
+/** Fixed 12-col hairline grid + corner crosshairs - the "blueprint" layer. */
 export default function GridOverlay() {
   return (
     <>

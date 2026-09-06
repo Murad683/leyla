@@ -9,7 +9,7 @@ import './styles/typography.css';
 
 const queryClient = new QueryClient();
 
-// NOTE: StrictMode intentionally omitted — its double invoke of effects
+// NOTE: StrictMode intentionally omitted - its double invoke of effects
 // races GSAP ScrollTrigger setup/teardown and leaves pinned refs null.
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>

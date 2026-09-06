@@ -15,10 +15,10 @@ const SECTIONS = [
   {
     to: '/admin/hero',
     title: 'Hero Bölməsi',
-    where: 'Ana səhifənin ən üstü — böyük başlıq.',
+    where: 'Ana səhifənin ən üstü - böyük başlıq.',
     tips: [
       '"Vurğu sözü" başlıqdakı sözlərdən biri olmalıdır (məs. "marketoloq"). O söz kursiv və terakota rəngdə göstərilir.',
-      'Açıqlama mətni v2 dizaynında ana səhifə hero-da göstərilmir — boş qala bilər.',
+      'Açıqlama mətni v2 dizaynında ana səhifə hero-da göstərilmir - boş qala bilər.',
     ],
   },
   {
@@ -28,7 +28,7 @@ const SECTIONS = [
     tips: [
       'Statistika: "Rəqəm" yalnız ədəd olsun (məs. 16), "Şəkilçi" ayrıca (məs. K+). Səhifədə rəqəm sıfırdan yuxarı sayılaraq görünür.',
       'Paraqraflar: hər sətir ayrıca paraqrafdır.',
-      '"Etiket" sahələri bölmə nömrələridir (məs. "03 — Rəqəmlər").',
+      '"Etiket" sahələri bölmə nömrələridir (məs. "03 - Rəqəmlər").',
     ],
   },
   {
@@ -37,7 +37,7 @@ const SECTIONS = [
     where: 'Ana səhifədəki xidmət diski (ServicesArc) + "Xidmətlər" səhifəsi.',
     tips: [
       '"Nə daxildir" bəndləri vergüllə ayrılır.',
-      'Kartları sürükləyərək sırala — nömrə (01, 02…) avtomatik verilir.',
+      'Kartları sürükləyərək sırala - nömrə (01, 02...) avtomatik verilir.',
     ],
   },
   {
@@ -58,7 +58,7 @@ const SECTIONS = [
       'Teqlər həm kartda görünür, həm də Portfolio səhifəsindəki filtr düymələrini yaradır.',
       'Metrikalar: 3 dənə qısa "ad → dəyər" cütü (məs. "İzləyici artımı → +48K").',
       '"Kart rəngi" hər layihəyə fərqli çalar verir.',
-      '"Keys-stadi mətnləri" hissəsi v2 kartlarda göstərilmir — boş qala bilər.',
+      '"Keys-stadi mətnləri" hissəsi v2 kartlarda göstərilmir - boş qala bilər.',
     ],
   },
   {
@@ -91,7 +91,7 @@ const Guide = () => (
       <p className={styles.subtitle} style={{ margin: 0 }}>
         Burada etdiyin dəyişikliklər dərhal yadda saxlanır. Saytda görünməsi
         üçün səhifəni yenilə (bəzən ~1 dəqiqə keşləmə olur). Şəkillər Cloudinary-yə
-        yüklənir. Bir sahəni boş qoysan, sayt köhnə/standart mətnə keçmir —
+        yüklənir. Bir sahəni boş qoysan, sayt köhnə/standart mətnə keçmir -
         sadəcə həmin element boş görünə bilər, ona görə vacib sahələri doldur.
       </p>
     </div>
