@@ -6,7 +6,6 @@ const LINKS = [
   { to: "/xidmetler", label: "Xidmətlər" },
   { to: "/kurslar", label: "Kurslar" },
   { to: "/portfolio", label: "Portfolio" },
-  { to: "/elaqe", label: "Əlaqə" },
 ];
 
 export default function Navbar() {
@@ -75,14 +74,9 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <a
-          href="https://www.instagram.com/leiylamammadly/"
-          target="_blank"
-          rel="noreferrer"
-          className={styles.cta}
-        >
+        <Link to="/elaqe" className={styles.cta} onClick={() => setOpen(false)}>
           İş birliyi
-        </a>
+        </Link>
 
         <button
           className={styles.burger}
@@ -107,6 +101,13 @@ export default function Navbar() {
           {l.label}
         </NavLink>
       ))}
+      <NavLink
+        to="/elaqe"
+        className={styles.sheetLink}
+        onClick={() => setOpen(false)}
+      >
+        İş birliyi
+      </NavLink>
       <a
         href="https://www.instagram.com/leiylamammadly/"
         target="_blank"

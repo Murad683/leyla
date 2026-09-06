@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
-import FlowField from "../../components/FlowField/FlowField";
+import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Courses.module.css";
-
-const IG = "https://www.instagram.com/leiylamammadly/";
 
 const COURSES = [
   {
@@ -115,7 +114,7 @@ function Hero() {
   const words = "Öyrən, tətbiq et, satışa çevir.".split(" ");
   return (
     <header className={styles.hero} ref={root}>
-      <FlowField />
+      <FlowGradient />
       <div className={`${styles.heroInner} shell`}>
         <span className="mono">Kurslar</span>
         <h1 className={styles.heroTitle}>
@@ -173,14 +172,12 @@ function CourseBlock({ c }) {
           </div>
         </div>
 
-        <a
-          href={IG}
-          target="_blank"
-          rel="noreferrer"
+        <Link
+          to={`/elaqe?kurs=${encodeURIComponent(c.title)}`}
           className={`${styles.enroll} reveal`}
         >
           Qeydiyyatdan keç →
-        </a>
+        </Link>
       </div>
     </article>
   );
@@ -216,7 +213,8 @@ function Faq() {
           {FAQ.map((f, i) => (
             <li
               key={f.q}
-              className={`${styles.faqItem} reveal ${i === open ? styles.faqOpen : ""}`}
+              className={`${styles.faqItem} reveal`}
+              data-open={i === open ? "true" : undefined}
             >
               <button
                 className={styles.faqQ}
@@ -246,14 +244,9 @@ function Cta() {
         <p className={`${styles.ctaText} reveal`}>
           Qeydiyyat açıqdır. Uyğun kursu birlikdə seçək.
         </p>
-        <a
-          href={IG}
-          target="_blank"
-          rel="noreferrer"
-          className={`${styles.ctaBtn} reveal`}
-        >
+        <Link to="/elaqe" className={`${styles.ctaBtn} reveal`}>
           Qeydiyyatdan keç
-        </a>
+        </Link>
       </div>
     </section>
   );

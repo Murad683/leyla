@@ -4,6 +4,8 @@ import SiteLayout from "../components/SiteLayout/SiteLayout";
 import Home from "../pages/Home/Home";
 import Services from "../pages/Services/Services";
 import CoursesPage from "../pages/Courses/Courses";
+import PortfolioPage from "../pages/Portfolio/Portfolio";
+import ContactPage from "../pages/Contact/Contact";
 import Placeholder from "../pages/Placeholder/Placeholder";
 import ProtectedRoute from "../components/admin/ProtectedRoute";
 
@@ -34,14 +36,8 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "xidmetler", element: <Services /> },
       { path: "kurslar", element: <CoursesPage /> },
-      {
-        path: "portfolio",
-        element: <Placeholder index="03" title="Portfolio" />,
-      },
-      {
-        path: "elaqe",
-        element: <Placeholder index="04" title="Əlaqə" />,
-      },
+      { path: "portfolio", element: <PortfolioPage /> },
+      { path: "elaqe", element: <ContactPage /> },
       {
         path: "*",
         element: (

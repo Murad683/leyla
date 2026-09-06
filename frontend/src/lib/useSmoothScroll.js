@@ -2,6 +2,16 @@ import { useEffect } from "react";
 import Lenis from "lenis";
 import { gsap, ScrollTrigger } from "./gsap";
 
+/** Live Lenis instance (null while reduced-motion or before mount). */
+let lenisInstance = null;
+export const getLenis = () => lenisInstance;
+
+/** Jump to the top instantly — used on route changes. */
+export function scrollToTop() {
+  if (lenisInstance) lenisInstance.scrollTo(0, { immediate: true, force: true });
+  window.scrollTo(0, 0);
+}
+
 /**
  * Boots Lenis smooth scrolling and keeps GSAP ScrollTrigger in sync.
  * Mount once, near the root. Respects prefers-reduced-motion.
@@ -25,6 +35,7 @@ export function useSmoothScroll() {
         touchMultiplier: 1.6,
       });
       lenis.on("scroll", ScrollTrigger.update);
+      lenisInstance = lenis;
       onRaf = (time) => lenis.raf(time * 1000);
       gsap.ticker.add(onRaf);
       gsap.ticker.lagSmoothing(0);
@@ -53,6 +64,7 @@ export function useSmoothScroll() {
       window.removeEventListener("resize", onResize);
       if (onRaf) gsap.ticker.remove(onRaf);
       if (lenis) lenis.destroy();
+      if (lenisInstance === lenis) lenisInstance = null;
     };
   }, []);
 }

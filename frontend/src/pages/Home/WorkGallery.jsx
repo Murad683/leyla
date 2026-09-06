@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
 import styles from "./WorkGallery.module.css";
 
@@ -90,14 +91,9 @@ export default function WorkGallery() {
               <p className={styles.endText}>
                 Sənin brendin <span className={styles.ital}>növbəti</span> ola bilər.
               </p>
-              <a
-                href="https://www.instagram.com/leiylamammadly/"
-                target="_blank"
-                rel="noreferrer"
-                className={styles.endLink}
-              >
+              <Link to="/elaqe" className={styles.endLink}>
                 İş birliyi →
-              </a>
+              </Link>
             </article>
           </div>
         </div>

@@ -155,21 +155,30 @@ export default function ServicesArc() {
               />
               <g ref={gref}>
                 {geo.nums.map((p, i) => (
-                  <text
-                    key={i}
-                    x={p.x}
-                    y={p.y}
-                    transform={`rotate(${p.rot} ${p.x} ${p.y})`}
-                    textAnchor={mobile ? "middle" : "end"}
-                    dominantBaseline="middle"
-                    className={styles.num}
-                    style={{
-                      fill: i === active ? "var(--ink)" : "var(--ink-faint)",
-                      opacity: Math.max(0.12, 1 - Math.abs(i - af) * 0.55),
-                    }}
-                  >
-                    {ITEMS[i].n}
-                  </text>
+                  <g key={i} transform={`rotate(${p.rot} ${p.x} ${p.y})`}>
+                    {mobile && (
+                      <rect
+                        x={p.x - 30}
+                        y={p.y - 24}
+                        width="60"
+                        height="48"
+                        fill="var(--paper-raised)"
+                      />
+                    )}
+                    <text
+                      x={p.x}
+                      y={p.y}
+                      textAnchor={mobile ? "middle" : "end"}
+                      dominantBaseline="middle"
+                      className={styles.num}
+                      style={{
+                        fill: i === active ? "var(--ink)" : "var(--ink-faint)",
+                        opacity: Math.max(0.12, 1 - Math.abs(i - af) * 0.55),
+                      }}
+                    >
+                      {ITEMS[i].n}
+                    </text>
+                  </g>
                 ))}
               </g>
               <circle className={styles.dot} cx={geo.dot.x} cy={geo.dot.y} r="4.5" />

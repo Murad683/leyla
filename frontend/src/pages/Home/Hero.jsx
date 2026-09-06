@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
-import FlowField from "../../components/FlowField/FlowField";
+import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Hero.module.css";
 
 const LINE1 = ["Sosial", "media —"];
@@ -83,7 +83,7 @@ export default function Hero() {
 
   return (
     <section className={styles.hero} ref={root}>
-      <FlowField />
+      <FlowGradient />
 
       <h1 className={styles.title} ref={title}>
         <span className={styles.line}>

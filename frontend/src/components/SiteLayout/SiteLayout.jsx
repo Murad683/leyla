@@ -5,7 +5,7 @@ import Footer from "../Footer/Footer";
 import Cursor from "../Cursor/Cursor";
 import GridOverlay from "../GridOverlay/GridOverlay";
 import Preloader from "../Preloader/Preloader";
-import { useSmoothScroll } from "../../lib/useSmoothScroll";
+import { useSmoothScroll, scrollToTop } from "../../lib/useSmoothScroll";
 import { ScrollTrigger } from "../../lib/gsap";
 
 export default function SiteLayout() {
@@ -14,8 +14,11 @@ export default function SiteLayout() {
   useSmoothScroll();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    scrollToTop();
     ScrollTrigger.refresh();
+    // beat any pin/scroll restoration that runs on the next frame
+    const raf = requestAnimationFrame(scrollToTop);
+    return () => cancelAnimationFrame(raf);
   }, [pathname]);
 
   useEffect(() => {

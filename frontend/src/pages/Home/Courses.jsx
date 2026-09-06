@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
 import Marquee from "../../components/Marquee/Marquee";
 import FlowCanvas from "../../components/FlowCanvas/FlowCanvas";
@@ -134,14 +135,9 @@ export default function Courses() {
 
         <div className={styles.ctaRow}>
           <p className={styles.ctaText}>Növbəti axın üçün qeydiyyat açıqdır.</p>
-          <a
-            href="https://www.instagram.com/leiylamammadly/"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.cta}
-          >
+          <Link to="/elaqe" className={styles.cta}>
             Qeydiyyatdan keç
-          </a>
+          </Link>
         </div>
       </div>
     </section>

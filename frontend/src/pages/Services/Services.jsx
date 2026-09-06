@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
-import FlowField from "../../components/FlowField/FlowField";
+import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Services.module.css";
 
 const SERVICES = [
@@ -90,7 +90,7 @@ function Hero() {
 
   return (
     <header className={styles.hero} ref={root}>
-      <FlowField />
+      <FlowGradient />
       <div className={`${styles.heroInner} shell`}>
         <span className="mono">Xidmətlər</span>
         <h1 className={styles.heroTitle}>
@@ -149,14 +149,9 @@ function Cta() {
           Hansı modulun sənə lazım olduğunu birlikdə müəyyən edək.
         </p>
         <div className={`${styles.ctaRow} reveal`}>
-          <a
-            href="https://www.instagram.com/leiylamammadly/"
-            target="_blank"
-            rel="noreferrer"
-            className={styles.ctaBtn}
-          >
+          <Link to="/elaqe" className={styles.ctaBtn}>
             İş birliyi
-          </a>
+          </Link>
           <Link to="/kurslar" className={styles.ctaLink}>
             Kurslara bax →
           </Link>
