@@ -65,11 +65,13 @@
   color: #f4f1e9;
   transition: transform 0.5s var(--ease-out);
 }
-.card:hover {
-  transform: translateY(-8px);
-}
-.card:hover .cardMedia {
-  transform: scale(1.05);
+@media (hover: hover) and (min-width: 861px) {
+  .card:hover {
+    transform: translateY(-8px);
+  }
+  .card:hover .cardMedia {
+    transform: scale(1.05);
+  }
 }
 
 .cardMedia {
@@ -178,11 +180,22 @@
   border-color: var(--accent);
 }
 
-/* mobile: keep the horizontal scroll animation, just centre the head
-   and size the cards for the viewport */
+/* pagination dots — mobile carousel only */
+.dots {
+  display: none;
+}
+
+/* ============================================================
+   MOBILE: real swipe carousel (native scroll-snap + JS focus
+   animation + gentle autoplay). No pin, no scroll-jacking.
+   ============================================================ */
 @media (max-width: 860px) {
   .pinWrap {
-    gap: clamp(1.5rem, 6vw, 2.5rem);
+    min-height: 0;
+    justify-content: flex-start;
+    gap: clamp(1.5rem, 6vw, 2.25rem);
+    padding-block: clamp(2.5rem, 10vw, 4rem);
+    overflow: visible;
   }
   .head {
     align-items: center;
@@ -193,12 +206,69 @@
     font-size: clamp(1.8rem, 8vw, 2.4rem);
     line-height: 1.24;
   }
+  .hint {
+    display: none;
+  }
+
+  .viewport {
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+  }
+  .viewport::-webkit-scrollbar {
+    display: none;
+  }
+
+  .track {
+    transform: none !important;
+    width: max-content;
+    gap: 4vw;
+    padding-inline: calc((100% - min(82vw, 360px)) / 2);
+    align-items: center;
+  }
+
   .card {
-    width: min(80vw, 380px);
-    height: min(62vh, 480px);
+    width: min(82vw, 360px);
+    height: min(64vh, 470px);
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+    opacity: 0.42;
+    transform: scale(0.9);
+    transition: transform 0.5s var(--ease-out), opacity 0.5s var(--ease-out);
+  }
+  .card.isActive {
+    opacity: 1;
+    transform: scale(1);
   }
   .cardEnd {
-    width: min(70vw, 320px);
+    width: min(74vw, 320px);
+    height: min(64vh, 470px);
+  }
+
+  .dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+  }
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    border: 0;
+    padding: 0;
+    background: var(--rule-strong);
+    opacity: 0.5;
+    transition: width 0.35s var(--ease-out), opacity 0.35s var(--ease-out), background 0.35s;
+  }
+  .dotOn {
+    width: 22px;
+    opacity: 1;
+    background: var(--accent);
   }
 }
 
