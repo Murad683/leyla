@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
-import { useReveal } from "../../lib/useReveal";
 import styles from "./Process.module.css";
 
 const STEPS = [
@@ -24,43 +23,7 @@ const STEPS = [
   },
 ];
 
-const MQ = "(max-width: 860px)";
-
-function ProcessMobile() {
-  const ref = useReveal({ stagger: 0.1 });
-  return (
-    <section className={styles.section}>
-      <div className={`${styles.mShell} shell`} ref={ref}>
-        <header className={styles.mHead}>
-          <span className="mono reveal">04 — Necə işləyirik</span>
-          <p className={`${styles.mHeadline} reveal`}>
-            Kaosdan aydınlığa — <span className={styles.ital}>üç mərhələ</span>.
-          </p>
-        </header>
-
-        <ol className={styles.mList}>
-          {STEPS.map((s, i) => (
-            <li className={`${styles.mCard} reveal`} key={s.n}>
-              <span className={styles.mN}>{s.n}</span>
-              <span className={`mono ${styles.mStage}`}>
-                Mərhələ {i + 1} / {STEPS.length}
-              </span>
-              <h3 className={styles.mTitle}>{s.title}</h3>
-              <p className={styles.mText}>{s.text}</p>
-              <ul className={styles.mTags}>
-                {s.tags.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-function ProcessDesktop() {
+export default function Process() {
   const root = useRef(null);
   const pin = useRef(null);
 
@@ -73,7 +36,7 @@ function ProcessDesktop() {
         scrollTrigger: {
           trigger: root.current,
           start: "top top",
-          end: () => "+=" + window.innerHeight * (cards.length - 0.35),
+          end: () => "+=" + window.innerHeight * (cards.length - 0.3),
           scrub: 0.5,
           pin: pin.current,
           anticipatePin: 1,
@@ -85,13 +48,13 @@ function ProcessDesktop() {
         if (i === 0) return;
         tl.fromTo(
           card,
-          { yPercent: 108, rotate: 1.5 },
+          { yPercent: 110, rotate: 1.4 },
           { yPercent: 0, rotate: 0, ease: "none" },
           i - 1
         );
         tl.to(
           cards[i - 1],
-          { scale: 0.92, yPercent: -5, opacity: 0.35, ease: "none" },
+          { scale: 0.93, yPercent: -4, opacity: 0.4, ease: "none" },
           i - 1
         );
       });
@@ -138,18 +101,4 @@ function ProcessDesktop() {
       </div>
     </section>
   );
-}
-
-export default function Process() {
-  const [mobile, setMobile] = useState(
-    typeof window !== "undefined" && window.matchMedia(MQ).matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia(MQ);
-    const on = () => setMobile(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-
-  return mobile ? <ProcessMobile /> : <ProcessDesktop />;
 }

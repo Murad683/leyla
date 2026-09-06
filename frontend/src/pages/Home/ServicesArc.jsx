@@ -1,6 +1,5 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap, ScrollTrigger } from "../../lib/gsap";
-import { useReveal } from "../../lib/useReveal";
 import styles from "./ServicesArc.module.css";
 
 const ITEMS = [
@@ -32,61 +31,77 @@ const ITEMS = [
 
 const N = ITEMS.length;
 const MQ = "(max-width: 900px)";
+const D2R = Math.PI / 180;
 
-/* ---------- mobile: clean centred stack ---------- */
-function ServicesMobile() {
-  const ref = useReveal({ stagger: 0.1 });
-  return (
-    <section className={styles.section}>
-      <div className={`${styles.mShell} shell`} ref={ref}>
-        <header className={styles.mHead}>
-          <span className={`mono reveal`}>02 — Xidmətlər</span>
-          <p className={`${styles.mTitle} reveal`}>
-            Dörd addım, <span className={styles.ital}>bir sistem</span>.
-          </p>
-        </header>
-
-        <ol className={styles.mList}>
-          {ITEMS.map((it) => (
-            <li className={`${styles.mItem} reveal`} key={it.n}>
-              <span className={styles.mN}>{it.n}</span>
-              <h3 className={styles.mItemTitle}>{it.title}</h3>
-              <p className={styles.mItemText}>{it.text}</p>
-              <ul className={styles.mTags}>
-                {it.tags.map((t) => (
-                  <li key={t}>{t}</li>
-                ))}
-              </ul>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </section>
-  );
-}
-
-/* ---------- desktop: sticky rail + rotating dial ---------- */
-function ServicesDesktop() {
+export default function ServicesArc() {
   const root = useRef(null);
   const gref = useRef(null);
+  const [mobile, setMobile] = useState(
+    typeof window !== "undefined" && window.matchMedia(MQ).matches
+  );
   const [af, setAf] = useState(0);
 
-  const cx = -210;
-  const cy = 340;
-  const r = 512;
-  const step = 13;
-  const nums = ITEMS.map((_, i) => {
-    const ang = i * step * (Math.PI / 180);
+  useEffect(() => {
+    const mq = window.matchMedia(MQ);
+    const on = () => setMobile(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+
+  const geo = useMemo(() => {
+    if (mobile) {
+      // circle far below the viewport -> only a shallow top arc shows;
+      // numbers sweep horizontally under a dot fixed at top-centre
+      const cx = 180;
+      const cy = 760;
+      const r = 700;
+      const step = 9; // deg between numbers
+      const nums = ITEMS.map((_, i) => {
+        const a = (-90 + i * step) * D2R;
+        return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a), rot: i * step };
+      });
+      return {
+        vb: { w: 360, h: 132 },
+        preserve: "xMidYMin slice",
+        cx,
+        cy,
+        r,
+        step,
+        dot: { x: cx, y: 30 },
+        nums,
+      };
+    }
+    // desktop: circle off to the left -> vertical arc on the right edge
+    const cx = -210;
+    const cy = 340;
+    const r = 512;
+    const step = 13;
+    const nums = ITEMS.map((_, i) => {
+      const a = i * step * D2R;
+      return {
+        x: cx + (r - 44) * Math.cos(a),
+        y: cy + (r - 44) * Math.sin(a),
+        rot: i * step,
+      };
+    });
     return {
-      x: cx + (r - 44) * Math.cos(ang),
-      y: cy + (r - 44) * Math.sin(ang),
-      rot: i * step,
+      vb: { w: 340, h: 680 },
+      preserve: "xMinYMid slice",
+      cx,
+      cy,
+      r,
+      step,
+      dot: { x: cx + r, y: cy },
+      nums,
     };
-  });
+  }, [mobile]);
 
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const total = (N - 1) * step;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setAf(0);
+      return;
+    }
+    const total = (N - 1) * geo.step;
     const ctx = gsap.context(() => {
       ScrollTrigger.create({
         trigger: root.current,
@@ -96,7 +111,10 @@ function ServicesDesktop() {
         onUpdate: (self) => {
           const p = self.progress;
           setAf(p * (N - 1));
-          gsap.set(gref.current, { rotation: -p * total, svgOrigin: `${cx} ${cy}` });
+          gsap.set(gref.current, {
+            rotation: -p * total,
+            svgOrigin: `${geo.cx} ${geo.cy}`,
+          });
         },
       });
     }, root);
@@ -105,12 +123,12 @@ function ServicesDesktop() {
       clearTimeout(id);
       ctx.revert();
     };
-  }, []);
+  }, [geo]);
 
   const active = Math.round(af);
 
   return (
-    <section className={styles.section} ref={root}>
+    <section className={`${styles.section} ${mobile ? styles.isMobile : ""}`} ref={root}>
       <div className={`${styles.grid} shell`}>
         <div className={styles.rail}>
           <div className={styles.railHead}>
@@ -119,34 +137,42 @@ function ServicesDesktop() {
               Dörd addım, <span className={styles.ital}>bir sistem</span>.
             </p>
           </div>
+
           <div className={styles.dialWrap}>
             <svg
               className={styles.dial}
-              viewBox="0 0 340 680"
-              preserveAspectRatio="xMinYMid slice"
+              viewBox={`0 0 ${geo.vb.w} ${geo.vb.h}`}
+              preserveAspectRatio={geo.preserve}
               aria-hidden="true"
             >
-              <circle cx={cx} cy={cy} r={r} fill="none" stroke="var(--rule-strong)" strokeWidth="1" />
+              <circle
+                cx={geo.cx}
+                cy={geo.cy}
+                r={geo.r}
+                fill="none"
+                stroke="var(--rule-strong)"
+                strokeWidth="1"
+              />
               <g ref={gref}>
-                {nums.map((p, i) => (
+                {geo.nums.map((p, i) => (
                   <text
                     key={i}
                     x={p.x}
                     y={p.y}
                     transform={`rotate(${p.rot} ${p.x} ${p.y})`}
-                    textAnchor="end"
+                    textAnchor={mobile ? "middle" : "end"}
                     dominantBaseline="middle"
                     className={styles.num}
                     style={{
                       fill: i === active ? "var(--ink)" : "var(--ink-faint)",
-                      opacity: Math.max(0.14, 1 - Math.abs(i - af) * 0.5),
+                      opacity: Math.max(0.12, 1 - Math.abs(i - af) * 0.55),
                     }}
                   >
                     {ITEMS[i].n}
                   </text>
                 ))}
               </g>
-              <circle className={styles.dot} cx={cx + r} cy={cy} r="4.5" />
+              <circle className={styles.dot} cx={geo.dot.x} cy={geo.dot.y} r="4.5" />
             </svg>
           </div>
         </div>
@@ -171,18 +197,4 @@ function ServicesDesktop() {
       </div>
     </section>
   );
-}
-
-export default function ServicesArc() {
-  const [mobile, setMobile] = useState(
-    typeof window !== "undefined" && window.matchMedia(MQ).matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia(MQ);
-    const on = () => setMobile(mq.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-
-  return mobile ? <ServicesMobile /> : <ServicesDesktop />;
 }
