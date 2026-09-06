@@ -108,15 +108,6 @@ export default function Navbar() {
       >
         İş birliyi
       </NavLink>
-      <a
-        href="https://www.instagram.com/leiylamammadly/"
-        target="_blank"
-        rel="noreferrer"
-        className={styles.sheetLink}
-        onClick={() => setOpen(false)}
-      >
-        Instagram
-      </a>
     </div>
     </>
   );
