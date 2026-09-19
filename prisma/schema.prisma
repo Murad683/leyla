@@ -24,13 +24,39 @@ model Course {
 }
 
 model Testimonial {
-  id          Int      @id @default(autoincrement())
-  quote       String
-  author      String
-  role        String?
-  sortOrder   Int      @default(0)
-  isPublished Boolean  @default(true)
-  createdAt   DateTime @default(now())
+  id            Int      @id @default(autoincrement())
+  quote         String
+  author        String
+  role          String?
+  screenshotUrl String?
+  videoUrl      String?
+  beforeAfter   Json?
+  sortOrder     Int      @default(0)
+  isPublished   Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model VideoLesson {
+  id           Int      @id @default(autoincrement())
+  title        String
+  badgeTag     String?
+  audienceTag  String?
+  description  String?
+  youtubeId    String
+  thumbnailUrl String?
+  sortOrder    Int      @default(0)
+  isPublished  Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model LeadMagnet {
+  id          Int      @id @default(1)
+  title       String?
+  description String?
+  fileUrl     String?
+  isActive    Boolean  @default(true)
   updatedAt   DateTime @updatedAt
 }
 
@@ -51,6 +77,17 @@ model HomeContent {
   courseHow       Json?
   courseFaq       Json?
   quotesEyebrow   String?
+  aboutEyebrow    String?
+  aboutHeadline   String?
+  aboutStory      String[]
+  aboutMethod     Json?
+  freeEyebrow     String?
+  freeHeadline    String?
+  resultsEyebrow  String?
+  resultsHeadline String?
+  faqEyebrow      String?
+  faqHeadline     String?
+  faqItems        Json?
   updatedAt       DateTime @updatedAt
 }
 
@@ -68,6 +105,7 @@ model Contact {
   name      String
   email     String
   phone     String?
+  whatsapp  String?
   company   String?
   service   String?
   budget    String?
@@ -134,6 +172,9 @@ model SiteSettings {
   instagramUrl    String?
   linkedinUrl     String?
   twitterUrl      String?
+  youtubeUrl      String?
+  telegramUrl     String?
+  whatsappNumber  String?
   metaTitle       String?
   metaDescription String?
   updatedAt       DateTime @updatedAt
@@ -151,6 +192,7 @@ model HeroSection {
   videoUrl          String?
   secondaryBtnText  String?
   secondaryBtnHref  String?
+  stats             Json?
   updatedAt         DateTime @updatedAt
 }
 

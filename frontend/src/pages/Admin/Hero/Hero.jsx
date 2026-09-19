@@ -4,6 +4,28 @@ import { getAdminHero, updateAdminHero, uploadImage } from '../../../services/ad
 import { useToast } from '../../../components/admin/ui';
 import styles from './Hero.module.css';
 
+function StatsRepeater({ rows, onChange }) {
+  const set = (i, key, val) => onChange(rows.map((r, ri) => (ri === i ? { ...r, [key]: val } : r)));
+  const add = () => onChange([...rows, { value: '', suffix: '', label: '' }]);
+  const del = (i) => onChange(rows.filter((_, ri) => ri !== i));
+  return (
+    <div className={styles.card}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <h3 className={styles.cardTitle}>Sosial Sübut Rəqəmləri</h3>
+        <button type="button" onClick={add} className={styles.uploadBtn}>+ Rəqəm</button>
+      </div>
+      {rows.map((row, i) => (
+        <div key={i} className={styles.grid2} style={{ borderTop: '1px solid #eee', paddingTop: 12, marginTop: 12 }}>
+          <div className={styles.inputGroup}><label className={styles.label}>Rəqəm (məs. 500)</label><input className={styles.input} value={row.value || ''} onChange={(e) => set(i, 'value', e.target.value)} /></div>
+          <div className={styles.inputGroup}><label className={styles.label}>Şəkilçi (məs. +)</label><input className={styles.input} value={row.suffix || ''} onChange={(e) => set(i, 'suffix', e.target.value)} /></div>
+          <div className={styles.inputGroup}><label className={styles.label}>Ad (məs. Tələbə)</label><input className={styles.input} value={row.label || ''} onChange={(e) => set(i, 'label', e.target.value)} /></div>
+          <button type="button" onClick={() => del(i)} className={styles.label} style={{ color: '#c0392b', cursor: 'pointer', textAlign: 'left' }}>Sil ✕</button>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 const Hero = () => {
   const queryClient = useQueryClient();
   const toast = useToast();
@@ -22,7 +44,8 @@ const Hero = () => {
     secondaryBtnText: '',
     secondaryBtnUrl: '',
     bgImage: '',
-    videoUrl: ''
+    videoUrl: '',
+    stats: []
   });
 
   const [uploading, setUploading] = useState(false);
@@ -81,7 +104,10 @@ const Hero = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateMutation.mutate(hero);
+    updateMutation.mutate({
+      ...hero,
+      stats: (hero.stats || []).filter((s) => s.label || s.value),
+    });
   };
 
   if (isLoading) return <p className={styles.loading}>Yüklənir...</p>;
@@ -146,6 +172,8 @@ const Hero = () => {
             </div>
           </div>
         </div>
+
+        <StatsRepeater rows={hero.stats || []} onChange={(v) => setHero((p) => ({ ...p, stats: v }))} />
 
         {/* Buttons Card */}
         <div className={styles.card}>

@@ -2,10 +2,99 @@
   position: relative;
   min-height: 100svh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
   overflow: hidden;
   padding-block: calc(var(--nav-h) + 6vh) 12vh;
+}
+
+.avatar {
+  position: relative;
+  z-index: 2;
+  width: clamp(72px, 10vw, 104px);
+  height: clamp(72px, 10vw, 104px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--rule-strong);
+}
+
+.statsRow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: clamp(1.75rem, 5vw, 3.5rem);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.statNum {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.statNum i {
+  font-style: normal;
+  font-size: 0.5em;
+  color: var(--accent);
+  margin-left: 0.1em;
+}
+
+.ctaRow {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.ctaPrimary,
+.ctaGhost {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.9rem 1.75rem;
+  border-radius: 999px;
+  font-size: 0.95rem;
+  transition: transform var(--dur-fast) var(--ease-out), background var(--dur-fast) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.ctaPrimary {
+  background: var(--accent);
+  color: var(--paper);
+}
+.ctaPrimary:hover {
+  background: var(--accent-deep);
+  transform: translateY(-1px);
+}
+
+.ctaGhost {
+  border: 1px solid var(--rule-strong);
+  color: var(--ink);
+}
+.ctaGhost:hover {
+  border-color: var(--ink);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 680px) {
+  .ctaPrimary,
+  .ctaGhost {
+    padding: 0.8rem 1.4rem;
+    font-size: 0.9rem;
+  }
 }
 
 .title {

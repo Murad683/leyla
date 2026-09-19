@@ -20,6 +20,8 @@ const AdminServices = lazy(() => import("../pages/Admin/Services/Services"));
 const AdminCourses = lazy(() => import("../pages/Admin/Courses/Courses"));
 const AdminPortfolio = lazy(() => import("../pages/Admin/Portfolio/Portfolio"));
 const AdminTestimonials = lazy(() => import("../pages/Admin/Testimonials/Testimonials"));
+const AdminVideoLessons = lazy(() => import("../pages/Admin/VideoLessons/VideoLessons"));
+const AdminLeadMagnet = lazy(() => import("../pages/Admin/LeadMagnet/LeadMagnet"));
 const AdminGuide = lazy(() => import("../pages/Admin/Guide/Guide"));
 
 const Fallback = () => (
@@ -79,6 +81,8 @@ const router = createBrowserRouter([
       { path: "services", element: <S><AdminServices /></S> },
       { path: "courses", element: <S><AdminCourses /></S> },
       { path: "portfolio", element: <S><AdminPortfolio /></S> },
+      { path: "video-lessons", element: <S><AdminVideoLessons /></S> },
+      { path: "lead-magnet", element: <S><AdminLeadMagnet /></S> },
       { path: "testimonials", element: <S><AdminTestimonials /></S> },
       { path: "guide", element: <S><AdminGuide /></S> },
     ],

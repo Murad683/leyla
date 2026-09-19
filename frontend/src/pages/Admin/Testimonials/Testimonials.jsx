@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getTestimonials } from '../../../services/settingsService';
-import { createTestimonial, updateTestimonial, deleteTestimonial } from '../../../services/adminService';
+import { createTestimonial, updateTestimonial, deleteTestimonial, uploadImage } from '../../../services/adminService';
 import { useToast, useConfirm, useDragReorder } from '../../../components/admin/ui';
 import styles from '../Services/Services.module.css';
 
-const EMPTY = { quote: '', author: '', role: '', sortOrder: 0, isPublished: true };
+const EMPTY = { quote: '', author: '', role: '', screenshotUrl: '', videoUrl: '', sortOrder: 0, isPublished: true };
 
 const AdminTestimonials = () => {
   const qc = useQueryClient();
@@ -14,6 +14,7 @@ const AdminTestimonials = () => {
   const [open, setOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [f, setF] = useState(EMPTY);
+  const [uploading, setUploading] = useState(false);
 
   const { data: items, isLoading } = useQuery({ queryKey: ['testimonials'], queryFn: getTestimonials });
 
@@ -40,7 +41,15 @@ const AdminTestimonials = () => {
   const openAdd = () => { setEditing(null); setF({ ...EMPTY, sortOrder: items?.length || 0 }); setOpen(true); };
   const openEdit = (t) => {
     setEditing(t);
-    setF({ quote: t.quote || '', author: t.author || '', role: t.role || '', sortOrder: t.sortOrder ?? 0, isPublished: t.isPublished ?? true });
+    setF({
+      quote: t.quote || '',
+      author: t.author || '',
+      role: t.role || '',
+      screenshotUrl: t.screenshotUrl || '',
+      videoUrl: t.videoUrl || '',
+      sortOrder: t.sortOrder ?? 0,
+      isPublished: t.isPublished ?? true,
+    });
     setOpen(true);
   };
 
@@ -53,6 +62,21 @@ const AdminTestimonials = () => {
   const ch = (e) => {
     const { name, value, type, checked } = e.target;
     setF((p) => ({ ...p, [name]: type === 'checkbox' ? checked : value }));
+  };
+
+  const handleScreenshotUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const res = await uploadImage(file);
+      setF((p) => ({ ...p, screenshotUrl: res.url }));
+      toast.success('Skrinşot yükləndi');
+    } catch {
+      toast.error('Skrinşot yüklənmədi');
+    } finally {
+      setUploading(false);
+    }
   };
 
   const submit = (e) => {
@@ -89,9 +113,11 @@ const AdminTestimonials = () => {
                 <button onClick={async () => { if (await confirm({ body: 'Bu rəy silinsin?' })) deleteM.mutate(t.id); }} className={styles.deleteBtn}>🗑️ Sil</button>
               </div>
             </div>
+            {t.screenshotUrl && <img src={t.screenshotUrl} alt="" style={{ width: '100%', borderRadius: 8, marginBottom: 8 }} />}
             <p className={styles.serviceDesc}>"{t.quote}"</p>
             <h3 className={styles.serviceTitle}>{t.author}</h3>
             <p className={styles.serviceDesc}>{t.role}</p>
+            {t.videoUrl && <p className={styles.serviceDesc}>🎥 Video rəy əlavə olunub</p>}
           </div>
         ))}
       </div>
@@ -104,6 +130,12 @@ const AdminTestimonials = () => {
               <div className={styles.inputGroup}><label className={styles.label}>Rəy mətni</label><textarea name="quote" value={f.quote} onChange={ch} className={styles.textarea} rows={4} required /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Müəllif</label><input name="author" value={f.author} onChange={ch} className={styles.input} required /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Rol / brend</label><input name="role" value={f.role} onChange={ch} className={styles.input} /></div>
+              <div className={styles.inputGroup}>
+                <label className={styles.label}>Skrinşot (WhatsApp təşəkkürü və s.)</label>
+                <input type="file" accept="image/*" onChange={handleScreenshotUpload} disabled={uploading} />
+                {f.screenshotUrl && <img src={f.screenshotUrl} alt="" style={{ maxWidth: 160, marginTop: 8, borderRadius: 8 }} />}
+              </div>
+              <div className={styles.inputGroup}><label className={styles.label}>Video rəy linki (istəyə bağlı)</label><input name="videoUrl" value={f.videoUrl} onChange={ch} className={styles.input} placeholder="https://..." /></div>
               <div className={styles.inputGroup}><label className={styles.label}>Sıra</label><input type="number" name="sortOrder" value={f.sortOrder} onChange={ch} className={styles.input} /></div>
               <label className={styles.label} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                 <input type="checkbox" name="isPublished" checked={f.isPublished} onChange={ch} /> Dərc edilsin

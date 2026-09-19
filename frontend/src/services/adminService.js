@@ -112,6 +112,33 @@ export const deleteTestimonial = async (id) => {
   return data.data;
 };
 
+// Video Lessons CRUD
+export const createVideoLesson = async (payload) => {
+  const { data } = await api.post('/admin/video-lessons', payload);
+  return data.data;
+};
+
+export const updateVideoLesson = async (id, payload) => {
+  const { data } = await api.put(`/admin/video-lessons/${id}`, payload);
+  return data.data;
+};
+
+export const deleteVideoLesson = async (id) => {
+  const { data } = await api.delete(`/admin/video-lessons/${id}`);
+  return data.data;
+};
+
+// Lead Magnet (singleton)
+export const getAdminLeadMagnet = async () => {
+  const { data } = await api.get('/admin/lead-magnet');
+  return data.data;
+};
+
+export const updateLeadMagnet = async (payload) => {
+  const { data } = await api.put('/admin/lead-magnet', payload);
+  return data.data;
+};
+
 // Portfolio CRUD
 export const createPortfolioItem = async (itemData) => {
   const { data } = await api.post('/admin/portfolio', itemData);

@@ -14,6 +14,7 @@ const mapHero = (hero) => ({
   videoUrl: hero.videoUrl || '',
   secondaryBtnText: hero.secondaryBtnText || '',
   secondaryBtnHref: hero.secondaryBtnHref || '',
+  stats: hero.stats || null,
 
   // Mapped fields (used by Admin Hero.jsx form)
   badge: hero.subtitle || '',
@@ -40,7 +41,7 @@ const getHero = async (req, res, next) => {
 
 const updateHero = async (req, res, next) => {
   try {
-    const { title, accentText, badge, description, primaryBtnText, primaryBtnUrl, bgImage, videoUrl, secondaryBtnText, secondaryBtnUrl } = req.body;
+    const { title, accentText, badge, description, primaryBtnText, primaryBtnUrl, bgImage, videoUrl, secondaryBtnText, secondaryBtnUrl, stats } = req.body;
 
     // Map incoming frontend fields to the database fields
     const mappedData = {
@@ -53,7 +54,8 @@ const updateHero = async (req, res, next) => {
       backgroundImage: bgImage || '',
       videoUrl: videoUrl || '',
       secondaryBtnText: secondaryBtnText || '',
-      secondaryBtnHref: secondaryBtnUrl || ''
+      secondaryBtnHref: secondaryBtnUrl || '',
+      ...(stats !== undefined ? { stats } : {}),
     };
 
     const hero = await prisma.heroSection.upsert({

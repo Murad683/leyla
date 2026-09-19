@@ -8,8 +8,12 @@ const FIELDS = [
   'processEyebrow', 'processHeadline', 'processSteps',
   'coursesEyebrow', 'coursesHeadline', 'courseHow', 'courseFaq',
   'quotesEyebrow',
+  'aboutEyebrow', 'aboutHeadline', 'aboutStory', 'aboutMethod',
+  'freeEyebrow', 'freeHeadline',
+  'resultsEyebrow', 'resultsHeadline',
+  'faqEyebrow', 'faqHeadline', 'faqItems',
 ];
-const ARRAY_FIELDS = ['introParagraphs', 'introTags'];
+const ARRAY_FIELDS = ['introParagraphs', 'introTags', 'aboutStory'];
 
 const pick = (body) => {
   const out = {};

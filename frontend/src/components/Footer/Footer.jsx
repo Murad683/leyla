@@ -16,8 +16,14 @@ export default function Footer() {
   const instagram = settings?.instagramUrl || IG_DEFAULT;
   const igLabel = instagram.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
   const address = settings?.address || "Bakı, Azərbaycan";
+  const whatsappUrl = settings?.whatsappNumber
+    ? `https://wa.me/${settings.whatsappNumber.replace(/[^0-9]/g, "")}`
+    : null;
   const socials = [
+    ["YouTube", settings?.youtubeUrl],
     ["Instagram", settings?.instagramUrl || IG_DEFAULT],
+    ["Telegram", settings?.telegramUrl],
+    ["WhatsApp", whatsappUrl],
     ["LinkedIn", settings?.linkedinUrl],
     ["Facebook", settings?.facebookUrl],
     ["X", settings?.twitterUrl],

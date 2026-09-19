@@ -12,6 +12,8 @@ const servicesController = require('../controllers/servicesController');
 const homeController = require('../controllers/homeController');
 const coursesController = require('../controllers/coursesController');
 const testimonialsController = require('../controllers/testimonialsController');
+const videoLessonsController = require('../controllers/videoLessonsController');
+const leadMagnetController = require('../controllers/leadMagnetController');
 
 // Public API Routes
 router.get('/settings', settingsController.getSettings);
@@ -20,6 +22,8 @@ router.get('/home', homeController.getHome);
 router.get('/services', servicesController.getServices);
 router.get('/courses', coursesController.getCourses);
 router.get('/testimonials', testimonialsController.getTestimonials);
+router.get('/video-lessons', videoLessonsController.getVideoLessons);
+router.get('/lead-magnet', leadMagnetController.getLeadMagnet);
 
 router.use('/portfolio', portfolioRoutes);
 router.use('/contact', contactRoutes);

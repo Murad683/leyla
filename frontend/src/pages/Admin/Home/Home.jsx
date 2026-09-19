@@ -22,6 +22,10 @@ const EMPTY = {
   processEyebrow: '', processHeadline: '', processSteps: [],
   coursesEyebrow: '', coursesHeadline: '', courseHow: [], courseFaq: [],
   quotesEyebrow: '',
+  aboutEyebrow: '', aboutHeadline: '', aboutStory: [], aboutMethod: [],
+  freeEyebrow: '', freeHeadline: '',
+  resultsEyebrow: '', resultsHeadline: '',
+  faqEyebrow: '', faqHeadline: '', faqItems: [],
 };
 
 const toLines = (arr) => (Array.isArray(arr) ? arr.join('\n') : '');
@@ -68,7 +72,7 @@ const AdminHome = () => {
   const [f, setF] = useState(EMPTY);
 
   useEffect(() => {
-    if (data) setF({ ...EMPTY, ...data, _introParagraphs: undefined, _introTags: undefined });
+    if (data) setF({ ...EMPTY, ...data, _introParagraphs: undefined, _introTags: undefined, _aboutStory: undefined });
   }, [data]);
 
   const mut = useMutation({
@@ -95,6 +99,9 @@ const AdminHome = () => {
         .map((s) => ({ ...s, tags: Array.isArray(s.tags) ? s.tags : fromCsv(s.tags) })),
       courseHow: (f.courseHow || []).filter((h) => h.t || h.d),
       courseFaq: (f.courseFaq || []).filter((q) => q.q || q.a),
+      aboutStory: fromLines(f._aboutStory ?? toLines(f.aboutStory)),
+      aboutMethod: (f.aboutMethod || []).filter((m) => m.t || m.d),
+      faqItems: (f.faqItems || []).filter((q) => q.q || q.a),
     });
   };
 
@@ -118,6 +125,41 @@ const AdminHome = () => {
           <div className={styles.inputGroup}><label className={styles.label}>Bəyanat (böyük cümlə)</label><textarea className={styles.textarea} rows={2} value={f.introStatement || ''} onChange={ch('introStatement')} /></div>
           <div className={styles.inputGroup}><label className={styles.label}>Paraqraflar (hər sətir - ayrı paraqraf)</label><textarea className={styles.textarea} rows={4} value={f._introParagraphs ?? toLines(f.introParagraphs)} onChange={ch('_introParagraphs')} /></div>
           <div className={styles.inputGroup}><label className={styles.label}>Teqlər (vergüllə)</label><input className={styles.input} value={f._introTags ?? toCsv(f.introTags)} onChange={ch('_introTags')} /></div>
+        </Section>
+
+        <Section title="Ekspert Haqqında (About)">
+          <div className={styles.grid2}>
+            <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.aboutEyebrow || ''} onChange={ch('aboutEyebrow')} /></div>
+            <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.aboutHeadline || ''} onChange={ch('aboutHeadline')} /></div>
+          </div>
+          <div className={styles.inputGroup}><label className={styles.label}>Hekayə (hər sətir - ayrı paraqraf)</label><textarea className={styles.textarea} rows={4} value={f._aboutStory ?? toLines(f.aboutStory)} onChange={ch('_aboutStory')} /></div>
+          <Repeater label="Metodologiya" rows={f.aboutMethod || []} onChange={(v) => setF((p) => ({ ...p, aboutMethod: v }))}
+            cols={[{ key: 't', label: 'Başlıq' }, { key: 'd', label: 'Mətn', textarea: true }]} />
+        </Section>
+
+        <Section title="Pulsuz Öyrənmə bölməsi">
+          <div className={styles.grid2}>
+            <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.freeEyebrow || ''} onChange={ch('freeEyebrow')} /></div>
+            <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.freeHeadline || ''} onChange={ch('freeHeadline')} /></div>
+          </div>
+          <p className={styles.helpText}>Video dərslər "Video Dərslər" bölməsindən, lead magnet isə "Lead Magnet" bölməsindən idarə olunur.</p>
+        </Section>
+
+        <Section title="Nəticələr / Keyslər bölməsi">
+          <div className={styles.grid2}>
+            <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.resultsEyebrow || ''} onChange={ch('resultsEyebrow')} /></div>
+            <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.resultsHeadline || ''} onChange={ch('resultsHeadline')} /></div>
+          </div>
+          <p className={styles.helpText}>Skrinşot/video rəylər "Rəylər" bölməsindən idarə olunur.</p>
+        </Section>
+
+        <Section title="FAQ">
+          <div className={styles.grid2}>
+            <div className={styles.inputGroup}><label className={styles.label}>Etiket</label><input className={styles.input} value={f.faqEyebrow || ''} onChange={ch('faqEyebrow')} /></div>
+            <div className={styles.inputGroup}><label className={styles.label}>Başlıq</label><input className={styles.input} value={f.faqHeadline || ''} onChange={ch('faqHeadline')} /></div>
+          </div>
+          <Repeater label="Suallar" rows={f.faqItems || []} onChange={(v) => setF((p) => ({ ...p, faqItems: v }))}
+            cols={[{ key: 'q', label: 'Sual' }, { key: 'a', label: 'Cavab', textarea: true }]} />
         </Section>
 
         <Section title="Rəqəmlər">

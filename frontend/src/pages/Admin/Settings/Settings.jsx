@@ -23,7 +23,10 @@ const Settings = () => {
     facebookUrl: '',
     instagramUrl: '',
     linkedinUrl: '',
-    twitterUrl: ''
+    twitterUrl: '',
+    youtubeUrl: '',
+    telegramUrl: '',
+    whatsappNumber: ''
   });
 
   const [uploading, setUploading] = useState(false);
@@ -230,6 +233,43 @@ const Settings = () => {
                 onChange={handleChange}
                 className={styles.input}
               />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>YouTube Kanal Linki</label>
+              <input
+                type="url"
+                name="youtubeUrl"
+                value={settings.youtubeUrl || ''}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="https://www.youtube.com/@..."
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>Telegram Linki</label>
+              <input
+                type="url"
+                name="telegramUrl"
+                value={settings.telegramUrl || ''}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="https://t.me/..."
+              />
+            </div>
+
+            <div className={styles.inputGroup}>
+              <label className={styles.label}>WhatsApp Nömrəsi</label>
+              <input
+                type="text"
+                name="whatsappNumber"
+                value={settings.whatsappNumber || ''}
+                onChange={handleChange}
+                className={styles.input}
+                placeholder="994XXXXXXXXX (kodlarla, + işarəsiz)"
+              />
+              <span className={styles.helpText}>Qeydiyyat forması və üzən düymə bu nömrəyə yönləndirəcək.</span>
             </div>
           </div>
         </div>

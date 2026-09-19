@@ -5,6 +5,7 @@ import Footer from "../Footer/Footer";
 import Cursor from "../Cursor/Cursor";
 import GridOverlay from "../GridOverlay/GridOverlay";
 import Preloader from "../Preloader/Preloader";
+import FloatingCTA from "../FloatingCTA/FloatingCTA";
 import { useSmoothScroll, scrollToTop } from "../../lib/useSmoothScroll";
 import { ScrollTrigger } from "../../lib/gsap";
 
@@ -36,6 +37,7 @@ export default function SiteLayout() {
         <Outlet />
       </main>
       <Footer />
+      <FloatingCTA />
     </>
   );
 }

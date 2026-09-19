@@ -6,6 +6,8 @@ import {
   getHome,
   getCourses,
   getTestimonials,
+  getVideoLessons,
+  getLeadMagnet,
 } from "../services/settingsService";
 import { getPortfolioItems } from "../services/portfolioService";
 
@@ -30,11 +32,11 @@ export function useSiteSettings() {
   return useQuery({ queryKey: ["settings"], queryFn: getSettings, ...OPTS }).data ?? null;
 }
 
-/** Hero content, falling back to `defaults` ({ title, accentText }). */
+/** Hero content, falling back to `defaults` ({ title, accentText, backgroundImage, ctaLabel, ctaHref, secondaryBtnText, secondaryBtnHref, stats }). */
 export function useHero(defaults) {
   const { data } = useQuery({ queryKey: ["hero"], queryFn: getHero, ...OPTS });
   if (!data || !data.title) return defaults;
-  return { title: data.title, accentText: data.accentText || "" };
+  return merge(defaults, data);
 }
 
 /**
@@ -110,7 +112,7 @@ export function useCourses(defaults) {
   }));
 }
 
-/** Testimonials -> { q, a, r }, falling back to `defaults`. */
+/** Testimonials -> { q, a, r, screenshot, video, beforeAfter }, falling back to `defaults`. */
 export function useTestimonials(defaults) {
   const { data } = useQuery({
     queryKey: ["testimonials"],
@@ -122,5 +124,41 @@ export function useTestimonials(defaults) {
     q: t.quote || "",
     a: t.author || "",
     r: t.role || "",
+    screenshot: t.screenshotUrl || "",
+    video: t.videoUrl || "",
+    beforeAfter: t.beforeAfter || null,
   }));
+}
+
+/** Video lessons -> { title, badge, audience, desc, youtubeId, thumb }, falling back to `defaults`. */
+export function useVideoLessons(defaults) {
+  const { data } = useQuery({
+    queryKey: ["videoLessons"],
+    queryFn: getVideoLessons,
+    ...OPTS,
+  });
+  if (!Array.isArray(data) || data.length === 0) return defaults;
+  return data.map((v) => ({
+    title: v.title || "",
+    badge: v.badgeTag || "",
+    audience: v.audienceTag || "",
+    desc: v.description || "",
+    youtubeId: v.youtubeId || "",
+    thumb: v.thumbnailUrl || "",
+  }));
+}
+
+/** Lead magnet singleton -> { title, description, fileUrl }, falling back to `defaults`. */
+export function useLeadMagnet(defaults) {
+  const { data } = useQuery({
+    queryKey: ["leadMagnet"],
+    queryFn: getLeadMagnet,
+    ...OPTS,
+  });
+  if (!data || !data.isActive) return defaults;
+  return {
+    title: data.title || defaults.title,
+    description: data.description || defaults.description,
+    fileUrl: data.fileUrl || defaults.fileUrl,
+  };
 }

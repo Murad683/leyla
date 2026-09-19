@@ -3,7 +3,9 @@ import { useSearchParams } from "react-router-dom";
 import { gsap } from "../../lib/gsap";
 import { useReveal } from "../../lib/useReveal";
 import FlowGradient from "../../components/FlowField/FlowGradient";
+import { useQuery } from "@tanstack/react-query";
 import { submitContact } from "../../services/contactService";
+import { getSettings } from "../../services/settingsService";
 import styles from "./Contact.module.css";
 
 const IG = "https://www.instagram.com/leiylamammadly/";
@@ -77,11 +79,12 @@ function Hero() {
   );
 }
 
-const EMPTY = { name: "", email: "", phone: "", service: "", message: "" };
+const EMPTY = { name: "", email: "", phone: "", whatsapp: "", service: "", message: "" };
 
 function Form() {
   const ref = useReveal({ stagger: 0.06 });
   const [params] = useSearchParams();
+  const { data: settings } = useQuery({ queryKey: ["settings"], queryFn: getSettings, staleTime: 60_000 });
   const [form, setForm] = useState(EMPTY);
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // idle | sending | ok | error
@@ -144,11 +147,23 @@ function Form() {
         name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim() || undefined,
+        whatsapp: form.whatsapp.trim() || undefined,
         service: form.service || undefined,
         subject: form.service ? `${form.service} - sayt formu` : "Sayt formu",
         message: form.message.trim(),
       });
       setStatus("ok");
+
+      const waNumber = (settings?.whatsappNumber || "").replace(/[^0-9]/g, "");
+      if (waNumber) {
+        const waText = `Salam, adım ${form.name.trim()}. ${form.message.trim()}`;
+        window.open(
+          `https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`,
+          "_blank",
+          "noreferrer"
+        );
+      }
+
       setForm(EMPTY);
     } catch (err) {
       // Field-level errors from the API (422)
@@ -242,6 +257,20 @@ function Form() {
                   onChange={setField("phone")}
                 />
               </div>
+            </div>
+
+            <div className={`${styles.field} reveal`}>
+              <label htmlFor="c-whatsapp">
+                WhatsApp <span className={styles.opt}>- istəyə bağlı</span>
+              </label>
+              <input
+                id="c-whatsapp"
+                type="tel"
+                autoComplete="tel"
+                value={form.whatsapp}
+                onChange={setField("whatsapp")}
+                placeholder="+994 XX XXX XX XX"
+              />
             </div>
 
             <div className={`${styles.field} reveal`}>

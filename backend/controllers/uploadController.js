@@ -14,10 +14,14 @@ const upload = multer({
   storage: storage,
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB (covers hero video uploads)
   fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/') || file.mimetype.startsWith('video/')) {
+    if (
+      file.mimetype.startsWith('image/') ||
+      file.mimetype.startsWith('video/') ||
+      file.mimetype === 'application/pdf'
+    ) {
       cb(null, true);
     } else {
-      cb(new Error('Only images and videos are allowed'));
+      cb(new Error('Only images, videos and PDFs are allowed'));
     }
   }
 });
@@ -32,7 +36,11 @@ const uploadImage = async (req, res, next) => {
       return res.status(500).json({ success: false, message: 'Cloudinary not configured' });
     }
 
-    const resourceType = req.file.mimetype.startsWith('video/') ? 'video' : 'image';
+    const resourceType = req.file.mimetype.startsWith('video/')
+      ? 'video'
+      : req.file.mimetype === 'application/pdf'
+      ? 'raw'
+      : 'image';
 
     const result = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(

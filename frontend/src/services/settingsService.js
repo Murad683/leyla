@@ -53,3 +53,21 @@ export const getTestimonials = async () => {
     throw new Error(error.response?.data?.message || 'Failed to fetch testimonials');
   }
 };
+
+export const getVideoLessons = async () => {
+  try {
+    const { data } = await api.get('/video-lessons');
+    return data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch video lessons');
+  }
+};
+
+export const getLeadMagnet = async () => {
+  try {
+    const { data } = await api.get('/lead-magnet');
+    return data.data;
+  } catch (error) {
+    throw new Error(error.response?.data?.message || 'Failed to fetch lead magnet');
+  }
+};

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { gsap } from "../../lib/gsap";
+import { useCounter } from "../../lib/useCounter";
 import { useHero } from "../../lib/useContent";
 import FlowGradient from "../../components/FlowField/FlowGradient";
 import styles from "./Hero.module.css";
@@ -7,7 +8,29 @@ import styles from "./Hero.module.css";
 const DEFAULTS = {
   title: "Sosial media - marketoloq təfəkkürü ilə.",
   accentText: "marketoloq",
+  backgroundImage: "",
+  ctaLabel: "Təlimə Müraciət Et",
+  ctaHref: "/elaqe",
+  secondaryBtnText: "Pulsuz Dərslərə Bax",
+  secondaryBtnHref: "#pulsuz-dersler",
+  stats: [
+    { value: 500, suffix: "+", label: "Tələbə" },
+    { value: 3, suffix: " il", label: "Təcrübə" },
+  ],
 };
+
+function MiniStat({ end, suffix, label }) {
+  const [ref, val] = useCounter(Number(end) || 0);
+  return (
+    <div className={styles.stat} ref={ref}>
+      <span className={styles.statNum}>
+        {val}
+        <i>{suffix}</i>
+      </span>
+      <span className="mono">{label}</span>
+    </div>
+  );
+}
 
 const norm = (s) => s.toLowerCase().replace(/[^\p{L}\p{N}]/gu, "");
 
@@ -96,9 +119,20 @@ export default function Hero() {
     return () => ctx.revert();
   }, [words]);
 
+  const stats = Array.isArray(hero.stats) && hero.stats.length ? hero.stats : DEFAULTS.stats;
+
   return (
     <section className={styles.hero} ref={root}>
       <FlowGradient />
+
+      {hero.backgroundImage && (
+        <img
+          src={hero.backgroundImage}
+          alt=""
+          className={styles.avatar}
+          aria-hidden="true"
+        />
+      )}
 
       <h1 className={styles.title} ref={title}>
         <span className={styles.line}>
@@ -112,6 +146,21 @@ export default function Hero() {
           ))}
         </span>
       </h1>
+
+      <div className={styles.statsRow}>
+        {stats.map((s, i) => (
+          <MiniStat key={i} end={s.value} suffix={s.suffix} label={s.label} />
+        ))}
+      </div>
+
+      <div className={styles.ctaRow}>
+        <a href={hero.ctaHref || DEFAULTS.ctaHref} className={styles.ctaPrimary}>
+          {hero.ctaLabel || DEFAULTS.ctaLabel}
+        </a>
+        <a href={hero.secondaryBtnHref || DEFAULTS.secondaryBtnHref} className={styles.ctaGhost}>
+          {hero.secondaryBtnText || DEFAULTS.secondaryBtnText}
+        </a>
+      </div>
 
       <span className={styles.cue} aria-hidden="true" />
     </section>

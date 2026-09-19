@@ -10,6 +10,8 @@ const coursesController = require('../controllers/coursesController');
 const testimonialsController = require('../controllers/testimonialsController');
 const portfolioController = require('../controllers/portfolioController');
 const contactController = require('../controllers/contactController');
+const videoLessonsController = require('../controllers/videoLessonsController');
+const leadMagnetController = require('../controllers/leadMagnetController');
 const { upload, uploadImage } = require('../controllers/uploadController');
 
 // All routes here are protected
@@ -46,6 +48,15 @@ router.delete('/testimonials/:id', testimonialsController.deleteTestimonial);
 router.post('/portfolio', portfolioController.createPortfolioItem);
 router.put('/portfolio/:id', portfolioController.updatePortfolioItem);
 router.delete('/portfolio/:id', portfolioController.deletePortfolioItem);
+
+// Video Lessons
+router.post('/video-lessons', videoLessonsController.createVideoLesson);
+router.put('/video-lessons/:id', videoLessonsController.updateVideoLesson);
+router.delete('/video-lessons/:id', videoLessonsController.deleteVideoLesson);
+
+// Lead Magnet (singleton)
+router.get('/lead-magnet', leadMagnetController.getLeadMagnet);
+router.put('/lead-magnet', leadMagnetController.updateLeadMagnet);
 
 // Contacts
 router.get('/contacts', contactController.getContacts);

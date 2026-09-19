@@ -12,6 +12,8 @@ const navLinks = [
   { path: '/admin/services', label: 'Xidmətlər', icon: '💼' },
   { path: '/admin/courses', label: 'Kurslar', icon: '🎓' },
   { path: '/admin/portfolio', label: 'Portfolio', icon: '🎨' },
+  { path: '/admin/video-lessons', label: 'Video Dərslər', icon: '🎬' },
+  { path: '/admin/lead-magnet', label: 'Lead Magnet', icon: '🎁' },
   { path: '/admin/testimonials', label: 'Rəylər', icon: '💬' },
   { path: '/admin/guide', label: 'Təlimat', icon: '📘' },
 ];
