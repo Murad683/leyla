@@ -64,11 +64,11 @@
 
 .aWrap {
   display: grid;
-  grid-template-rows: 0fr;
+  grid-template-rows: minmax(0, 0fr);
   transition: grid-template-rows var(--dur) var(--ease-io);
 }
 .aOpen {
-  grid-template-rows: 1fr;
+  grid-template-rows: minmax(0, 1fr);
 }
 .aWrap > .a {
   overflow: hidden;
