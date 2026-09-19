@@ -54,8 +54,16 @@ export default function FreeLessons() {
 
         <div className={styles.grid}>
           {lessons.map((l, i) => (
-            <article className={`${styles.card} reveal`} key={i}>
+            <article
+              className={`${styles.card} reveal`}
+              key={i}
+              role="button"
+              tabIndex={0}
+              onClick={() => setOpenVideo(l.youtubeId)}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && setOpenVideo(l.youtubeId)}
+            >
               <div className={styles.media} style={l.thumb ? { backgroundImage: `url(${l.thumb})` } : undefined}>
+                <span className={styles.playIcon} aria-hidden="true">▶</span>
                 <div className={styles.badges}>
                   {l.badge && <span className={styles.badge}>{l.badge}</span>}
                   {l.audience && <span className={styles.badgeGhost}>{l.audience}</span>}
@@ -64,14 +72,13 @@ export default function FreeLessons() {
               <h3 className={styles.cardTitle}>{l.title}</h3>
               <p className={styles.cardDesc}>{l.desc}</p>
               <div className={styles.actions}>
-                <button type="button" className={styles.watchBtn} onClick={() => setOpenVideo(l.youtubeId)}>
-                  Saytda İzlə
-                </button>
+                <span className={styles.watchBtn}>Saytda İzlə</span>
                 <a
                   href={`https://www.youtube.com/watch?v=${l.youtubeId}`}
                   target="_blank"
                   rel="noreferrer"
                   className={styles.ytLink}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   YouTube-da aç →
                 </a>
